@@ -1,0 +1,25 @@
+{
+  "name": "fastly-promises",
+  "version": "0.0.1",
+  "description": "Promise based Fastly API client for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philippschulte/fastly-promises.git"
+  },
+  "keywords": [
+    "fastly",
+    "promises",
+    "api",
+    "client"
+  ],
+  "author": "Philipp Schulte <philipp.schulte@ymail.com> (http://www.philippschulte.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/philippschulte/fastly-promises/issues"
+  },
+  "homepage": "https://github.com/philippschulte/fastly-promises#readme"
+}
