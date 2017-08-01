@@ -14,12 +14,17 @@
     "fastly",
     "promises",
     "api",
-    "client"
+    "client",
+    "cdn"
   ],
   "author": "Philipp Schulte <philipp.schulte@ymail.com> (http://www.philippschulte.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/philippschulte/fastly-promises/issues"
   },
-  "homepage": "https://github.com/philippschulte/fastly-promises#readme"
+  "homepage": "https://github.com/philippschulte/fastly-promises#readme",
+  "devDependencies": {
+    "expect": "1.20.2",
+    "mocha": "3.5.0"
+  }
 }
