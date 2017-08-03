@@ -1,12 +1,13 @@
 'use strict';
 
 const axios = require('axios');
+const config = require('./config');
 
 class Fastly {
   constructor(token, service_id) {
     this.service_id = service_id;
     this.request = axios.create({
-      baseURL: 'https://api.fastly.com',
+      baseURL: config.mainEntryPoint,
       timeout: 3000,
       headers: { 'Fastly-Key': token }
     });
