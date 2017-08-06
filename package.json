@@ -23,6 +23,9 @@
     "url": "https://github.com/philippschulte/fastly-promises/issues"
   },
   "homepage": "https://github.com/philippschulte/fastly-promises#readme",
+  "engines": {
+    "node": ">=7.6.0"
+  },
   "devDependencies": {
     "expect": "1.20.2",
     "mocha": "3.5.0",
