@@ -10,11 +10,11 @@ describe('index.js', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
 
   describe('#constructor', () => {
-    it('should exist', () => {
+    it('instance should exist', () => {
       expect(fastly).toExist();
     });
 
-    it('should have service_id and request properties', () => {
+    it('instance should have service_id and request properties', () => {
       expect(fastly).toIncludeKeys(['service_id', 'request']);
     });
   });
@@ -30,17 +30,21 @@ describe('index.js', () => {
       resp = await fastly.purgeIndividual('www.example.com/image.jpg');
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an object', () => {
-      expect(resp).toBeA('object');
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should have status and id properties', () => {
-      expect(resp).toIncludeKeys(['status', 'id']);
-      expect(resp).toEqual(response.purgeIndividual);
+    it('response body should be an object', () => {
+      expect(resp.data).toBeA('object');
+    });
+
+    it('response body should have status and id properties', () => {
+      expect(resp.data).toIncludeKeys(['status', 'id']);
+      expect(resp.data).toEqual(response.purgeIndividual);
     });
   });
 
@@ -55,17 +59,21 @@ describe('index.js', () => {
       resp = await fastly.purgeAll();
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an object', () => {
-      expect(resp).toBeA('object');
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should have status property', () => {
-      expect(resp).toIncludeKeys(['status']);
-      expect(resp).toEqual(response.purgeAll);
+    it('response body should be an object', () => {
+      expect(resp.data).toBeA('object');
+    });
+
+    it('response body should have status property', () => {
+      expect(resp.data).toIncludeKeys(['status']);
+      expect(resp.data).toEqual(response.purgeAll);
     });
   });
 
@@ -80,17 +88,21 @@ describe('index.js', () => {
       resp = await fastly.purgeKey('key_1');
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an object', () => {
-      expect(resp).toBeA('object');
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should have status and id properties', () => {
-      expect(resp).toIncludeKeys(['status', 'id']);
-      expect(resp).toEqual(response.purgeKey);
+    it('response body should be an object', () => {
+      expect(resp.data).toBeA('object');
+    });
+
+    it('response body should have status and id properties', () => {
+      expect(resp.data).toIncludeKeys(['status', 'id']);
+      expect(resp.data).toEqual(response.purgeKey);
     });
   });
 
@@ -105,17 +117,21 @@ describe('index.js', () => {
       resp = await fastly.purgeKeys(['key_1', 'key_2', 'key_3']);
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an object', () => {
-      expect(resp).toBeA('object');
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should have surrogate keys as properties', () => {
-      expect(resp).toIncludeKeys(['key_1', 'key_2', 'key_3']);
-      expect(resp).toEqual(response.purgeKeys);
+    it('response body should be an object', () => {
+      expect(resp.data).toBeA('object');
+    });
+
+    it('response body should have surrogate keys property', () => {
+      expect(resp.data).toIncludeKeys(['key_1', 'key_2', 'key_3']);
+      expect(resp.data).toEqual(response.purgeKeys);
     });
   });
 
@@ -130,17 +146,21 @@ describe('index.js', () => {
       resp = await fastly.softPurgeIndividual('www.example.com/image.jpg');
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an object', () => {
-      expect(resp).toBeA('object');
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should have status and id properties', () => {
-      expect(resp).toIncludeKeys(['status', 'id']);
-      expect(resp).toEqual(response.softPurgeIndividual);
+    it('response body should be an object', () => {
+      expect(resp.data).toBeA('object');
+    });
+
+    it('response body should have status and id properties', () => {
+      expect(resp.data).toIncludeKeys(['status', 'id']);
+      expect(resp.data).toEqual(response.softPurgeIndividual);
     });
   });
 
@@ -155,17 +175,21 @@ describe('index.js', () => {
       resp = await fastly.softPurgeKey('key_1');
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an object', () => {
-      expect(resp).toBeA('object');
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should have status and id properties', () => {
-      expect(resp).toIncludeKeys(['status', 'id']);
-      expect(resp).toEqual(response.softPurgeKey);
+    it('response body should be an object', () => {
+      expect(resp.data).toBeA('object');
+    });
+
+    it('response body should have status and id properties', () => {
+      expect(resp.data).toIncludeKeys(['status', 'id']);
+      expect(resp.data).toEqual(response.softPurgeKey);
     });
   });
 
@@ -180,21 +204,25 @@ describe('index.js', () => {
       resp = await fastly.dataCenters();
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an array', () => {
-      expect(Array.isArray(resp)).toBe(true);
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should return an array of objects', () => {
-      expect(resp[0]).toBeA('object');
+    it('response body should be an array', () => {
+      expect(Array.isArray(resp.data)).toBe(true);
     });
 
-    it('should have code, name, group, coordinates, and shield properties', () => {
-      expect(resp[0]).toIncludeKeys(['code', 'name', 'group', 'coordinates', 'shield']);
-      expect(resp[0]).toEqual(response.dataCenters[0]);
+    it('response body should be an array of objects', () => {
+      expect(resp.data[0]).toBeA('object');
+    });
+
+    it('response body should have code, name, group, coordinates, and shield properties', () => {
+      expect(resp.data[0]).toIncludeKeys(['code', 'name', 'group', 'coordinates', 'shield']);
+      expect(resp.data[0]).toEqual(response.dataCenters[0]);
     });
   });
 
@@ -209,17 +237,21 @@ describe('index.js', () => {
       resp = await fastly.publicIpList();
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an object', () => {
-      expect(resp).toBeA('object');
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should have addresses property', () => {
-      expect(resp).toIncludeKeys(['addresses']);
-      expect(resp).toEqual(response.publicIpList);
+    it('response body should be an object', () => {
+      expect(resp.data).toBeA('object');
+    });
+
+    it('response body should have addresses property', () => {
+      expect(resp.data).toIncludeKeys(['addresses']);
+      expect(resp.data).toEqual(response.publicIpList);
     });
   });
 
@@ -234,21 +266,25 @@ describe('index.js', () => {
       resp = await fastly.edgeCheck('www.example.com/foo/bar');
     });
 
-    it('should exist', () => {
-      expect(resp).toExist();
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
     });
 
-    it('should return an array', () => {
-      expect(Array.isArray(resp)).toBe(true);
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
     });
 
-    it('should return an array of objects', () => {
-      expect(resp[0]).toBeA('object');
+    it('response body should be an array', () => {
+      expect(Array.isArray(resp.data)).toBe(true);
     });
 
-    it('should have hash, request, response, response_time, and server properties', () => {
-      expect(resp[0]).toIncludeKeys(['hash', 'request', 'response', 'response_time', 'server']);
-      expect(resp[0]).toEqual(response.edgeCheck[0]);
+    it('response body should be an array of objects', () => {
+      expect(resp.data[0]).toBeA('object');
+    });
+
+    it('response body should have hash, request, response, response_time, and server properties', () => {
+      expect(resp.data[0]).toIncludeKeys(['hash', 'request', 'response', 'response_time', 'server']);
+      expect(resp.data[0]).toEqual(response.edgeCheck[0]);
     });
   });
 });

@@ -5,11 +5,11 @@ const config = require('../src/config');
 
 describe('config.js', () => {
   describe('#mainEntryPoint', () => {
-    it('should exist', () => {
+    it('property should exist', () => {
       expect(config.mainEntryPoint).toExist();
     });
 
-    it('should be a string', () => {
+    it('property should be a string', () => {
       expect(config.mainEntryPoint).toBeA('string');
     });
   });

@@ -13,53 +13,40 @@ class Fastly {
     });
   }
 
-  async fastly(method = 'get', url = '/', data = {}, headers = {}, fullResponse = false) {
-    try {
-      const response = await this.request[method](url, data, headers);
-      if (fullResponse) {
-        return response;
-      } else {
-        return response.data;
-      }
-    } catch (e) {
-      return Promise.reject(new Error(e));
-    }
+  purgeIndividual(url = '') {
+    return this.request.post(`/purge/${url}`);
   }
 
-  purgeIndividual(url = '', fullResponse) {
-    return this.fastly('post', `/purge/${url}`, undefined, undefined, fullResponse);
+  purgeAll() {
+    return this.request.post(`/service/${this.service_id}/purge_all`);
   }
 
-  purgeAll(fullResponse) {
-    return this.fastly('post', `/service/${this.service_id}/purge_all`, undefined, undefined, fullResponse);
+  purgeKey(key = '') {
+    return this.request.post(`/service/${this.service_id}/purge/${key}`);
   }
 
-  purgeKey(key = '', fullResponse) {
-    return this.fastly('post', `/service/${this.service_id}/purge/${key}`, undefined, undefined, fullResponse);
+  purgeKeys(keys = []) {
+    return this.request.post(`/service/${this.service_id}/purge`, { 'surrogate_keys': keys });
   }
 
-  purgeKeys(keys = [], fullResponse) {
-    return this.fastly('post', `/service/${this.service_id}/purge`, { 'surrogate_keys': keys }, undefined, fullResponse);
+  softPurgeIndividual(url = '') {
+    return this.request.post(`/purge/${url}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
   }
 
-  softPurgeIndividual(url, fullResponse) {
-    return this.fastly('post', `/purge/${url}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } }, fullResponse);
+  softPurgeKey(key = '') {
+    return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
   }
 
-  softPurgeKey(key, fullResponse) {
-    return this.fastly('post', `/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } }, fullResponse);
+  dataCenters() {
+    return this.request.get('/datacenters');
   }
 
-  dataCenters(fullResponse) {
-    return this.fastly('get', '/datacenters', undefined, undefined, fullResponse);
+  publicIpList() {
+    return this.request.get('/public-ip-list');
   }
 
-  publicIpList(fullResponse) {
-    return this.fastly('get', '/public-ip-list', undefined, undefined, fullResponse);
-  }
-
-  edgeCheck(url, fullResponse) {
-    return this.fastly('get', `/content/edge_check?url=${url}`, undefined, undefined, fullResponse);
+  edgeCheck(url = '') {
+    return this.request.get(`/content/edge_check?url=${url}`);
   }
 }
 
