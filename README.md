@@ -8,18 +8,18 @@ Promise based Fastly API client for Node.js
 - [Install](#install)
 - [Usage](#usage)
 - [API](#api)
-- [Maintainers](#maintainers)
+- [Tests](#tests)
 - [Contribute](#contribute)
 - [License](#license)
 
 ## Security
 
-You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in order to use the `fastly-promises` library. I recommend to use a token with a [global](https://docs.fastly.com/api/auth#access) scope to be able to use all `fastly-promises` API methods.
+You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in order to use the `fastly-promises` library. I recommend to use a token with a [global scope](https://docs.fastly.com/api/auth#access) to be able to use all `fastly-promises` API methods.
 
 ## Install
 
 ```
-npm install fastly-promises
+$ npm install fastly-promises
 ```
 
 ## Usage
@@ -28,8 +28,8 @@ npm install fastly-promises
 const fastly = require('fastly-promises');
 
 // create one or more instances
-const service_1('token', 'service_id_1');
-const serivce_2('token', 'service_id_2');
+const service_1 = fastly('token', 'service_id_1');
+const serivce_2 = fastly('token', 'service_id_2');
 
 // read/write baseURL property
 console.log(service_1.request.defaults.baseURL); // https://api.fastly.com
@@ -66,17 +66,17 @@ console.log(service_1.request.defaults.timeout); // 3000
 ### Promises
 
 ```javascript
-function process() {
+function handler() {
   Promise.all([
-    instance.purgeIndividual('https://docs.fastly.com/api/'),
-    instance.purgeAll(),
-    instance.purgeKey('key_1'),
-    instance.purgeKeys(['key_2', 'key_3', 'key_4']),
-    instance.softPurgeIndividual('https://docs.fastly.com/api/purge#purge'),
-    instance.softPurgeKey('key_5'),
-    instance.dataCenters(),
-    instance.publicIpList(),
-    instance.edgeCheck('https://docs.fastly.com/api/')
+    service_1.purgeIndividual('https://docs.fastly.com/api/'),
+    service_1.purgeAll(),
+    service_1.purgeKey('key_1'),
+    service_1.purgeKeys(['key_2', 'key_3', 'key_4']),
+    service_1.softPurgeIndividual('https://docs.fastly.com/api/purge#purge'),
+    service_1.softPurgeKey('key_5'),
+    service_1.dataCenters(),
+    service_1.publicIpList(),
+    service_1.edgeCheck('https://docs.fastly.com/api/')
   ])
   .then(responses => {
     responses.forEach(response => {
@@ -97,18 +97,18 @@ function process() {
 ### Async/Await
 
 ```javascript
-async function process() {
+async function handler() {
   try {
     const responses = await Promise.all([
-      instance.purgeIndividual('https://docs.fastly.com/api/'),
-      instance.purgeAll(),
-      instance.purgeKey('key_1'),
-      instance.purgeKeys(['key_2', 'key_3', 'key_4']),
-      instance.softPurgeIndividual('https://docs.fastly.com/api/purge#purge'),
-      instance.softPurgeKey('key_5'),
-      instance.dataCenters(),
-      instance.publicIpList(),
-      instance.edgeCheck('https://docs.fastly.com/api/')
+      serivce_2.purgeIndividual('https://docs.fastly.com/api/'),
+      serivce_2.purgeAll(),
+      serivce_2.purgeKey('key_1'),
+      serivce_2.purgeKeys(['key_2', 'key_3', 'key_4']),
+      serivce_2.softPurgeIndividual('https://docs.fastly.com/api/purge#purge'),
+      serivce_2.softPurgeKey('key_5'),
+      serivce_2.dataCenters(),
+      serivce_2.publicIpList(),
+      serivce_2.edgeCheck('https://docs.fastly.com/api/')
     ]);
 
     responses.forEach(response => {
@@ -127,104 +127,143 @@ async function process() {
 
 ## API
 
-- [instance.request.defaults.baseURL](#baseURL)
-- [instance.request.defaults.timeout](#timeout)
-- [instance.purgeIndividual(url)](#purgeIndividual(url))
-- [instance.purgeAll()](#purgeAll())
-- [instance.purgeKey(key)](#purgeKey(key))
-- [instance.purgeKeys(keys)](#purgeKeys(keys))
-- [instance.softPurgeIndividual(url)](#softPurgeIndividual(url))
-- [instance.softPurgeKey(key)](#softPurgeKey(key))
-- [instance.dataCenters()](#dataCenters())
-- [instance.publicIpList()](#publicIpList())
-- [instance.edgeCheck(url)](#edgeCheck(url))
+- [constructor(token, service_id)](#constructor)
+  - [.request.defaults.baseURL](#baseURL)
+  - [.request.defaults.timeout](#timeout)
+  - [.purgeIndividual(url)](#purgeIndividual)
+  - [.purgeAll()](#purgeAll)
+  - [.purgeKey(key)](#purgeKey)
+  - [.purgeKeys(keys)](#purgeKeys)
+  - [.softPurgeIndividual(url)](#softPurgeIndividual)
+  - [.softPurgeKey(key)](#softPurgeKey)
+  - [.dataCenters()](#dataCenters)
+  - [.publicIpList()](#publicIpList)
+  - [.edgeCheck(url)](#edgeCheck)
 
-### baseURL
+<a name="constructor"></a>
 
-*The main entry point for the API is https://api.fastly.com/.*
+### constructor(token, service_id)
 
-**Kind**: Property
-**Return**: {String}
+*Method for creating and initializing a new fastly-promises instance.*
 
-### timeout
+**Kind**: method  
+**Param**: token `string`  
+**Param**: service_id `string`  
+**Return**: instance `object`
+
+<a name="baseURL"></a>
+
+### .request.defaults.baseURL
+
+*The main entry point for the Fastly API.*
+
+**Kind**: property  
+**Return**: url `string`
+
+<a name="timeout"></a>
+
+### .request.defaults.timeout
 
 *The number of milliseconds before the request times out.*
 
-**Kind**: Property
-**Return**: {Number}
+**Kind**: property  
+**Return**: milliseconds `number`
 
-### purgeIndividual(url)
+<a name="purgeIndividual"></a>
+
+### .purgeIndividual(url)
 
 *Instant Purge an individual URL.*
 
-**Kind**: Method
-**Param**: url {String}
-**Return**: {Promise}
+**Kind**: method  
+**Param**: url `string`  
+**Return**: schema `promise`
 
-### purgeAll()
+<a name="purgeAll"></a>
+
+### .purgeAll()
 
 *Instant Purge everything from a service.*
 
-**Kind**: Method
-**Return**: {Promise}
+**Kind**: method  
+**Return**: schema `promise`
 
-### purgeKey(key)
+<a name="purgeKey"></a>
+
+### .purgeKey(key)
 
 *Instant Purge a particular service of items tagged with a Surrogate Key.*
 
-**Kind**: Method
-**Param**: key {String}
-**Return**: {Promise}
+**Kind**: method  
+**Param**: key `string`  
+**Return**: schema `promise`
 
-### purgeKeys(keys)
+<a name="purgeKeys"></a>
+
+### .purgeKeys(keys)
 
 *Instant Purge a particular service of items tagged with Surrogate Keys in a batch.*
 
-**Kind**: Method
-**Param**: keys {Array}
-**Return**: {Promise}
+**Kind**: method  
+**Param**: keys `array`  
+**Return**: schema `promise`
 
-### softPurgeIndividual(url)
+<a name="softPurgeIndividual"></a>
+
+### .softPurgeIndividual(url)
 
 *Soft Purge an individual URL.*
 
-**Kind**: Method
-**Param**: url {String}
-**Return**: {Promise}
+**Kind**: method  
+**Param**: url `string`  
+**Return**: schema `promise`
 
-### softPurgeKey(key)
+<a name="softPurgeKey"></a>
+
+### .softPurgeKey(key)
 
 *Soft Purge a particular service of items tagged with a Surrogate Key.*
 
-**Kind**: Method
-**Param**: key {String}
-**Return**: {Promise}
+**Kind**: method  
+**Param**: key `string`  
+**Return**: schema `promise`
 
-### dataCenters()
+<a name="dataCenters"></a>
+
+### .dataCenters()
 
 *Get a list of all Fastly datacenters.*
 
-**Kind**: Method
-**Return**: {Promise}
+**Kind**: method  
+**Return**: schema `promise`
 
-### publicIpList()
+<a name="publicIpList"></a>
+
+### .publicIpList()
 
 *Fastly's services IP ranges.*
 
-**Kind**: Method
-**Return**: {Promise}
+**Kind**: method  
+**Return**: schema `promise`
 
-### edgeCheck(url)
+<a name="edgeCheck"></a>
+
+### .edgeCheck(url)
 
 *Retrieve headers and MD5 hash of the content for a particular URL from each Fastly edge server.*
 
-**Kind**: Method
-**Param**: url {String}
-**Return**: {Promise}
+**Kind**: method  
+**Param**: url `string`  
+**Return**: schema `promise`
 
-## Maintainers
+## Tests
 
-[@philippschulte](https://github.com/philippschulte)
+To run the test suite, first install the dependencies, then run `npm test`:
+
+```
+$ npm install
+$ npm test
+```
 
 ## Contribute
 

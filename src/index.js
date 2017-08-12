@@ -69,7 +69,7 @@ class Fastly {
   }
 
   /**
-   * Soft Purge an individual URL with an API token.
+   * Soft Purge an individual URL.
    *
    * @name softPurgeIndividual
    * @method
