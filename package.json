@@ -1,10 +1,12 @@
 {
   "name": "fastly-promises",
-  "version": "0.0.1",
+  "version": "0.0.0-semantically-released",
   "description": "Promise based Fastly API client for Node.js",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha test"
+    "commit": "git-cz",
+    "test": "mocha test",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
@@ -27,11 +29,19 @@
     "node": ">=7.6.0"
   },
   "devDependencies": {
+    "commitizen": "2.9.6",
+    "cz-conventional-changelog": "2.0.0",
     "expect": "1.20.2",
     "mocha": "3.5.0",
-    "nock": "9.0.14"
+    "nock": "9.0.14",
+    "semantic-release": "^6.3.6"
   },
   "dependencies": {
     "axios": "0.16.2"
+  },
+  "config": {
+    "commitizen" : {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   }
 }
