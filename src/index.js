@@ -125,6 +125,17 @@ class Fastly {
   edgeCheck(url = '') {
     return this.request.get(`/content/edge_check?url=${url}`);
   }
+
+  /**
+   * List the versions for a particular service.
+   *
+   * @name versionList
+   * @method
+   * @return {Promise}
+   */
+  versionList() {
+    return this.request.get(`/service/${this.service_id}/version`);
+  }
 }
 
 /**

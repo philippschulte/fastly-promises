@@ -87,7 +87,8 @@ function handler() {
     service_1.softPurgeKey('key_5'),
     service_1.dataCenters(),
     service_1.publicIpList(),
-    service_1.edgeCheck('api.example.com')
+    service_1.edgeCheck('api.example.com'),
+    service_1.versionList()
   ])
   .then(responses => {
     responses.forEach(response => {
@@ -119,7 +120,8 @@ async function handler() {
       serivce_2.softPurgeKey('key_5'),
       serivce_2.dataCenters(),
       serivce_2.publicIpList(),
-      serivce_2.edgeCheck('api.example.com')
+      serivce_2.edgeCheck('api.example.com'),
+      service_2.versionList()
     ]);
 
     responses.forEach(response => {
@@ -150,6 +152,7 @@ async function handler() {
   - [.dataCenters()](#dataCenters)
   - [.publicIpList()](#publicIpList)
   - [.edgeCheck(url)](#edgeCheck)
+  - [.versionList()](#versionList)
 
 <a name="constructor"></a>
 
@@ -401,6 +404,28 @@ instance.edgeCheck('api.example.com')
 
 **Kind**: method  
 **Param**: url => `string`  
+**Return**: schema => `promise`
+
+<a name="versionList"></a>
+
+### [.versionList()](https://docs.fastly.com/api/config#version_dfde9093f4eb0aa2497bbfd1d9415987)
+
+*List the versions for a particular service.*
+
+**Example**:
+
+```javascript
+instance.versionList()
+  .then(resp => {
+    const active = resp.data.filter(version => version.active === true);
+    console.log(active);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
 **Return**: schema => `promise`
 
 ## Tests

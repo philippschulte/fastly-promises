@@ -287,4 +287,37 @@ describe('index.js', () => {
       expect(resp.data[0]).toEqual(response.edgeCheck[0]);
     });
   });
+
+  describe('#versionList', () => {
+    let resp;
+
+    nock(config.mainEntryPoint)
+      .get('/service/SU1Z0isxPaozGVKXdv0eY/version')
+      .reply(200, response.versionList);
+
+    before(async () => {
+      resp = await fastly.versionList();
+    });
+
+    it('response body should exist', () => {
+      expect(resp.data).toExist();
+    });
+
+    it('response should be a status 200', () => {
+      expect(resp.status).toBe(200);
+    });
+
+    it('response body should be an array', () => {
+      expect(Array.isArray(resp.data)).toBe(true);
+    });
+
+    it('response body should be an array of objects', () => {
+      expect(resp.data[0]).toBeA('object');
+    });
+
+    it('response body should have active, comment, created_at, deleted_at, deployed, locked, number, service_id, staging, testing, and updated_at properties', () => {
+      expect(resp.data[0]).toIncludeKeys(['active', 'comment', 'created_at', 'deleted_at', 'deployed', 'locked', 'number', 'service_id', 'staging', 'testing', 'updated_at']);
+      expect(resp.data[0]).toEqual(response.versionList[0]);
+    });
+  });
 });
