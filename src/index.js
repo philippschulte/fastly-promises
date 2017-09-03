@@ -127,6 +127,17 @@ class Fastly {
   }
   
   /**
+   * List all services.
+   *
+   * @name serviceList
+   * @method
+   * @return {Promise}
+   */
+  serviceList() {
+    return this.request.get(`/service`);
+  }
+  
+  /**
    * List the versions for a particular service.
    *
    * @name versionList

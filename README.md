@@ -152,6 +152,7 @@ async function handler() {
   - [.dataCenters()](#dataCenters)
   - [.publicIpList()](#publicIpList)
   - [.edgeCheck(url)](#edgeCheck)
+  - [.serviceList()](#serviceList)
   - [.versionList()](#versionList)
   - [.domainList(version)](#domainList)
 
@@ -405,6 +406,27 @@ instance.edgeCheck('api.example.com')
 
 **Kind**: method  
 **Param**: url => `string`  
+**Return**: schema => `promise`
+
+<a name="serviceList"></a>
+
+### [.serviceList()](https://docs.fastly.com/api/config#service_74d98f7e5d018256e44d1cf820388ef8)
+
+*List all services.*
+
+**Example**:
+
+```javascript
+instance.serviceList()
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
 **Return**: schema => `promise`
 
 <a name="versionList"></a>
