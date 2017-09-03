@@ -153,6 +153,7 @@ async function handler() {
   - [.publicIpList()](#publicIpList)
   - [.edgeCheck(url)](#edgeCheck)
   - [.versionList()](#versionList)
+  - [.domainList(version)](#domainList)
 
 <a name="constructor"></a>
 
@@ -221,8 +222,8 @@ instance.request.defaults.timeout = 5000;
 
 ```javascript
 instance.purgeIndividual('www.example.com')
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -243,8 +244,8 @@ instance.purgeIndividual('www.example.com')
 
 ```javascript
 instance.purgeAll()
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -264,8 +265,8 @@ instance.purgeAll()
 
 ```javascript
 instance.purgeKey('key_1')
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -286,8 +287,8 @@ instance.purgeKey('key_1')
 
 ```javascript
 instance.purgeKeys(['key_2', 'key_3', 'key_4'])
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -308,8 +309,8 @@ instance.purgeKeys(['key_2', 'key_3', 'key_4'])
 
 ```javascript
 instance.softPurgeIndividual('www.example.com/images')
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -330,8 +331,8 @@ instance.softPurgeIndividual('www.example.com/images')
 
 ```javascript
 instance.softPurgeKey('key_5')
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -352,8 +353,8 @@ instance.softPurgeKey('key_5')
 
 ```javascript
 instance.dataCenters()
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -373,8 +374,8 @@ instance.dataCenters()
 
 ```javascript
 instance.publicIpList()
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -394,8 +395,8 @@ instance.publicIpList()
 
 ```javascript
 instance.edgeCheck('api.example.com')
-  .then(resp => {
-    console.log(resp.data);
+  .then(res => {
+    console.log(res.data);
   })
   .catch(err => {
     console.log(err.message);
@@ -416,8 +417,8 @@ instance.edgeCheck('api.example.com')
 
 ```javascript
 instance.versionList()
-  .then(resp => {
-    const active = resp.data.filter(version => version.active === true);
+  .then(res => {
+    const active = res.data.filter(version => version.active === true);
     console.log(active);
   })
   .catch(err => {
@@ -426,6 +427,28 @@ instance.versionList()
 ```
 
 **Kind**: method  
+**Return**: schema => `promise`
+
+<a name="domainList"></a>
+
+### [.domainList(version)](https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d)
+
+*List all the domains for a particular service and version.*
+
+**Example**:
+
+```javascript
+instance.domainList('182')
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Param**: version => `string`  
 **Return**: schema => `promise`
 
 ## Tests

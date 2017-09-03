@@ -125,7 +125,7 @@ class Fastly {
   edgeCheck(url = '') {
     return this.request.get(`/content/edge_check?url=${url}`);
   }
-
+  
   /**
    * List the versions for a particular service.
    *
@@ -135,6 +135,18 @@ class Fastly {
    */
   versionList() {
     return this.request.get(`/service/${this.service_id}/version`);
+  }
+  
+  /**
+   * List all the domains for a particular service and version.
+   *
+   * @name domainList
+   * @method
+   * @param version {String}
+   * @return {Promise}
+   */
+  domainList(version = '') {
+    return this.request.get(`/service/${this.service_id}/version/${version}/domain`);
   }
 }
 
