@@ -51,8 +51,9 @@ console.log(service_1.request.defaults.timeout); // 3000
 
 ### Response Schema
 
+Each `fastly-promises` API method returns the following response object:
+
 ```javascript
-// each fastly-promises api method responses with the following object
 {
   // the HTTP status code from the server response
   status: 200,
@@ -76,62 +77,46 @@ console.log(service_1.request.defaults.timeout); // 3000
 
 ### Promises
 
+This example does the following:
+
+1. Get all the versions
+2. Filter out the active version
+3. Get all the domains of the active version
+4. Purge all the domains
+5. Log the status text of each purge request
+
 ```javascript
 function handler() {
-  Promise.all([
-    service_1.purgeIndividual('www.example.com'),
-    service_1.purgeAll(),
-    service_1.purgeKey('key_1'),
-    service_1.purgeKeys(['key_2', 'key_3', 'key_4']),
-    service_1.softPurgeIndividual('www.example.com/images'),
-    service_1.softPurgeKey('key_5'),
-    service_1.dataCenters(),
-    service_1.publicIpList(),
-    service_1.edgeCheck('api.example.com'),
-    service_1.versionList()
-  ])
-  .then(responses => {
-    responses.forEach(response => {
-      console.log(response.status);
-      console.log(response.statusText);
-      console.log(response.headers);
-      console.log(response.config);
-      console.log(response.request);
-      console.log(response.data);
+  service_1.versionList()
+    .then(versions => {
+      const active = versions.data.filter(version => version.active === true)[0];
+      return service_1.domainList(active.number);
+    })
+    .then(domains => {
+      return Promise.all(domains.data.map(domain => service_1.purgeIndividual(domain.name)));
+    })
+    .then(purges => {
+      purges.forEach(purge => console.log(purge.statusText));
+    })
+    .catch(e => {
+      console.log('Shoot!');
     });
-  })
-  .catch(e => {
-    console.log('Shoot!');
-  });
 }
 ```
 
 ### Async/Await
 
+This is the same example but uses the async/await syntax instead!
+
 ```javascript
 async function handler() {
   try {
-    const responses = await Promise.all([
-      serivce_2.purgeIndividual('www.example.com'),
-      serivce_2.purgeAll(),
-      serivce_2.purgeKey('key_1'),
-      serivce_2.purgeKeys(['key_2', 'key_3', 'key_4']),
-      serivce_2.softPurgeIndividual('www.example.com/images'),
-      serivce_2.softPurgeKey('key_5'),
-      serivce_2.dataCenters(),
-      serivce_2.publicIpList(),
-      serivce_2.edgeCheck('api.example.com'),
-      service_2.versionList()
-    ]);
+    const versions = await serivce_2.versionList();
+    const active = versions.data.filter(version => version.active === true)[0];
+    const domains = await serivce_2.domainList(active.number);
+    const purges = await Promise.all(domains.data.map(domain => serivce_2.purgeIndividual(domain.name)));
 
-    responses.forEach(response => {
-      console.log(response.status);
-      console.log(response.statusText);
-      console.log(response.headers);
-      console.log(response.config);
-      console.log(response.request);
-      console.log(response.data);
-    });
+    purges.forEach(purge => console.log(purge.statusText));
   } catch (e) {
     console.log('Shoot!');
   }
