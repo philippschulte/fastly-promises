@@ -159,6 +159,18 @@ class Fastly {
   domainList(version = '') {
     return this.request.get(`/service/${this.service_id}/version/${version}/domain`);
   }
+
+  /**
+   * Checks the status of all domains for a particular service and version.
+   *
+   * @name domainCheckAll
+   * @method
+   * @param version {String}
+   * @return {Promise}
+   */
+  domainCheckAll(version = '') {
+    return this.request.get(`/service/${this.service_id}/version/${version}/domain/check_all`);
+  }
 }
 
 /**

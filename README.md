@@ -106,7 +106,7 @@ function handler() {
 
 ### Async/Await
 
-This is the same example but uses the async/await syntax instead!
+This is the same example but uses the `async/await` syntax instead!
 
 ```javascript
 async function handler() {
@@ -140,6 +140,7 @@ async function handler() {
   - [.serviceList()](#serviceList)
   - [.versionList()](#versionList)
   - [.domainList(version)](#domainList)
+  - [.domainCheckAll(version)](#domainCheckAll)
 
 <a name="constructor"></a>
 
@@ -446,6 +447,28 @@ instance.versionList()
 
 ```javascript
 instance.domainList('182')
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Param**: version => `string`  
+**Return**: schema => `promise`
+
+<a name="domainCheckAll"></a>
+
+### [.domainCheckAll(version)](https://docs.fastly.com/api/config#domain_e33a599694c3316f00b6b8d53a2db7d9)
+
+*Checks the status of all domains for a particular service and version.*
+
+**Example**:
+
+```javascript
+instance.domainCheckAll('182')
   .then(res => {
     console.log(res.data);
   })
