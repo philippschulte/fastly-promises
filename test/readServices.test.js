@@ -4,18 +4,18 @@ const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
 const fastlyPromises = require('../src/index');
-const response = require('./response/domainList.response');
+const response = require('./response/readServices.response');
 
-describe('#domainList', () => {
+describe('#readServices', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
   let res;
 
   nock(config.mainEntryPoint)
-    .get('/service/SU1Z0isxPaozGVKXdv0eY/version/182/domain')
-    .reply(200, response.domainList);
+    .get('/service')
+    .reply(200, response.readServices);
 
   before(async () => {
-    res = await fastly.domainList('182');
+    res = await fastly.readServices();
   });
 
   it('response should be a status 200', () => {
@@ -36,9 +36,9 @@ describe('#domainList', () => {
     });
   });
 
-  it('response body items should have comment, name, service_id, and version properties', () => {
+  it('response body items should have comment, customer_id, id, name, version, and versions properties', () => {
     res.data.forEach(item => {
-      expect(item).toIncludeKeys(['comment', 'name', 'service_id', 'version']);
+      expect(item).toIncludeKeys(['comment', 'customer_id', 'id', 'name', 'version', 'versions']);
     });
   });
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.domainList = [
+module.exports.readDomains = [
   {
     'comment': '',
     'name': 'www.example.com',

@@ -4,24 +4,24 @@ const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
 const fastlyPromises = require('../src/index');
-const response = require('./response/versionList.response');
+const response = require('./response/readDomains.response');
 
-describe('#versionList', () => {
+describe('#readDomains', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
   let res;
 
   nock(config.mainEntryPoint)
-    .get('/service/SU1Z0isxPaozGVKXdv0eY/version')
-    .reply(200, response.versionList);
+    .get('/service/SU1Z0isxPaozGVKXdv0eY/version/182/domain')
+    .reply(200, response.readDomains);
 
   before(async () => {
-    res = await fastly.versionList();
+    res = await fastly.readDomains('182');
   });
 
   it('response should be a status 200', () => {
     expect(res.status).toBe(200);
   });
-
+  
   it('response body should exist', () => {
     expect(res.data).toExist();
   });
@@ -36,9 +36,9 @@ describe('#versionList', () => {
     });
   });
 
-  it('response body items should have active, comment, created_at, deleted_at, deployed, locked, number, service_id, staging, testing, and updated_at properties', () => {
+  it('response body items should have comment, name, service_id, and version properties', () => {
     res.data.forEach(item => {
-      expect(item).toIncludeKeys(['active', 'comment', 'created_at', 'deleted_at', 'deployed', 'locked', 'number', 'service_id', 'staging', 'testing', 'updated_at']);
+      expect(item).toIncludeKeys(['comment', 'name', 'service_id', 'version']);
     });
   });
 });

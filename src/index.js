@@ -6,11 +6,8 @@ const config = require('./config');
 class Fastly {
   /**
    * The constructor method for creating a fastly-promises instance.
-   *
-   * @name constructor
-   * @method
-   * @param token {Sting}
-   * @param service_id {String}
+   * @param token {String} The Fastly API token.
+   * @param service_id {String} The Fastly service ID.
    */
   constructor(token, service_id) {
     this.service_id = service_id;
@@ -23,11 +20,8 @@ class Fastly {
 
   /**
    * Instant Purge an individual URL.
-   *
-   * @name purgeIndividual
-   * @method
-   * @param url {String}
-   * @return {Promise}
+   * @param url {String} The URL to purge.
+   * @return {Promise} The response object representing the completion or failure.
    */
   purgeIndividual(url = '') {
     return this.request.post(`/purge/${url}`);
@@ -35,10 +29,7 @@ class Fastly {
 
   /**
    * Instant Purge everything from a service.
-   *
-   * @name purgeAll
-   * @method
-   * @return {Promise}
+   * @return {Promise} The response object representing the completion or failure.
    */
   purgeAll() {
     return this.request.post(`/service/${this.service_id}/purge_all`);
@@ -46,11 +37,8 @@ class Fastly {
 
   /**
    * Instant Purge a particular service of items tagged with a Surrogate Key.
-   *
-   * @name purgeKey
-   * @method
-   * @param key {String}
-   * @return {Promise}
+   * @param key {String} The surrogate key to purge.
+   * @return {Promise} The response object representing the completion or failure.
    */
   purgeKey(key = '') {
     return this.request.post(`/service/${this.service_id}/purge/${key}`);
@@ -58,11 +46,8 @@ class Fastly {
 
   /**
    * Instant Purge a particular service of items tagged with Surrogate Keys in a batch.
-   *
-   * @name purgeKeys
-   * @method
-   * @param keys {Array}
-   * @return {Promise}
+   * @param keys {Array} The array of surrogate keys to purge.
+   * @return {Promise} The response object representing the completion or failure.
    */
   purgeKeys(keys = []) {
     return this.request.post(`/service/${this.service_id}/purge`, { 'surrogate_keys': keys });
@@ -70,11 +55,8 @@ class Fastly {
 
   /**
    * Soft Purge an individual URL.
-   *
-   * @name softPurgeIndividual
-   * @method
-   * @param url {String}
-   * @return {Promise}
+   * @param url {String} The URL to soft purge.
+   * @return {Promise} The response object representing the completion or failure.
    */
   softPurgeIndividual(url = '') {
     return this.request.post(`/purge/${url}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
@@ -82,11 +64,8 @@ class Fastly {
 
   /**
    * Soft Purge a particular service of items tagged with a Surrogate Key.
-   *
-   * @name softPurgeKey
-   * @method
-   * @param key {String}
-   * @return {Promise}
+   * @param key {String} The surrogate key to soft purge.
+   * @return {Promise} The response object representing the completion or failure.
    */
   softPurgeKey(key = '') {
     return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
@@ -94,10 +73,7 @@ class Fastly {
 
   /**
    * Get a list of all Fastly datacenters.
-   *
-   * @name dataCenters
-   * @method
-   * @return {Promise}
+   * @return {Promise} The response object representing the completion or failure.
    */
   dataCenters() {
     return this.request.get('/datacenters');
@@ -105,10 +81,7 @@ class Fastly {
 
   /**
    * Fastly's services IP ranges.
-   *
-   * @name publicIpList
-   * @method
-   * @return {Promise}
+   * @return {Promise} The response object representing the completion or failure.
    */
   publicIpList() {
     return this.request.get('/public-ip-list');
@@ -116,11 +89,8 @@ class Fastly {
 
   /**
    * Retrieve headers and MD5 hash of the content for a particular URL from each Fastly edge server.
-   *
-   * @name edgeCheck
-   * @method
-   * @param url {String}
-   * @return {Promise}
+   * @param url {String} Full URL (host and path) to check on all nodes. If protocol is omitted, http will be assumed.
+   * @return {Promise} The response object representing the completion or failure.
    */
   edgeCheck(url = '') {
     return this.request.get(`/content/edge_check?url=${url}`);
@@ -128,45 +98,33 @@ class Fastly {
   
   /**
    * List all services.
-   *
-   * @name serviceList
-   * @method
-   * @return {Promise}
+   * @return {Promise} The response object representing the completion or failure.
    */
-  serviceList() {
+  readServices() {
     return this.request.get(`/service`);
   }
   
   /**
    * List the versions for a particular service.
-   *
-   * @name versionList
-   * @method
-   * @return {Promise}
+   * @return {Promise} The response object representing the completion or failure.
    */
-  versionList() {
+  readVersions() {
     return this.request.get(`/service/${this.service_id}/version`);
   }
   
   /**
    * List all the domains for a particular service and version.
-   *
-   * @name domainList
-   * @method
-   * @param version {String}
-   * @return {Promise}
+   * @param version {String} The current version of a service.
+   * @return {Promise} The response object representing the completion or failure.
    */
-  domainList(version = '') {
+  readDomains(version = '') {
     return this.request.get(`/service/${this.service_id}/version/${version}/domain`);
   }
 
   /**
    * Checks the status of all domains for a particular service and version.
-   *
-   * @name domainCheckAll
-   * @method
-   * @param version {String}
-   * @return {Promise}
+   * @param version {String} The current version of a service.
+   * @return {Promise} The response object representing the completion or failure.
    */
   domainCheckAll(version = '') {
     return this.request.get(`/service/${this.service_id}/version/${version}/domain/check_all`);
@@ -175,14 +133,11 @@ class Fastly {
 
 /**
  * Function to create a new fastly-promises instance.
- *
- * @name anonymous
- * @function
- * @param token {String}
- * @param service_id {String}
+ * @param token {String} The Fastly API token.
+ * @param service_id {String} The Fastly service ID.
  * @return {Object} {
- *    service_id : the alphanumeric string identifying a service
- *    request    : instance of axios with a custom config
+ *    service_id : The alphanumeric string identifying a service
+ *    request    : Axios instance
  * }
  */
 module.exports = (token = '', service_id = '') => {

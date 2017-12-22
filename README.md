@@ -10,6 +10,13 @@
 
 [![NPM](https://nodei.co/npm/fastly-promises.png)](https://nodei.co/npm/fastly-promises/)
 
+## Problem
+
+There are already some promise based clients on [NPM](https://www.npmjs.com/) for the [Fastly](https://docs.fastly.com/api/) API but either way there are not well documented, tested, or don't provide the functionality I needed. The callback based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/)!
+
+## Solution
+
+The `fastly-promises` package uses the promise based HTTP client [Axios](https://www.npmjs.com/package/axios) to perform requests to the [Fastly](https://docs.fastly.com/api/) API. [Axios](https://www.npmjs.com/package/axios) supports the native JavaScript [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API and automatically transforms the data into JSON. Each `fastly-promises` API method returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which represents either the completion or failure of the request. This allows us to implement modern JavaScript asynchronous programming patterns like `async/await` for a clean and simple control flow! 
 
 ## Table of Contents
 
@@ -77,7 +84,7 @@ Each `fastly-promises` API method returns the following response object:
 
 ### Promises
 
-This example does the following:
+The following example does the following:
 
 1. Get all the versions
 2. Filter out the active version
@@ -87,10 +94,10 @@ This example does the following:
 
 ```javascript
 function handler() {
-  service_1.versionList()
+  service_1.readVersions()
     .then(versions => {
-      const active = versions.data.filter(version => version.active === true)[0];
-      return service_1.domainList(active.number);
+      const active = versions.data.filter(version => version.active)[0];
+      return service_1.readDomains(active.number);
     })
     .then(domains => {
       return Promise.all(domains.data.map(domain => service_1.purgeIndividual(domain.name)));
@@ -111,9 +118,9 @@ This is the same example but uses the `async/await` syntax instead!
 ```javascript
 async function handler() {
   try {
-    const versions = await serivce_2.versionList();
-    const active = versions.data.filter(version => version.active === true)[0];
-    const domains = await serivce_2.domainList(active.number);
+    const versions = await serivce_2.readVersions();
+    const active = versions.data.filter(version => version.active)[0];
+    const domains = await serivce_2.readDomains(active.number);
     const purges = await Promise.all(domains.data.map(domain => serivce_2.purgeIndividual(domain.name)));
 
     purges.forEach(purge => console.log(purge.statusText));
@@ -137,14 +144,14 @@ async function handler() {
   - [.dataCenters()](#dataCenters)
   - [.publicIpList()](#publicIpList)
   - [.edgeCheck(url)](#edgeCheck)
-  - [.serviceList()](#serviceList)
-  - [.versionList()](#versionList)
-  - [.domainList(version)](#domainList)
+  - [.readServices()](#readServices)
+  - [.readVersions()](#readVersions)
+  - [.readDomains(version)](#readDomains)
   - [.domainCheckAll(version)](#domainCheckAll)
 
 <a name="constructor"></a>
 
-### [constructor(token, service_id)](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L15)
+### [constructor(token, service_id)](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L12)
 
 *Method for creating and initializing a new fastly-promises instance.*
 
@@ -158,13 +165,13 @@ const instance = fastly('token', 'service_id');
 ```
 
 **Kind**: method  
-**Param**: token => `string`  
-**Param**: service_id => `string`  
-**Return**: instance => `object`
+**Param**: token {string} The Fastly API token.  
+**Param**: service_id {string} The Fastly service ID.  
+**Return**: instance {object} A new fastly-promises instance.
 
 <a name="baseURL"></a>
 
-### [.request.defaults.baseURL](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L18)
+### [.request.defaults.baseURL](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L15)
 
 *The main entry point for the Fastly API.*
 
@@ -179,11 +186,11 @@ instance.request.defaults.baseURL = 'https://api.fastly.com/v1';
 ```
 
 **Kind**: property  
-**Return**: url => `string`
+**Return**: url {string} The main entry point for the Fastly API.
 
 <a name="timeout"></a>
 
-### [.request.defaults.timeout](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L19)
+### [.request.defaults.timeout](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L16)
 
 *The number of milliseconds before the request times out.*
 
@@ -197,7 +204,7 @@ instance.request.defaults.timeout = 5000;
 ```
 
 **Kind**: property  
-**Return**: milliseconds => `number`
+**Return**: milliseconds {number} The number of milliseconds before the request times out.
 
 <a name="purgeIndividual"></a>
 
@@ -218,8 +225,8 @@ instance.purgeIndividual('www.example.com')
 ```
 
 **Kind**: method  
-**Param**: url => `string`  
-**Return**: schema => `promise`
+**Param**: url {string} The URL to purge.  
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="purgeAll"></a>
 
@@ -240,7 +247,7 @@ instance.purgeAll()
 ```
 
 **Kind**: method  
-**Return**: schema => `promise`
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="purgeKey"></a>
 
@@ -261,8 +268,8 @@ instance.purgeKey('key_1')
 ```
 
 **Kind**: method  
-**Param**: key => `string`  
-**Return**: schema => `promise`
+**Param**: key {string} The surrogate key to purge.  
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="purgeKeys"></a>
 
@@ -283,8 +290,8 @@ instance.purgeKeys(['key_2', 'key_3', 'key_4'])
 ```
 
 **Kind**: method  
-**Param**: keys => `array`  
-**Return**: schema => `promise`
+**Param**: keys {array} The array of surrogate keys to purge.  
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="softPurgeIndividual"></a>
 
@@ -305,8 +312,8 @@ instance.softPurgeIndividual('www.example.com/images')
 ```
 
 **Kind**: method  
-**Param**: url => `string`  
-**Return**: schema => `promise`
+**Param**: url {string} The URL to soft purge.  
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="softPurgeKey"></a>
 
@@ -327,8 +334,8 @@ instance.softPurgeKey('key_5')
 ```
 
 **Kind**: method  
-**Param**: key => `string`  
-**Return**: schema => `promise`
+**Param**: key {string} The surrogate key to soft purge.  
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="dataCenters"></a>
 
@@ -349,7 +356,7 @@ instance.dataCenters()
 ```
 
 **Kind**: method  
-**Return**: schema => `promise`
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="publicIpList"></a>
 
@@ -370,7 +377,7 @@ instance.publicIpList()
 ```
 
 **Kind**: method  
-**Return**: schema => `promise`
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="edgeCheck"></a>
 
@@ -391,19 +398,19 @@ instance.edgeCheck('api.example.com')
 ```
 
 **Kind**: method  
-**Param**: url => `string`  
-**Return**: schema => `promise`
+**Param**: url {string} Full URL (host and path) to check on all nodes. If protocol is omitted, http will be assumed.  
+**Return**: schema {promise} The response object representing the completion or failure.
 
-<a name="serviceList"></a>
+<a name="readServices"></a>
 
-### [.serviceList()](https://docs.fastly.com/api/config#service_74d98f7e5d018256e44d1cf820388ef8)
+### [.readServices()](https://docs.fastly.com/api/config#service_74d98f7e5d018256e44d1cf820388ef8)
 
 *List all services.*
 
 **Example**:
 
 ```javascript
-instance.serviceList()
+instance.readServices()
   .then(res => {
     console.log(res.data);
   })
@@ -413,18 +420,18 @@ instance.serviceList()
 ```
 
 **Kind**: method  
-**Return**: schema => `promise`
+**Return**: schema {promise} The response object representing the completion or failure.
 
-<a name="versionList"></a>
+<a name="readVersions"></a>
 
-### [.versionList()](https://docs.fastly.com/api/config#version_dfde9093f4eb0aa2497bbfd1d9415987)
+### [.readVersions()](https://docs.fastly.com/api/config#version_dfde9093f4eb0aa2497bbfd1d9415987)
 
 *List the versions for a particular service.*
 
 **Example**:
 
 ```javascript
-instance.versionList()
+instance.readVersions()
   .then(res => {
     const active = res.data.filter(version => version.active === true);
     console.log(active);
@@ -435,18 +442,18 @@ instance.versionList()
 ```
 
 **Kind**: method  
-**Return**: schema => `promise`
+**Return**: schema {promise} The response object representing the completion or failure.
 
-<a name="domainList"></a>
+<a name="readDomains"></a>
 
-### [.domainList(version)](https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d)
+### [.readDomains(version)](https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d)
 
 *List all the domains for a particular service and version.*
 
 **Example**:
 
 ```javascript
-instance.domainList('182')
+instance.readDomains('182')
   .then(res => {
     console.log(res.data);
   })
@@ -456,8 +463,8 @@ instance.domainList('182')
 ```
 
 **Kind**: method  
-**Param**: version => `string`  
-**Return**: schema => `promise`
+**Param**: version {string} The current version of a service.  
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="domainCheckAll"></a>
 
@@ -478,8 +485,8 @@ instance.domainCheckAll('182')
 ```
 
 **Kind**: method  
-**Param**: version => `string`  
-**Return**: schema => `promise`
+**Param**: version {string} The current version of a service.  
+**Return**: schema {promise} The response object representing the completion or failure.
 
 ## Tests
 

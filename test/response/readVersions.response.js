@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.versionList = [
+module.exports.readVersions = [
   {
     'active': true,
     'comment': '',

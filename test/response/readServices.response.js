@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.serviceList = [
+module.exports.readServices = [
   {
     'comment': '',
     'customer_id': 'x4xCwxxJxGCx123Rx5xTx',
