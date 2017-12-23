@@ -12,11 +12,11 @@
 
 ## Problem
 
-There are already some promise based clients on [NPM](https://www.npmjs.com/) for the [Fastly](https://docs.fastly.com/api/) API but either way there are not well documented, tested, or don't provide the functionality I needed. The callback based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/)!
+The callback based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/)!
 
 ## Solution
 
-The `fastly-promises` package uses the promise based HTTP client [Axios](https://www.npmjs.com/package/axios) to perform requests to the [Fastly](https://docs.fastly.com/api/) API. [Axios](https://www.npmjs.com/package/axios) supports the native JavaScript [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API and automatically transforms the data into JSON. Each `fastly-promises` API method returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which represents either the completion or failure of the request. This allows us to implement modern JavaScript asynchronous programming patterns like `async/await` for a clean and simple control flow! 
+The `fastly-promises` package uses the promise based HTTP client [Axios](https://www.npmjs.com/package/axios) to perform requests to the [Fastly](https://docs.fastly.com/api/) API. [Axios](https://www.npmjs.com/package/axios) supports the native JavaScript [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API and automatically transforms the data into JSON. Each `fastly-promises` API method returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which represents either the completion or failure of the request. 
 
 ## Table of Contents
 
@@ -147,6 +147,7 @@ async function handler() {
   - [.readServices()](#readServices)
   - [.readVersions()](#readVersions)
   - [.readDomains(version)](#readDomains)
+  - [.readBackends(version)](#readBackends)
   - [.domainCheckAll(version)](#domainCheckAll)
 
 <a name="constructor"></a>
@@ -454,6 +455,28 @@ instance.readVersions()
 
 ```javascript
 instance.readDomains('182')
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Param**: version {string} The current version of a service.  
+**Return**: schema {promise} The response object representing the completion or failure.
+
+<a name="readBackends"></a>
+
+### [.readBackends(version)](https://docs.fastly.com/api/config#backend_fb0e875c9a7669f071cbf89ca32c7f69)
+
+*List all backends for a particular service and version.*
+
+**Example**:
+
+```javascript
+instance.readBackends('12')
   .then(res => {
     console.log(res.data);
   })

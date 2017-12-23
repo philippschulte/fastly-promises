@@ -30,7 +30,7 @@ describe('#purgeAll', () => {
     expect(res.data).toBeA('object');
   });
 
-  it('response body should have status property', () => {
+  it('response body should contain all properties', () => {
     expect(res.data).toIncludeKeys(['status']);
   });
 });

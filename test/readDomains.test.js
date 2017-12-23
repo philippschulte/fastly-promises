@@ -36,7 +36,7 @@ describe('#readDomains', () => {
     });
   });
 
-  it('response body items should have comment, name, service_id, and version properties', () => {
+  it('response body should contain all properties', () => {
     res.data.forEach(item => {
       expect(item).toIncludeKeys(['comment', 'name', 'service_id', 'version']);
     });

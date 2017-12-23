@@ -36,7 +36,7 @@ describe('#edgeCheck', () => {
     });
   });
 
-  it('response body items should have hash, request, response, response_time, and server properties', () => {    
+  it('response body should contain all properties', () => {    
     res.data.forEach(item => {
       expect(item).toIncludeKeys(['hash', 'request', 'response', 'response_time', 'server']);
     });

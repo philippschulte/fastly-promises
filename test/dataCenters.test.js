@@ -36,7 +36,7 @@ describe('#dataCenters', () => {
     });
   });
 
-  it('response body items should have code, name, group, coordinates, and shield properties', () => {
+  it('response body should contain all properties', () => {
     res.data.forEach(item => {
       expect(item).toIncludeKeys(['code', 'name', 'group', 'coordinates', 'shield']);
     });

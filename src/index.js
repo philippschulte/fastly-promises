@@ -122,6 +122,15 @@ class Fastly {
   }
 
   /**
+   * List all backends for a particular service and version.
+   * @param version {String} The current version of a service.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  readBackends(version = '') {
+    return this.request.get(`/service/${this.service_id}/version/${version}/backend`);
+  }
+
+  /**
    * Checks the status of all domains for a particular service and version.
    * @param version {String} The current version of a service.
    * @return {Promise} The response object representing the completion or failure.

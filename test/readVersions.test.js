@@ -36,9 +36,21 @@ describe('#readVersions', () => {
     });
   });
 
-  it('response body items should have active, comment, created_at, deleted_at, deployed, locked, number, service_id, staging, testing, and updated_at properties', () => {
+  it('response body should contain all properties', () => {
     res.data.forEach(item => {
-      expect(item).toIncludeKeys(['active', 'comment', 'created_at', 'deleted_at', 'deployed', 'locked', 'number', 'service_id', 'staging', 'testing', 'updated_at']);
+      expect(item).toIncludeKeys([
+        'active',
+        'comment',
+        'created_at',
+        'deleted_at',
+        'deployed',
+        'locked',
+        'number',
+        'service_id',
+        'staging',
+        'testing',
+        'updated_at'
+      ]);
     });
   });
 });

@@ -30,7 +30,7 @@ describe('#purgeKeys', () => {
     expect(res.data).toBeA('object');
   });
 
-  it('response body should have surrogate keys property', () => {
+  it('response body should contain all properties', () => {
     expect(res.data).toIncludeKeys(['key_1', 'key_2', 'key_3']);
   });
 });

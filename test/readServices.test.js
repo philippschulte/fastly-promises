@@ -36,9 +36,16 @@ describe('#readServices', () => {
     });
   });
 
-  it('response body items should have comment, customer_id, id, name, version, and versions properties', () => {
+  it('response body should contain all properties', () => {
     res.data.forEach(item => {
-      expect(item).toIncludeKeys(['comment', 'customer_id', 'id', 'name', 'version', 'versions']);
+      expect(item).toIncludeKeys([
+        'comment',
+        'customer_id',
+        'id',
+        'name',
+        'version',
+        'versions'
+      ]);
     });
   });
 });

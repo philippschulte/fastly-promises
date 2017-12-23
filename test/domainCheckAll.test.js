@@ -36,7 +36,7 @@ describe('#domainCheckAll', () => {
     });
   });
 
-  it('response body items should have three items', () => {
+  it('response body should have three items', () => {
     res.data.forEach(item => {
       expect(item.length).toEqual(3);
     });

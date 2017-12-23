@@ -30,7 +30,7 @@ describe('#purgeIndividual', () => {
     expect(res.data).toBeA('object');
   });
 
-  it('response body should have status and id properties', () => {
+  it('response body should contain all properties', () => {
     expect(res.data).toIncludeKeys(['status', 'id']);
   });
 });
