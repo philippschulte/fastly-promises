@@ -131,6 +131,17 @@ class Fastly {
   }
 
   /**
+   * Update the backend for a particular service and version.
+   * @param version {String} The current version of a service.
+   * @param name {String} The name of the backend.
+   * @param data {Object} The data to be sent as the request body.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  updateBackend(version = '', name = '', data = {}) {
+    return this.request.put(`/service/${this.service_id}/version/${version}/backend/${encodeURIComponent(name)}`, data);
+  }
+
+  /**
    * Checks the status of all domains for a particular service and version.
    * @param version {String} The current version of a service.
    * @return {Promise} The response object representing the completion or failure.

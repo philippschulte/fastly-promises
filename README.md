@@ -148,6 +148,7 @@ async function handler() {
   - [.readVersions()](#readVersions)
   - [.readDomains(version)](#readDomains)
   - [.readBackends(version)](#readBackends)
+  - [.updateBackend(version, name, data)](#updateBackend)
   - [.domainCheckAll(version)](#domainCheckAll)
 
 <a name="constructor"></a>
@@ -487,6 +488,30 @@ instance.readBackends('12')
 
 **Kind**: method  
 **Param**: version {string} The current version of a service.  
+**Return**: schema {promise} The response object representing the completion or failure.
+
+<a name="updateBackend"></a>
+
+### [.updateBackend(version, name, data)](https://docs.fastly.com/api/config#backend_fb3b3529417c70f57458644f7aec652e)
+
+*Update the backend for a particular service and version.*
+
+**Example**:
+
+```javascript
+instance.updateBackend('34', 'slow-server', { name: 'fast-server' })
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Param**: version {string} The current version of a service.  
+**Param**: name {string} The name of the backend.  
+**Param**: data {object} The data to be sent as the request body.  
 **Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="domainCheckAll"></a>
