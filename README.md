@@ -84,7 +84,7 @@ Each `fastly-promises` API method returns the following response object:
 
 ### Promises
 
-The following example does the following:
+This example does the following:
 
 1. Get all the versions
 2. Filter out the active version
@@ -146,6 +146,7 @@ async function handler() {
   - [.edgeCheck(url)](#edgeCheck)
   - [.readServices()](#readServices)
   - [.readVersions()](#readVersions)
+  - [.cloneVersion(version)](#cloneVersion)
   - [.readDomains(version)](#readDomains)
   - [.readBackends(version)](#readBackends)
   - [.updateBackend(version, name, data)](#updateBackend)
@@ -435,7 +436,7 @@ instance.readServices()
 ```javascript
 instance.readVersions()
   .then(res => {
-    const active = res.data.filter(version => version.active === true);
+    const active = res.data.filter(version => version.active);
     console.log(active);
   })
   .catch(err => {
@@ -444,6 +445,28 @@ instance.readVersions()
 ```
 
 **Kind**: method  
+**Return**: schema {promise} The response object representing the completion or failure.
+
+<a name="cloneVersion"></a>
+
+### [.cloneVersion(version)](https://docs.fastly.com/api/config#version_7f4937d0663a27fbb765820d4c76c709)
+
+*Clone the current configuration into a new version.*
+
+**Example**:
+
+```javascript
+instance.cloneVersion('45')
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Param**: version {string} The version to be cloned.  
 **Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="readDomains"></a>
