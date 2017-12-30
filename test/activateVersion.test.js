@@ -4,18 +4,18 @@ const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
 const fastlyPromises = require('../src/index');
-const response = require('./response/cloneVersion.response');
+const response = require('./response/activateVersion.response');
 
-describe('#cloneVersion', () => {
+describe('#activateVersion', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
   let res;
 
   nock(config.mainEntryPoint)
-    .put('/service/SU1Z0isxPaozGVKXdv0eY/version/134/clone')
-    .reply(200, response.cloneVersion);
+    .put('/service/SU1Z0isxPaozGVKXdv0eY/version/253/activate')
+    .reply(200, response.activateVersion);
 
   before(async () => {
-    res = await fastly.cloneVersion('134');
+    res = await fastly.activateVersion('253');
   });
 
   it('response should be a status 200', () => {
@@ -30,8 +30,9 @@ describe('#cloneVersion', () => {
     expect(res.data).toBeA('object');
   });
 
-  it('response body property should be greater than cloned version number', () => {
-    expect(res.data.number).toBeGreaterThan(134);
+  it('response body property should be true', () => {
+    expect(res.data.number).toBe(253);
+    expect(res.data.active).toBeTruthy();
   });
 
   it('response body should contain all properties', () => {
@@ -46,7 +47,8 @@ describe('#cloneVersion', () => {
       'deleted_at',
       'comment',
       'updated_at',
-      'deployed'
+      'deployed',
+      'msg'
     ]);
   });
 });

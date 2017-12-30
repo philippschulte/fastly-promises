@@ -84,23 +84,27 @@ Each `fastly-promises` API method returns the following response object:
 
 ### Promises
 
-This example does the following:
+Purge all domains of the active version:
 
-1. Get all the versions
+1. Get all versions
 2. Filter out the active version
-3. Get all the domains of the active version
-4. Purge all the domains
-5. Log the status text of each purge request
+3. Get all the domains for the active version
+4. Purge all domains
+5. Log the status text for each purge request
 
 ```javascript
+const fastly = require('fastly-promises');
+
+const service = fastly('token', 'service_id');
+
 function handler() {
-  service_1.readVersions()
+  service.readVersions()
     .then(versions => {
       const active = versions.data.filter(version => version.active)[0];
-      return service_1.readDomains(active.number);
+      return service.readDomains(active.number);
     })
     .then(domains => {
-      return Promise.all(domains.data.map(domain => service_1.purgeIndividual(domain.name)));
+      return Promise.all(domains.data.map(domain => service.purgeIndividual(domain.name)));
     })
     .then(purges => {
       purges.forEach(purge => console.log(purge.statusText));
@@ -113,17 +117,41 @@ function handler() {
 
 ### Async/Await
 
-This is the same example but uses the `async/await` syntax instead!
+Update `first_byte_timeout` property for every backend and service if the value is less than 5000 milliseconds:
+
+1.  Get all services associated with an account
+2.  Iterate over all services
+3.  Get all versions
+4.  Filter out the active version
+5.  Get all backends for the active version
+6.  Filter out the infected backends
+7.  Continue with the next service if there are no infected backends
+8.  Clone the active version
+9.  Update all infected backends for the cloned version
+10. Activate the cloned version
 
 ```javascript
+const fastly = require('fastly-promises');
+
+const account = fastly('token');
+
 async function handler() {
   try {
-    const versions = await serivce_2.readVersions();
-    const active = versions.data.filter(version => version.active)[0];
-    const domains = await serivce_2.readDomains(active.number);
-    const purges = await Promise.all(domains.data.map(domain => serivce_2.purgeIndividual(domain.name)));
+    const services = await account.readServices();
 
-    purges.forEach(purge => console.log(purge.statusText));
+    for (const id of services.data) {
+      const service = fastly('token', id);
+      const versions = await service.readVersions();
+      const active = versions.data.filter(version => version.active)[0];
+      const backends = await service.readBackends(active.number);
+      const infected = backends.data.filter(backend => backend.first_byte_timeout < 5000);
+
+      if (!infected.length) continue;
+
+      const clone = await service.cloneVersion(active.number);
+      await Promise.all(infected.map(backend => service.updateBackend(clone.data.number, backend.name, { first_byte_timeout: 5000 })));
+      await service.activateVersion(clone.data.number);
+    }
   } catch (e) {
     console.log('Shoot!');
   }
@@ -133,24 +161,33 @@ async function handler() {
 ## API
 
 - [constructor(token, service_id)](#constructor)
-  - [.request.defaults.baseURL](#baseURL)
-  - [.request.defaults.timeout](#timeout)
-  - [.purgeIndividual(url)](#purgeIndividual)
-  - [.purgeAll()](#purgeAll)
-  - [.purgeKey(key)](#purgeKey)
-  - [.purgeKeys(keys)](#purgeKeys)
-  - [.softPurgeIndividual(url)](#softPurgeIndividual)
-  - [.softPurgeKey(key)](#softPurgeKey)
-  - [.dataCenters()](#dataCenters)
-  - [.publicIpList()](#publicIpList)
-  - [.edgeCheck(url)](#edgeCheck)
-  - [.readServices()](#readServices)
-  - [.readVersions()](#readVersions)
-  - [.cloneVersion(version)](#cloneVersion)
-  - [.readDomains(version)](#readDomains)
-  - [.readBackends(version)](#readBackends)
-  - [.updateBackend(version, name, data)](#updateBackend)
-  - [.domainCheckAll(version)](#domainCheckAll)
+  - Properties
+    - [.request.defaults.baseURL](#baseURL)
+    - [.request.defaults.timeout](#timeout)
+  - Purging
+    - [.purgeIndividual(url)](#purgeIndividual)
+    - [.purgeAll()](#purgeAll)
+    - [.purgeKey(key)](#purgeKey)
+    - [.purgeKeys(keys)](#purgeKeys)
+  - Soft Purging
+    - [.softPurgeIndividual(url)](#softPurgeIndividual)
+    - [.softPurgeKey(key)](#softPurgeKey)
+  - Utilities
+    - [.dataCenters()](#dataCenters)
+    - [.publicIpList()](#publicIpList)
+    - [.edgeCheck(url)](#edgeCheck)
+  - Service
+    - [.readServices()](#readServices)
+  - Version
+    - [.readVersions()](#readVersions)
+    - [.cloneVersion(version)](#cloneVersion)
+    - [.activateVersion(version)](#activateVersion)
+  - Domain
+    - [.domainCheckAll(version)](#domainCheckAll)
+    - [.readDomains(version)](#readDomains)
+  - Backend
+    - [.readBackends(version)](#readBackends)
+    - [.updateBackend(version, name, data)](#updateBackend)
 
 <a name="constructor"></a>
 
@@ -469,6 +506,50 @@ instance.cloneVersion('45')
 **Param**: version {string} The version to be cloned.  
 **Return**: schema {promise} The response object representing the completion or failure.
 
+<a name="activateVersion"></a>
+
+### [.activateVersion(version)](https://docs.fastly.com/api/config#version_0b79ae1ba6aee61d64cc4d43fed1e0d5)
+
+*Activate the current version.*
+
+**Example**:
+
+```javascript
+instance.activateVersion('23')
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Param**: version {string} The version to be activated.  
+**Return**: schema {promise} The response object representing the completion or failure.
+
+<a name="domainCheckAll"></a>
+
+### [.domainCheckAll(version)](https://docs.fastly.com/api/config#domain_e33a599694c3316f00b6b8d53a2db7d9)
+
+*Checks the status of all domains for a particular service and version.*
+
+**Example**:
+
+```javascript
+instance.domainCheckAll('182')
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Param**: version {string} The current version of a service.  
+**Return**: schema {promise} The response object representing the completion or failure.
+
 <a name="readDomains"></a>
 
 ### [.readDomains(version)](https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d)
@@ -535,28 +616,6 @@ instance.updateBackend('34', 'slow-server', { name: 'fast-server' })
 **Param**: version {string} The current version of a service.  
 **Param**: name {string} The name of the backend.  
 **Param**: data {object} The data to be sent as the request body.  
-**Return**: schema {promise} The response object representing the completion or failure.
-
-<a name="domainCheckAll"></a>
-
-### [.domainCheckAll(version)](https://docs.fastly.com/api/config#domain_e33a599694c3316f00b6b8d53a2db7d9)
-
-*Checks the status of all domains for a particular service and version.*
-
-**Example**:
-
-```javascript
-instance.domainCheckAll('182')
-  .then(res => {
-    console.log(res.data);
-  })
-  .catch(err => {
-    console.log(err.message);
-  });
-```
-
-**Kind**: method  
-**Param**: version {string} The current version of a service.  
 **Return**: schema {promise} The response object representing the completion or failure.
 
 ## Tests

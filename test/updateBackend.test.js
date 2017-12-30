@@ -30,7 +30,7 @@ describe('#updateBackend', () => {
     expect(res.data).toBeA('object');
   });
 
-  it('response body should contain updated property', () => {
+  it('response body property should be updated', () => {
     expect(res.data.name).toBe('fast-server');
   });
 

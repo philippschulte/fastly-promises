@@ -122,6 +122,15 @@ class Fastly {
   }
 
   /**
+   * Activate the current version.
+   * @param version {String} The version to be activated.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  activateVersion(version = '') {
+    return this.request.put(`/service/${this.service_id}/version/${version}/activate`);
+  }
+
+  /**
    * List all the domains for a particular service and version.
    * @param version {String} The current version of a service.
    * @return {Promise} The response object representing the completion or failure.
