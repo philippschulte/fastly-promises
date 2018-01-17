@@ -10,15 +10,16 @@ const response = require('./response/getWAFs.response');
 const FASTLY_API_TOKEN = process.env.FASTLY_API_TOKEN;
 
 describe('#getWAFs', () => {
-    const fastly = fastlyPromises(FASTLY_API_TOKEN, '79CEhEeP8DKPQQGiXokV5M');
+    const fastly = fastlyPromises(FASTLY_API_TOKEN, '79CEhEeP8DKPQQGTXokV5M');
     let res;
 
     nock(config.mainEntryPoint)
-        .get('/service/79CEhEeP8DKPQQGiXokV5M/version/9/wafs')
+        .get('/service/79CEhEeP8DKPQQGTXokV5M/version/9/wafs')
         .reply(200, response.getWAFs);
 
     before(async () => {
         res = await fastly.getWAFs('9');
+        console.log(res.data)
     });
 
     it('response should be a status 200', () => {
@@ -34,8 +35,8 @@ describe('#getWAFs', () => {
         expect(Array.isArray(res.data.data)).toBe(true);
     });
 
-    it('response should contain WAF ID rfjm9II8V21LSeEgyMi9x', () => {
-        expect(res.data.data[0].id).toBe("rfjm9II8V21LSeEgyMi9x");
+    it('response should contain WAF ID rfjn9II8V21LSeEgyMT9x', () => {
+        expect(res.data.data[0].id).toBe("rfjn9II8V21LSeEgyMT9x");
     });
 
     it('response body should contain properties', () => {

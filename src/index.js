@@ -167,6 +167,7 @@ class Fastly {
     domainCheckAll(version = '') {
         return this.request.get(`/service/${this.service_id}/version/${version}/domain/check_all`);
     }
+
     /**
      * Gets the WAFs associated with a service.
      * @param version {String} The current version of a service.
@@ -174,6 +175,29 @@ class Fastly {
      */
     getWAFs(version = '') {
         return this.request.get(`/service/${this.service_id}/version/${version}/wafs`)
+    }
+
+    /**
+     * Updates the status of all the rules by a tag.By default, updates all the tags. Doesnt need a PATCH
+     * @param wafId {string} The WAF ID associated with a service.
+     * @param status {String} Can be log, block or disable.
+     * @param tags {Array} Optional. Updates all tags by default.
+     * @param force {boolean} Optional. If set to true,changes the status to the specified mode including previously disabled rules as well. Use with caution
+     * @return {Promise} An array of response object(s) representing the completion or failure.
+     */
+
+    updateTags(wafId = '', status = '', tags = config.WAFTags, force=false) {
+        const tagRequests = tags.map((tag) => {
+            const data = {
+                "data": {
+                    "type": "rule_status",
+                    "id": wafId,
+                    "attributes": {"name": tag, "status": status, "force": force}
+                }
+            };
+            return this.request.post(`/service/${this.service_id}/wafs/${wafId}/rule_statuses`, data, {headers: {'Accept': 'application/vnd.api+json','Content-Type':'application/vnd.api+json'}});
+        });
+        return axios.all(tagRequests); //returns an array of responses(Type : object)
     }
 }
 

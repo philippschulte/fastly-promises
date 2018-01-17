@@ -7,13 +7,13 @@ module.exports.getWAFs =
                     "last_push": "2017-11-30T14:24:58Z",
                     "prefetch_condition": "WAF_Prefetch",
                     "response": "WAF_Response",
-                    "rule_statuses_block_count": 0,
-                    "rule_statuses_disabled_count": 26,
-                    "rule_statuses_log_count": 989,
-                    "service_id": "79CEhEeP8DKPQQGiXokV5M",
+                    "rule_statuses_block_count": 999,
+                    "rule_statuses_disabled_count": 999,
+                    "rule_statuses_log_count": 999,
+                    "service_id": "79CEhEeP8DKPQQGTXokV5M",
                     "version": 9
                 },
-                "id": "rfjm9II8V21LSeEgyMi9x",
+                "id": "rfjn9II8V21LSeEgyMT9x",
                 "type": "waf"
             }
         ],
