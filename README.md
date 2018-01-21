@@ -56,40 +56,14 @@ console.log(service_1.request.defaults.baseURL); // https://api.fastly.com
 console.log(service_1.request.defaults.timeout); // 3000
 ```
 
-### Response Schema
-
-Each `fastly-promises` API method returns the following response object:
-
-```javascript
-{
-  // the HTTP status code from the server response
-  status: 200,
-
-  // the HTTP status message from the server response
-  statusText: 'OK',
-
-  // the headers that the server responded with
-  headers: {},
-
-  // the config that was provided to axios for the request
-  config: {},
-
-  // the request that generated the response
-  request: {},
-
-  // the response that was provided by the server
-  data: {}
-}
-```
-
 ### Promises
 
 Purge all domains of the active version:
 
-1. Get all versions
+1. Get all the versions
 2. Filter out the active version
 3. Get all the domains for the active version
-4. Purge all domains
+4. Purge all the domains
 5. Log the status text for each purge request
 
 ```javascript
@@ -119,16 +93,17 @@ function handler() {
 
 Update `first_byte_timeout` property for every backend and service if the value is less than 5000 milliseconds:
 
-1.  Get all services associated with an account
-2.  Iterate over all services
-3.  Get all versions
-4.  Filter out the active version
-5.  Get all backends for the active version
-6.  Filter out the infected backends
-7.  Continue with the next service if there are no infected backends
-8.  Clone the active version
-9.  Update all infected backends for the cloned version
-10. Activate the cloned version
+1.  Get all the services associated with the Fastly API token
+2.  Filter out the service IDs
+3.  Iterate over all services synchronously
+4.  Get all the versions
+5.  Filter out the active version
+6.  Get all the backends for the active version
+7.  Filter out the affected backends
+8.  Continue with the next service if there are no affected backends
+9.  Clone the active version
+10. Update all the affected backends parallelly
+11. Activate the cloned version
 
 ```javascript
 const fastly = require('fastly-promises');
@@ -138,18 +113,19 @@ const account = fastly('token');
 async function handler() {
   try {
     const services = await account.readServices();
+    const ids = services.data.map(service => service.id);
 
-    for (const id of services.data) {
+    for (const id of ids) {
       const service = fastly('token', id);
       const versions = await service.readVersions();
       const active = versions.data.filter(version => version.active)[0];
       const backends = await service.readBackends(active.number);
-      const infected = backends.data.filter(backend => backend.first_byte_timeout < 5000);
+      const affected = backends.data.filter(backend => backend.first_byte_timeout < 5000);
 
-      if (!infected.length) continue;
+      if (!affected.length) continue;
 
       const clone = await service.cloneVersion(active.number);
-      await Promise.all(infected.map(backend => service.updateBackend(clone.data.number, backend.name, { first_byte_timeout: 5000 })));
+      await Promise.all(affected.map(backend => service.updateBackend(clone.data.number, backend.name, { first_byte_timeout: 5000 })));
       await service.activateVersion(clone.data.number);
     }
   } catch (e) {
@@ -158,34 +134,60 @@ async function handler() {
 }
 ```
 
+### Response Schema
+
+Each `fastly-promises` API method returns the following response object:
+
+```javascript
+{
+  // the HTTP status code from the server response
+  status: 200,
+
+  // the HTTP status message from the server response
+  statusText: 'OK',
+
+  // the headers that the server responded with
+  headers: {},
+
+  // the config that was provided to axios for the request
+  config: {},
+
+  // the request that generated the response
+  request: {},
+
+  // the response that was provided by the server
+  data: {}
+}
+```
+
 ## API
 
 - [constructor(token, service_id)](#constructor)
-  - Properties
+  - [Properties](#properties)
     - [.request.defaults.baseURL](#baseURL)
     - [.request.defaults.timeout](#timeout)
-  - Purging
+  - [Purging](#purging)
     - [.purgeIndividual(url)](#purgeIndividual)
     - [.purgeAll()](#purgeAll)
     - [.purgeKey(key)](#purgeKey)
     - [.purgeKeys(keys)](#purgeKeys)
-  - Soft Purging
+  - [Soft Purging](#soft-purging)
     - [.softPurgeIndividual(url)](#softPurgeIndividual)
     - [.softPurgeKey(key)](#softPurgeKey)
-  - Utilities
+  - [Utilities](#utilities)
     - [.dataCenters()](#dataCenters)
     - [.publicIpList()](#publicIpList)
     - [.edgeCheck(url)](#edgeCheck)
-  - Service
+  - [Service](#service)
     - [.readServices()](#readServices)
-  - Version
+  - [Version](#version)
     - [.readVersions()](#readVersions)
     - [.cloneVersion(version)](#cloneVersion)
     - [.activateVersion(version)](#activateVersion)
-  - Domain
+  - [Domain](#domain)
     - [.domainCheckAll(version)](#domainCheckAll)
     - [.readDomains(version)](#readDomains)
-  - Backend
+  - [Backend](#backend)
     - [.readBackends(version)](#readBackends)
     - [.updateBackend(version, name, data)](#updateBackend)
 
@@ -208,6 +210,10 @@ const instance = fastly('token', 'service_id');
 **Param**: token {string} The Fastly API token.  
 **Param**: service_id {string} The Fastly service ID.  
 **Return**: instance {object} A new fastly-promises instance.
+
+---
+
+### Properties
 
 <a name="baseURL"></a>
 
@@ -245,6 +251,10 @@ instance.request.defaults.timeout = 5000;
 
 **Kind**: property  
 **Return**: milliseconds {number} The number of milliseconds before the request times out.
+
+---
+
+### Purging
 
 <a name="purgeIndividual"></a>
 
@@ -333,6 +343,10 @@ instance.purgeKeys(['key_2', 'key_3', 'key_4'])
 **Param**: keys {array} The array of surrogate keys to purge.  
 **Return**: schema {promise} The response object representing the completion or failure.
 
+---
+
+### Soft Purging
+
 <a name="softPurgeIndividual"></a>
 
 ### [.softPurgeIndividual(url)](https://docs.fastly.com/api/purge#soft_purge_0c4f56f3d68e9bed44fb8b638b78ea36)
@@ -376,6 +390,10 @@ instance.softPurgeKey('key_5')
 **Kind**: method  
 **Param**: key {string} The surrogate key to soft purge.  
 **Return**: schema {promise} The response object representing the completion or failure.
+
+---
+
+### Utilities
 
 <a name="dataCenters"></a>
 
@@ -441,6 +459,10 @@ instance.edgeCheck('api.example.com')
 **Param**: url {string} Full URL (host and path) to check on all nodes. If protocol is omitted, http will be assumed.  
 **Return**: schema {promise} The response object representing the completion or failure.
 
+---
+
+### Service
+
 <a name="readServices"></a>
 
 ### [.readServices()](https://docs.fastly.com/api/config#service_74d98f7e5d018256e44d1cf820388ef8)
@@ -461,6 +483,10 @@ instance.readServices()
 
 **Kind**: method  
 **Return**: schema {promise} The response object representing the completion or failure.
+
+---
+
+### Version
 
 <a name="readVersions"></a>
 
@@ -528,6 +554,10 @@ instance.activateVersion('23')
 **Param**: version {string} The version to be activated.  
 **Return**: schema {promise} The response object representing the completion or failure.
 
+---
+
+### Domain
+
 <a name="domainCheckAll"></a>
 
 ### [.domainCheckAll(version)](https://docs.fastly.com/api/config#domain_e33a599694c3316f00b6b8d53a2db7d9)
@@ -571,6 +601,10 @@ instance.readDomains('182')
 **Kind**: method  
 **Param**: version {string} The current version of a service.  
 **Return**: schema {promise} The response object representing the completion or failure.
+
+---
+
+### Backend
 
 <a name="readBackends"></a>
 
