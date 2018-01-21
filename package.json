@@ -38,7 +38,7 @@
     "ghooks": "2.0.0",
     "istanbul": "0.4.5",
     "mocha": "3.5.0",
-    "nock": "9.0.14",
+    "nock": "9.1.6",
     "semantic-release": "^6.3.6"
   },
   "dependencies": {
