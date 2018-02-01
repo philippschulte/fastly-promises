@@ -14,7 +14,7 @@ class Fastly {
     this.request = axios.create({
       baseURL: config.mainEntryPoint,
       timeout: 3000,
-      headers: {'Fastly-Key': token}
+      headers: { 'Fastly-Key': token }
     });
   }
 
@@ -50,7 +50,7 @@ class Fastly {
    * @return {Promise} The response object representing the completion or failure.
    */
   purgeKeys(keys = []) {
-    return this.request.post(`/service/${this.service_id}/purge`, {'surrogate_keys': keys});
+    return this.request.post(`/service/${this.service_id}/purge`, { 'surrogate_keys': keys });
   }
 
   /**
@@ -68,7 +68,7 @@ class Fastly {
    * @return {Promise} The response object representing the completion or failure.
    */
   softPurgeKey(key = '') {
-    return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, {headers: {'Fastly-Soft-Purge': 1}});
+    return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
   }
 
   /**
