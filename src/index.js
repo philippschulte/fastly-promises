@@ -219,9 +219,11 @@ class Fastly {
     const ruleIds = rules.map((ruleId) => {
       const data = {
         "data": {
+          "attributes": {
+            "status": status
+          },
           "type": "rule_status",
           "id": `${wafId}-${ruleId}`,
-          "status": status
         }
       };
       return this.request.patch(`/service/${this.service_id}/wafs/${wafId}/rules/${ruleId}/rule_status`, data, {

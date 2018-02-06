@@ -52,7 +52,7 @@ describe('#UpdateTags', () => {
   it('responses should have status as blocked', () => {
     res.forEach(item => {
       item.data.data.forEach(subitem => {
-        console.log(subitem.attributes.status);
+        //console.log(subitem.attributes.status);
         expect(subitem.attributes.status).toBe("block");
       });
     });
