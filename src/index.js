@@ -182,19 +182,23 @@ class Fastly {
    * @param wafId {string} The WAF ID associated with a service.
    * @param status {String} Can be log, block or disable.
    * @param tags {Array} Optional. Updates all tags by default.
-   * @param force {boolean} Optional. If set to true,changes the status to the specified mode including previously disabled rules as well. Use with caution
+   * @param forceToggle {boolean} Optional. If set to true,changes the status to the specified mode including previously disabled rules as well. Use with caution
    * @return {Promise} An array of response object(s) representing the completion or failure.
    */
 
-  updateTags(wafId = '', status = '', tags = config.WAFTags, force = false) {
+  updateTags(wafId = '', status = '', tags = config.WAFTags, forceToggle = false) {
     const tagRequests = tags.map((tag) => {
       const data = {
         "data": {
+          "attributes": {
+            "name": tag,
+            "status": status
+          },
           "type": "rule_status",
-          "id": wafId,
-          "attributes": {"name": tag, "status": status, "force": force}
+          "id": wafId
         }
       };
+      if (forceToggle === true) data.data.attributes.force = true;
       //Override timeout for this request as it's known to take a long time- updates every rule in the tag one by one
       return this.request.post(`/service/${this.service_id}/wafs/${wafId}/rule_statuses`, data, {
         timeout: 30000,
