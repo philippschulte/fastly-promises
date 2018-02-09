@@ -202,15 +202,16 @@ class Fastly {
       //Override timeout for this request as it's known to take a long time- updates every rule in the tag one by one
       return this.request.post(`/service/${this.service_id}/wafs/${wafId}/rule_statuses`, data, {
         timeout: 30000,
+        validateStatus:null,
         headers: {
           'Accept': 'application/vnd.api+json',
           'Content-Type': 'application/vnd.api+json'
         }
       });
     });
+    //console.log(axios.all(tagRequests));
     return axios.all(tagRequests); //returns an array of responses(Type : object)
   }
-
   /**
    *Update rule status(s) for a particular service, firewall, and rule.
    * @param wafId {string} The WAF ID associated with a service.
