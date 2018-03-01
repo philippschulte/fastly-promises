@@ -192,7 +192,6 @@ class Fastly {
    * Gets the WAF Rules associated with a service dependant on WAF tags.
    * @param wafId {string} The WAF ID associated with a service.
    * @param tag {string} The WAF tag whose rules are enabled on a service.
-   * @return {Promise} The response object representing the completion or failure.
    * @param pageNumber {number} Page number for the of the results output.
    * @return {Promise} An array of response object(s) representing the completion or failure.
    */
