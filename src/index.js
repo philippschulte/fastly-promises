@@ -14,7 +14,7 @@ class Fastly {
     this.request = axios.create({
       baseURL: config.mainEntryPoint,
       timeout: 3000,
-      headers: {'Fastly-Key': token}
+      headers: { 'Fastly-Key': token }
     });
   }
 
@@ -50,7 +50,7 @@ class Fastly {
    * @return {Promise} The response object representing the completion or failure.
    */
   purgeKeys(keys = []) {
-    return this.request.post(`/service/${this.service_id}/purge`, {'surrogate_keys': keys});
+    return this.request.post(`/service/${this.service_id}/purge`, { 'surrogate_keys': keys });
   }
 
   /**
@@ -68,7 +68,7 @@ class Fastly {
    * @return {Promise} The response object representing the completion or failure.
    */
   softPurgeKey(key = '') {
-    return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, {headers: {'Fastly-Soft-Purge': 1}});
+    return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
   }
 
   /**
@@ -188,7 +188,17 @@ class Fastly {
     return this.request.get(`/service/${this.service_id}/wafs/${wafId}/rule_statuses?filter[status]=${wafStatus}&page[size]=200&page[number]=${pageNumber}`)
   }
 
-
+  /**
+   * Gets the WAF Rules associated with a service dependant on WAF tags.
+   * @param wafId {string} The WAF ID associated with a service.
+   * @param tag {string} The WAF tag whose rules are enabled on a service.
+   * @return {Promise} The response object representing the completion or failure.
+   * @param pageNumber {number} Page number for the of the results output.
+   * @return {Promise} An array of response object(s) representing the completion or failure.
+   */
+  getWafRulesByTags(wafId = '', tag = '', pageNumber = '') {
+      return this.request.get(`/service/${this.service_id}/wafs/${wafId}/rule_statuses?filter[rule][tags][name]=${tag}&page[size]=200&page[number]=${pageNumber}`)
+  }
   /**
    * Updates the status of all the rules by a tag.By default, updates all the tags. Doesnt need a PATCH
    * @param wafId {string} The WAF ID associated with a service.
@@ -221,7 +231,6 @@ class Fastly {
         }
       });
     });
-    //console.log(axios.all(tagRequests));
     return axios.all(tagRequests); //returns an array of responses(Type : object)
   }
   /**
