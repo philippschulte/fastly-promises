@@ -193,10 +193,12 @@ class Fastly {
    * @param wafId {string} The WAF ID associated with a service.
    * @param tag {string} The WAF tag whose rules are enabled on a service.
    * @param pageNumber {number} Page number for the of the results output.
-   * @return {Promise} An array of response object(s) representing the completion or failure.
+   * @return {Promise} The response object representing the completion or failure.
    */
   getWafRulesByTags(wafId = '', tag = '', pageNumber = '') {
-      return this.request.get(`/service/${this.service_id}/wafs/${wafId}/rule_statuses?filter[rule][tags][name]=${tag}&page[size]=200&page[number]=${pageNumber}`)
+      return this.request.get(`/service/${this.service_id}/wafs/${wafId}/rule_statuses?filter[rule][tags][name]=${tag}&page[size]=200&page[number]=${pageNumber}`,{
+        timeout:30000
+      })
   }
   /**
    * Updates the status of all the rules by a tag.By default, updates all the tags. Doesnt need a PATCH
