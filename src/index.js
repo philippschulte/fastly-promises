@@ -178,6 +178,18 @@ class Fastly {
   }
 
   /**
+   * Gets the WAF Rules associated with a service dependant on WAF status.
+   * @param wafId {string} The WAF ID associated with a service.
+   * @param wafStatus {string} The WAF status associated with a rule (log/block/disabled).
+   * @param pageNumber {number} Page number for the of the results output.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  getWafRules(wafId = '', wafStatus = '', pageNumber = '') {
+    return this.request.get(`/service/${this.service_id}/wafs/${wafId}/rule_statuses?filter[status]=${wafStatus}&page[size]=200&page[number]=${pageNumber}`)
+  }
+
+
+  /**
    * Updates the status of all the rules by a tag.By default, updates all the tags. Doesnt need a PATCH
    * @param wafId {string} The WAF ID associated with a service.
    * @param status {String} Can be log, block or disable.
