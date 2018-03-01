@@ -14,7 +14,7 @@ class Fastly {
     this.request = axios.create({
       baseURL: config.mainEntryPoint,
       timeout: 3000,
-      headers: { 'Fastly-Key': token }
+      headers: {'Fastly-Key': token}
     });
   }
 
@@ -50,7 +50,7 @@ class Fastly {
    * @return {Promise} The response object representing the completion or failure.
    */
   purgeKeys(keys = []) {
-    return this.request.post(`/service/${this.service_id}/purge`, { 'surrogate_keys': keys });
+    return this.request.post(`/service/${this.service_id}/purge`, {'surrogate_keys': keys});
   }
 
   /**
@@ -68,7 +68,7 @@ class Fastly {
    * @return {Promise} The response object representing the completion or failure.
    */
   softPurgeKey(key = '') {
-    return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
+    return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, {headers: {'Fastly-Soft-Purge': 1}});
   }
 
   /**
@@ -194,29 +194,63 @@ class Fastly {
    * @param wafId {string} The WAF ID associated with a service.
    * @param status {String} Can be log, block or disable.
    * @param tags {Array} Optional. Updates all tags by default.
-   * @param force {boolean} Optional. If set to true,changes the status to the specified mode including previously disabled rules as well. Use with caution
+   * @param forceToggle {boolean} Optional. If set to true,changes the status to the specified mode including previously disabled rules as well. Use with caution
    * @return {Promise} An array of response object(s) representing the completion or failure.
    */
 
-  updateTags(wafId = '', status = '', tags = config.WAFTags, force = false) {
+  updateTags(wafId = '', status = '', tags = config.WAFTags, forceToggle = false) {
     const tagRequests = tags.map((tag) => {
       const data = {
         "data": {
+          "attributes": {
+            "name": tag,
+            "status": status
+          },
           "type": "rule_status",
-          "id": wafId,
-          "attributes": {"name": tag, "status": status, "force": force}
+          "id": wafId
         }
       };
+      if (forceToggle === true) data.data.attributes.force = true;
       //Override timeout for this request as it's known to take a long time- updates every rule in the tag one by one
       return this.request.post(`/service/${this.service_id}/wafs/${wafId}/rule_statuses`, data, {
-        timeout:30000,
+        timeout: 30000,
+        validateStatus:null,
         headers: {
           'Accept': 'application/vnd.api+json',
           'Content-Type': 'application/vnd.api+json'
         }
       });
     });
+    //console.log(axios.all(tagRequests));
     return axios.all(tagRequests); //returns an array of responses(Type : object)
+  }
+  /**
+   *Update rule status(s) for a particular service, firewall, and rule.
+   * @param wafId {string} The WAF ID associated with a service.
+   * @param status {String} Can be log, block or disable.
+   * @param rules {Array} A string of ruleIDs, can be between 1-**.
+   * @return {Promise} An array of response object(s) representing the completion or failure.
+   */
+
+  updateRules(wafId = '', status = '', rules = []) {
+    const ruleIds = rules.map((ruleId) => {
+      const data = {
+        "data": {
+          "attributes": {
+            "status": status
+          },
+          "type": "rule_status",
+          "id": `${wafId}-${ruleId}`,
+        }
+      };
+      return this.request.patch(`/service/${this.service_id}/wafs/${wafId}/rules/${ruleId}/rule_status`, data, {
+        headers: {
+          'Accept': 'application/vnd.api+json',
+          'Content-Type': 'application/vnd.api+json'
+        }
+      });
+    });
+    return axios.all(ruleIds); //returns an array of responses(Type : object)
   }
 }
 

@@ -13,14 +13,36 @@ describe('#UpdateTags', () => {
   const fastly = fastlyPromises(FASTLY_API_TOKEN, '79CEhEeP8DKPQQGTXokV5M');
   let res;
 
-  nock(config.mainEntryPoint)
-   .post('/service/79CEhEeP8DKPQQGTXokV5M/wafs/rfjn9II8V21LSeEgyMT9x/rule_statuses', () => true)
-   .times(10)
-   .reply(200, response.updateTags);
+  const createUpdateTagsStub = (bodyTest = '*') => {
+    return nock(config.mainEntryPoint)
+      .post('/service/79CEhEeP8DKPQQGTXokV5M/wafs/rfjn9II8V21LSeEgyMT9x/rule_statuses', bodyTest)
+      .times(10)
+      .reply(200, response.updateTags);
+  };
+
+  const makeUpdateTagsRequest = async (force) => {
+    res = await fastly.updateTags("rfjn9II8V21LSeEgyMT9x", "block", undefined, force);
+  };
+
+  createUpdateTagsStub(() => true);
 
   before(async () => {
-    res = await fastly.updateTags("rfjn9II8V21LSeEgyMT9x", "block");
+    await makeUpdateTagsRequest();
     //console.log(res)
+  });
+
+  it('request body shouldn\'t contain force key:value when value is set to false', async () => {
+    nock.cleanAll();
+    const scope = createUpdateTagsStub((body) => body.data.attributes && (typeof body.data.attributes.force) === 'undefined');
+    await makeUpdateTagsRequest();
+    expect(scope.isDone()).toBe(true);
+  });
+
+  it('request body should contain force key:value when value is set to true', async () => {
+    nock.cleanAll();
+    const scope = createUpdateTagsStub((body) => body.data.attributes && body.data.attributes.force === true);
+    await makeUpdateTagsRequest(true);
+    expect(scope.isDone()).toBe(true);
   });
 
   it('response body should exist', () => {
@@ -52,7 +74,7 @@ describe('#UpdateTags', () => {
   it('responses should have status as blocked', () => {
     res.forEach(item => {
       item.data.data.forEach(subitem => {
-        console.log(subitem.attributes.status);
+        //console.log(subitem.attributes.status);
         expect(subitem.attributes.status).toBe("block");
       });
     });

@@ -6,3 +6,7 @@
 
 /* Istanbul */
 /coverage
+/*Local files */
+src/.env
+.idea/
+inputBody.json

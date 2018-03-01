@@ -16,6 +16,7 @@ describe('#getWAFs', () => {
 
   before(async () => {
     res = await fastly.getWAFs('9');
+    //console.log(res.data)
   });
 
   it('response should be a status 200', () => {
