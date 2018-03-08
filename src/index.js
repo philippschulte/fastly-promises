@@ -235,7 +235,7 @@ class Fastly {
     return axios.all(tagRequests); //returns an array of responses(Type : object)
   }
   /**
-   *Update rule status(s) for a particular service, firewall, and rule.
+   * Update rule status(s) for a particular service, firewall, and rule.
    * @param wafId {string} The WAF ID associated with a service.
    * @param status {String} Can be log, block or disable.
    * @param rules {Array} A string of ruleIDs, can be between 1-**.
@@ -261,6 +261,26 @@ class Fastly {
       });
     });
     return axios.all(ruleIds); //returns an array of responses(Type : object)
+  }
+
+  /**
+   * Activate changes to your WAF config by running a patch request on the ruleset endpoint.
+   * @param wafId {string} The WAF ID associated with a service.
+   * @return {Promise} An array of response object(s) representing the completion or failure.
+   */
+
+  deployChangesForWAF(wafId = '') {
+    const data = {
+      "data": {
+        "type": "ruleset",
+        "id": wafId,
+      }
+    };
+    return this.request.patch(`/service/${this.service_id}/wafs/${wafId}/ruleset`, data, {
+      headers: {
+        'Content-Type': 'application/vnd.api+json'
+      }
+    });
   }
 }
 
