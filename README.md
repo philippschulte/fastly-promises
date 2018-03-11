@@ -190,6 +190,8 @@ Each `fastly-promises` API method returns the following response object:
   - [Backend](#backend)
     - [.readBackends(version)](#readBackends)
     - [.updateBackend(version, name, data)](#updateBackend)
+  - [VCL Snippets](#vcl-snippets)
+    - [.createSnippet(version, data)](#createSnippet)
 
 <a name="constructor"></a>
 
@@ -649,6 +651,39 @@ instance.updateBackend('34', 'slow-server', { name: 'fast-server' })
 **Kind**: method  
 **Param**: version {string} The current version of a service.  
 **Param**: name {string} The name of the backend.  
+**Param**: data {object} The data to be sent as the request body.  
+**Return**: schema {promise} The response object representing the completion or failure.
+
+---
+
+### VCL Snippets
+
+<a name="createSnippet"></a>
+
+### [.createSnippet(version, data)](https://docs.fastly.com/api/config#snippet_41e0e11c662d4d56adada215e707f30d)
+
+*Create a snippet for a particular service and version.*
+
+**Example**:
+
+```javascript
+instance.createSnippet('36', {
+    name: 'your_snippet',
+    priority: 10,
+    dynamic: 1,
+    content: 'table referer_blacklist {}',
+    type: 'init'
+  })
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Param**: version {string} The current version of a service.  
 **Param**: data {object} The data to be sent as the request body.  
 **Return**: schema {promise} The response object representing the completion or failure.
 
