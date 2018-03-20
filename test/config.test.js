@@ -12,3 +12,12 @@ describe('#mainEntryPoint', () => {
     expect(config.mainEntryPoint).toBeA('string');
   });
 });
+
+describe('#WAFTags', () => {
+  it('Tags should exist', () => {
+    expect(config.WAFTags).toExist();
+  });
+  it('property should be an array', () => {
+    expect(Array.isArray(config.WAFTags)).toBe(true)
+  });
+});
