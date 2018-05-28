@@ -167,15 +167,31 @@ class Fastly {
   updateBackend(version = '', name = '', data = {}) {
     return this.request.put(`/service/${this.service_id}/version/${version}/backend/${encodeURIComponent(name)}`, data);
   }
+  /**
+   * @typedef {Object} Snippet
+   * @property {String} name The name of the snippet, as visible in the Fastly UI
+   * @property {String} content The VCL body of the snippet
+   */
 
   /**
    * Create a snippet for a particular service and version.
    * @param version {String} The current version of a service.
-   * @param data {Object} The data to be sent as the request body.
+   * @param data {Snippet} The data to be sent as the request body.
    * @return {Promise} The response object representing the completion or failure.
    */
   createSnippet(version = '', data = {}) {
     return this.request.post(`/service/${this.service_id}/version/${version}/snippet`, data);
+  }
+
+  /**
+   * 
+   * @param {String} version The current version of a service.
+   * @param {String} name The name of the snippet to update.
+   * @param {Snippet} data The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  updateSnippet(version = '', name = '', data = {}) {
+    return this.request.put(`/service/${this.service_id}/version/${version}/snippet/${name}`, data);
   }
 }
 
