@@ -184,7 +184,7 @@ class Fastly {
   }
 
   /**
-   * 
+   * Update a VCL snippet for a particular service and version.
    * @param {String} version The current version of a service.
    * @param {String} name The name of the snippet to update.
    * @param {Snippet} data The data to be sent as the request body.
@@ -193,6 +193,45 @@ class Fastly {
   updateSnippet(version = '', name = '', data = {}) {
     return this.request.put(`/service/${this.service_id}/version/${version}/snippet/${name}`, data);
   }
+
+  /**
+   * @typedef {Object} VCL
+   * @property {String} name The name of the VCL, as visible in the Fastly UI. Note: setting the name to 'main' here won't make it the main VCL, unless you also call `setMainVCL`.
+   * @property {String} content The VCL body of the custom VCL
+   */
+
+  /**
+   * Create custom VCL for a particular service and version.
+   * @param version {String} The current version of a service.
+   * @param data {VCL} The data to be sent as the request body.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  createVCL(version = '', data = {}) {
+    return this.request.post(`/service/${this.service_id}/version/${version}/vcl`, data);
+  }
+
+  /**
+   * Update custom VCL for a particular service and version.
+   * @param {String} version The current version of a service.
+   * @param {String} name The name of the VCL to update.
+   * @param {VCL} data The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  updateVCL(version = '', name = '', data = {}) {
+    return this.request.put(`/service/${this.service_id}/version/${version}/vcl/${name}`, data);
+  }
+
+  /**
+   * Define a custom VCL to be the main VCL for a particular service and version.
+   * @param {String} version The current version of a service.
+   * @param {String} name The name of the VCL to declare main.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  setMainVCL(version = '', name = '') {
+    return this.request.put(`/service/${this.service_id}/version/${version}/vcl/${name}/main`, {});
+  }
+
+  
 }
 
 /**

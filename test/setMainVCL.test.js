@@ -1,0 +1,48 @@
+'use strict';
+
+const nock = require('nock');
+const expect = require('expect');
+const config = require('../src/config');
+const fastlyPromises = require('../src/index');
+const response = require('./response/setMainVCL.response');
+
+describe('#setMainVCL', () => {
+  const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
+  let res;
+
+  nock(config.mainEntryPoint)
+    .put('/service/SU1Z0isxPaozGVKXdv0eY/version/1/vcl/test-vcl/main')
+    .reply(200, response.setMainVCL);
+
+  before(async () => {
+    res = await fastly.setMainVCL('1', 'test-vcl');
+  });
+
+  it('response should be a status 200', () => {
+    expect(res.status).toBe(200);
+  });
+
+  it('response body should exist', () => {
+    expect(res.data).toExist();
+  });
+
+  it('response body should be an object', () => {
+    expect(res.data).toBeA('object');
+  });
+
+  it('response body properties should be created', () => {
+    expect(res.data.name).toBe('test-vcl');
+    expect(res.data.main).toBe(true);
+    expect(res.data.content).toBe('backend default {\n  .host = \"127.0.0.1\";\n  .port = \"9092\";\n}\n\nsub vcl_recv {\n    set req.backend = default;\n}\n\nsub vcl_hash {\n    set req.hash += req.url;\n    set req.hash += req.http.host;\n    set req.hash += \"0\";\n}');
+  });
+
+  it('response body should contain all properties', () => {
+    expect(res.data).toIncludeKeys([
+      'name',
+      'content',
+      'main',
+      'service_id',
+      'version' 
+    ]);
+  });
+});
