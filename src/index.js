@@ -393,6 +393,7 @@ class Fastly {
 
   /**
    * Create custom VCL for a particular service and version.
+   * @see https://docs.fastly.com/api/config#vcl_7ade6ab5926b903b6acf3335a85060cc
    * @param version {String} The current version of a service.
    * @param data {VCL} The data to be sent as the request body.
    * @return {Promise} The response object representing the completion or failure.
@@ -404,6 +405,7 @@ class Fastly {
 
   /**
    * Update custom VCL for a particular service and version.
+   * @see https://docs.fastly.com/api/config#vcl_0971365908e17086751c5ef2a8053087
    * @param {String} version The current version of a service.
    * @param {String} name The name of the VCL to update.
    * @param {VCL} data The data to be sent as the request body.
@@ -416,6 +418,7 @@ class Fastly {
 
   /**
    * Define a custom VCL to be the main VCL for a particular service and version.
+   * @see https://docs.fastly.com/api/config#vcl_5576c38e7652f5a7261bfcad41c0faf1
    * @param {String} version The current version of a service.
    * @param {String} name The name of the VCL to declare main.
    * @return {Promise} The response object representing the completion or failure.

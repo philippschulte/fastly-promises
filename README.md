@@ -650,6 +650,7 @@ Create custom VCL for a particular service and version.
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
 **Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#vcl_7ade6ab5926b903b6acf3335a85060cc  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -664,6 +665,7 @@ Update custom VCL for a particular service and version.
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
 **Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#vcl_0971365908e17086751c5ef2a8053087  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -679,6 +681,7 @@ Define a custom VCL to be the main VCL for a particular service and version.
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
 **Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#vcl_5576c38e7652f5a7261bfcad41c0faf1  
 
 | Param | Type | Description |
 | --- | --- | --- |
