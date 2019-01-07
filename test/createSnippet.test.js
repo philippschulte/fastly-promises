@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env mocha */
+
 const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
@@ -15,7 +17,9 @@ describe('#createSnippet', () => {
     .reply(200, response.createSnippet);
 
   before(async () => {
-    res = await fastly.createSnippet('1', { name: 'my_snippet', priority: '10', dynamic: '1', type: 'fetch' });
+    res = await fastly.createSnippet('1', {
+      name: 'my_snippet', priority: '10', dynamic: '1', type: 'fetch',
+    });
   });
 
   it('response should be a status 200', () => {
@@ -49,7 +53,7 @@ describe('#createSnippet', () => {
       'deleted_at',
       'created_at',
       'updated_at',
-      'id'      
+      'id',
     ]);
   });
 });

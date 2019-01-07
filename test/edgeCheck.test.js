@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env mocha */
+
 const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
@@ -31,13 +33,13 @@ describe('#edgeCheck', () => {
   });
 
   it('response body should be an array of objects', () => {
-    res.data.forEach(item => {
+    res.data.forEach((item) => {
       expect(item).toBeA('object');
     });
   });
 
-  it('response body should contain all properties', () => {    
-    res.data.forEach(item => {
+  it('response body should contain all properties', () => {
+    res.data.forEach((item) => {
       expect(item).toIncludeKeys(['hash', 'request', 'response', 'response_time', 'server']);
     });
   });

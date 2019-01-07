@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env mocha */
+
 const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
@@ -15,7 +17,9 @@ describe('#updateSnippet', () => {
     .reply(200, response.updateSnippet);
 
   before(async () => {
-    res = await fastly.updateSnippet('1', 'my_snippet', { content: 'backend new_backend {}' , priority: '10', dynamic: '1', type: 'init' });
+    res = await fastly.updateSnippet('1', 'my_snippet', {
+      content: 'backend new_backend {}', priority: '10', dynamic: '1', type: 'init',
+    });
   });
 
   it('response should be a status 200', () => {
@@ -49,7 +53,7 @@ describe('#updateSnippet', () => {
       'deleted_at',
       'created_at',
       'updated_at',
-      'id'      
+      'id',
     ]);
   });
 });

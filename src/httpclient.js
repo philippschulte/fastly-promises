@@ -1,6 +1,6 @@
 const request = require('request-promise-native');
 
-function create({baseURL, timeout, headers}) {
+function create({ baseURL, timeout, headers }) {
   function makereq(method) {
     return function req(path, body, config) {
       const myheaders = Object.assign(headers,
@@ -14,26 +14,24 @@ function create({baseURL, timeout, headers}) {
         timeout,
         myheaders,
         resolveWithFullResponse: true,
-        simple: false
+        simple: false,
       };
 
-      return request(options).then(response => {
-        return {
-          status: response.statusCode,
-          statusText: response.stausMessage,
-          headers: response.headers,
-          config: options,
-          request: response.request,
-          data: response.body
-        }
-      });
-    }
+      return request(options).then(response => ({
+        status: response.statusCode,
+        statusText: response.stausMessage,
+        headers: response.headers,
+        config: options,
+        request: response.request,
+        data: response.body,
+      }));
+    };
   }
 
   return {
     post: makereq('post'),
     get: makereq('get'),
-    put: makereq('put')
+    put: makereq('put'),
   };
 }
 

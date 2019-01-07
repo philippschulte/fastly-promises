@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 'use strict';
 
 const nock = require('nock');
@@ -46,7 +48,7 @@ describe('#cloneVersion', () => {
       'deleted_at',
       'comment',
       'updated_at',
-      'deployed'
+      'deployed',
     ]);
   });
 });

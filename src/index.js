@@ -4,6 +4,7 @@ const axios = require('./httpclient');
 const config = require('./config');
 
 class Fastly {
+  /* eslint-disable camelcase */
   /**
    * The constructor method for creating a fastly-promises instance.
    * @param token {String} The Fastly API token.
@@ -14,7 +15,7 @@ class Fastly {
     this.request = axios.create({
       baseURL: config.mainEntryPoint,
       timeout: 3000,
-      headers: { 'Fastly-Key': token }
+      headers: { 'Fastly-Key': token },
     });
   }
 
@@ -99,7 +100,7 @@ class Fastly {
    * @return {Promise} The response object representing the completion or failure.
    */
   purgeKeys(keys = []) {
-    return this.request.post(`/service/${this.service_id}/purge`, { 'surrogate_keys': keys });
+    return this.request.post(`/service/${this.service_id}/purge`, { surrogate_keys: keys });
   }
 
   /**
@@ -185,14 +186,15 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @param url {String} Full URL (host and path) to check on all nodes. If protocol is omitted, http will be assumed.
+   * @param url {String} Full URL (host and path) to check on all nodes. If protocol is omitted,
+   http will be assumed.
    * @return {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   edgeCheck(url = '') {
     return this.request.get(`/content/edge_check?url=${url}`);
   }
-  
+
   /**
    * List all services.
    * @see https://docs.fastly.com/api/config#service_74d98f7e5d018256e44d1cf820388ef8
@@ -207,9 +209,9 @@ class Fastly {
    * @return {Promise} The response object representing the completion or failure.
    */
   readServices() {
-    return this.request.get(`/service`);
+    return this.request.get('/service');
   }
-  
+
   /**
    * List the versions for a particular service.
    * @see https://docs.fastly.com/api/config#version_dfde9093f4eb0aa2497bbfd1d9415987
@@ -296,7 +298,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
- 
+
    * @return {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
@@ -387,7 +389,9 @@ class Fastly {
 
   /**
    * @typedef {Object} VCL
-   * @property {String} name The name of the VCL, as visible in the Fastly UI. Note: setting the name to 'main' here won't make it the main VCL, unless you also call `setMainVCL`.
+   * @property {String} name The name of the VCL, as visible in the Fastly UI.
+   * Note: setting the name to 'main' here won't make it the main VCL,
+   * unless you also call `setMainVCL`.
    * @property {String} content The VCL body of the custom VCL
    */
 
@@ -427,8 +431,6 @@ class Fastly {
   setMainVCL(version = '', name = '') {
     return this.request.put(`/service/${this.service_id}/version/${version}/vcl/${name}/main`, {});
   }
-
-  
 }
 
 /**
@@ -440,6 +442,4 @@ class Fastly {
  *    request    : Axios instance
  * }
  */
-module.exports = (token = '', service_id = '') => {
-  return new Fastly(token, service_id);
-};
+module.exports = (token = '', service_id = '') => new Fastly(token, service_id);

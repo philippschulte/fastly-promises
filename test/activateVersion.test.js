@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 'use strict';
 
 const nock = require('nock');
@@ -48,7 +50,7 @@ describe('#activateVersion', () => {
       'comment',
       'updated_at',
       'deployed',
-      'msg'
+      'msg',
     ]);
   });
 });
