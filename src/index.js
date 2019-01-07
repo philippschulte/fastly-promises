@@ -19,10 +19,21 @@ class Fastly {
   }
 
   /**
+   * @typedef {Object} Response
+   * @property {Number} status The HTTP status code from the server response, e.g. 200.
+   * @property {String} statusText The HTTP status text, e.g. 'OK'
+   * @property {Object} headers The HTTP headers of the reponse
+   * @property {Object} config The original request configuration used for the HTTP client
+   * @property {Object} request the HTTP request
+   * @property {Object} data the parsed body of the HTTP response
+   */
+
+  /**
    * Instant Purge an individual URL.
    * @see https://docs.fastly.com/api/purge#purge_3aa1d66ee81dbfed0b03deed0fa16a9a
    * @param url {String} The URL to purge.
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    * @example
    * instance.purgeIndividual('www.example.com')
    .then(res => {
@@ -48,6 +59,7 @@ class Fastly {
      console.log(err.message);
    });
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   purgeAll() {
     return this.request.post(`/service/${this.service_id}/purge_all`);
@@ -66,6 +78,7 @@ class Fastly {
    });
    * @param key {String} The surrogate key to purge.
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   purgeKey(key = '') {
     return this.request.post(`/service/${this.service_id}/purge/${key}`);
@@ -102,6 +115,7 @@ class Fastly {
      console.log(err.message);
    });
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   softPurgeIndividual(url = '') {
     return this.request.post(`/purge/${url}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
@@ -137,6 +151,7 @@ class Fastly {
      console.log(err.message);
    });
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   dataCenters() {
     return this.request.get('/datacenters');
@@ -172,6 +187,7 @@ class Fastly {
    });
    * @param url {String} Full URL (host and path) to check on all nodes. If protocol is omitted, http will be assumed.
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   edgeCheck(url = '') {
     return this.request.get(`/content/edge_check?url=${url}`);
@@ -207,6 +223,7 @@ class Fastly {
      console.log(err.message);
    });
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   readVersions() {
     return this.request.get(`/service/${this.service_id}/version`);
@@ -243,6 +260,7 @@ class Fastly {
      console.log(err.message);
    });
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   activateVersion(version = '') {
     return this.request.put(`/service/${this.service_id}/version/${version}/activate`);
@@ -280,6 +298,7 @@ class Fastly {
    });
  
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   readDomains(version = '') {
     return this.request.get(`/service/${this.service_id}/version/${version}/domain`);
@@ -318,6 +337,7 @@ class Fastly {
    * @param name {String} The name of the backend.
    * @param data {Object} The data to be sent as the request body.
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   updateBackend(version = '', name = '', data = {}) {
     return this.request.put(`/service/${this.service_id}/version/${version}/backend/${encodeURIComponent(name)}`, data);
@@ -358,7 +378,8 @@ class Fastly {
    * @param {String} version The current version of a service.
    * @param {String} name The name of the snippet to update.
    * @param {Snippet} data The data to be sent as the request body.
-   * @returns {Promise} The response object representing the completion or failure.
+   * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   updateSnippet(version = '', name = '', data = {}) {
     return this.request.put(`/service/${this.service_id}/version/${version}/snippet/${name}`, data);
@@ -375,6 +396,7 @@ class Fastly {
    * @param version {String} The current version of a service.
    * @param data {VCL} The data to be sent as the request body.
    * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   createVCL(version = '', data = {}) {
     return this.request.post(`/service/${this.service_id}/version/${version}/vcl`, data);
@@ -385,7 +407,8 @@ class Fastly {
    * @param {String} version The current version of a service.
    * @param {String} name The name of the VCL to update.
    * @param {VCL} data The data to be sent as the request body.
-   * @returns {Promise} The response object representing the completion or failure.
+   * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   updateVCL(version = '', name = '', data = {}) {
     return this.request.put(`/service/${this.service_id}/version/${version}/vcl/${name}`, data);
@@ -395,7 +418,8 @@ class Fastly {
    * Define a custom VCL to be the main VCL for a particular service and version.
    * @param {String} version The current version of a service.
    * @param {String} name The name of the VCL to declare main.
-   * @returns {Promise} The response object representing the completion or failure.
+   * @return {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
    */
   setMainVCL(version = '', name = '') {
     return this.request.put(`/service/${this.service_id}/version/${version}/vcl/${name}/main`, {});

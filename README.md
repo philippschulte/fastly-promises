@@ -169,6 +169,8 @@ Each `fastly-native-promises` API method returns the following response object:
 ### Typedefs
 
 <dl>
+<dt><a href="#Response">Response</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Snippet">Snippet</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#VCL">VCL</a> : <code>Object</code></dt>
@@ -223,6 +225,7 @@ Instant Purge an individual URL.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/purge#purge_3aa1d66ee81dbfed0b03deed0fa16a9a  
 
 | Param | Type | Description |
@@ -246,6 +249,7 @@ Instant Purge everything from a service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/purge#purge_bee5ed1a0cfd541e8b9f970a44718546  
 **Example**  
 ```js
@@ -264,6 +268,7 @@ Instant Purge a particular service of items tagged with a Surrogate Key.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/purge#purge_d8b8e8be84c350dd92492453a3df3230  
 
 | Param | Type | Description |
@@ -310,6 +315,7 @@ Soft Purge an individual URL.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/purge#soft_purge_0c4f56f3d68e9bed44fb8b638b78ea36  
 
 | Param | Type | Description |
@@ -356,6 +362,7 @@ Get a list of all Fastly datacenters.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/tools#datacenter_1c8d3b9dd035e301155b44eae05e0554  
 **Example**  
 ```js
@@ -392,6 +399,7 @@ Retrieve headers and MD5 hash of the content for a particular URL from each Fast
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/tools#content_4d2d4548b29c7661e17ebe7098872d6d  
 
 | Param | Type | Description |
@@ -433,6 +441,7 @@ List the versions for a particular service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/config#version_dfde9093f4eb0aa2497bbfd1d9415987  
 **Example**  
 ```js
@@ -475,6 +484,7 @@ Activate the current version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/config#version_0b79ae1ba6aee61d64cc4d43fed1e0d5  
 
 | Param | Type | Description |
@@ -521,6 +531,7 @@ List all the domains for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d  
 
 | Param | Type | Description |
@@ -567,6 +578,7 @@ Update the backend for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 **See**: https://docs.fastly.com/api/config#backend_fb3b3529417c70f57458644f7aec652e  
 
 | Param | Type | Description |
@@ -622,6 +634,7 @@ Update a VCL snippet for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -636,6 +649,7 @@ Create custom VCL for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -649,6 +663,7 @@ Update custom VCL for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -663,11 +678,27 @@ Define a custom VCL to be the main VCL for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | version | <code>String</code> | The current version of a service. |
 | name | <code>String</code> | The name of the VCL to declare main. |
+
+<a name="Response"></a>
+
+### Response : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| status | <code>Number</code> | The HTTP status code from the server response, e.g. 200. |
+| statusText | <code>String</code> | The HTTP status text, e.g. 'OK' |
+| headers | <code>Object</code> | The HTTP headers of the reponse |
+| config | <code>Object</code> | The original request configuration used for the HTTP client |
+| request | <code>Object</code> | the HTTP request |
+| data | <code>Object</code> | the parsed body of the HTTP response |
 
 <a name="Snippet"></a>
 
