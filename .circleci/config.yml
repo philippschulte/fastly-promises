@@ -34,21 +34,14 @@ jobs:
     steps:
     - setup
     - run: mkdir junit
-    # - run:
-    #     name: Lint
-    #     command: npm run lint
+    - run:
+        name: Lint
+        command: npm run lint
 
     # test & get code coverage
     - run:
         name: Getting Code Coverage
-        command: npm run test && npm run check-coverage
-        environment:
-          MOCHA_FILE: junit/test-results.xml
-
-    # test & get code coverage
-    - run:
-        name: Reporting Code Coverage
-        command: npm run report-coverage
+        command: npm run junit
         environment:
           MOCHA_FILE: junit/test-results.xml
 

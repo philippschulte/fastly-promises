@@ -404,7 +404,7 @@ Retrieve headers and MD5 hash of the content for a particular URL from each Fast
 
 | Param | Type | Description |
 | --- | --- | --- |
-| url | <code>String</code> | Full URL (host and path) to check on all nodes. If protocol is omitted, http will be assumed. |
+| url | <code>String</code> | Full URL (host and path) to check on all nodes. If protocol is omitted,    http will be assumed. |
 
 **Example**  
 ```js
