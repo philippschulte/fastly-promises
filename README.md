@@ -223,11 +223,22 @@ Instant Purge an individual URL.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/purge#purge_3aa1d66ee81dbfed0b03deed0fa16a9a  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | url | <code>String</code> | The URL to purge. |
 
+**Example**  
+```js
+instance.purgeIndividual('www.example.com')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+purgeAll"></a>
 
 #### fastly.purgeAll() ⇒ <code>Promise</code>
@@ -235,6 +246,17 @@ Instant Purge everything from a service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/purge#purge_bee5ed1a0cfd541e8b9f970a44718546  
+**Example**  
+```js
+instance.purgeAll()
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+purgeKey"></a>
 
 #### fastly.purgeKey(key) ⇒ <code>Promise</code>
@@ -242,11 +264,22 @@ Instant Purge a particular service of items tagged with a Surrogate Key.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/purge#purge_d8b8e8be84c350dd92492453a3df3230  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | key | <code>String</code> | The surrogate key to purge. |
 
+**Example**  
+```js
+instance.purgeKey('key_1')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+purgeKeys"></a>
 
 #### fastly.purgeKeys(keys) ⇒ <code>Promise</code>
@@ -254,11 +287,22 @@ Instant Purge a particular service of items tagged with Surrogate Keys in a batc
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/purge#purge_db35b293f8a724717fcf25628d713583  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | keys | <code>Array</code> | The array of surrogate keys to purge. |
 
+**Example**  
+```js
+instance.purgeKeys(['key_2', 'key_3', 'key_4'])
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+softPurgeIndividual"></a>
 
 #### fastly.softPurgeIndividual(url) ⇒ <code>Promise</code>
@@ -266,11 +310,22 @@ Soft Purge an individual URL.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/purge#soft_purge_0c4f56f3d68e9bed44fb8b638b78ea36  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | url | <code>String</code> | The URL to soft purge. |
 
+**Example**  
+```js
+instance.softPurgeIndividual('www.example.com/images')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+softPurgeKey"></a>
 
 #### fastly.softPurgeKey(key) ⇒ <code>Promise</code>
@@ -278,11 +333,22 @@ Soft Purge a particular service of items tagged with a Surrogate Key.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/purge#soft_purge_2e4d29085640127739f8467f27a5b549  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | key | <code>String</code> | The surrogate key to soft purge. |
 
+**Example**  
+```js
+instance.softPurgeKey('key_5')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+dataCenters"></a>
 
 #### fastly.dataCenters() ⇒ <code>Promise</code>
@@ -290,6 +356,17 @@ Get a list of all Fastly datacenters.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/tools#datacenter_1c8d3b9dd035e301155b44eae05e0554  
+**Example**  
+```js
+instance.dataCenters()
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+publicIpList"></a>
 
 #### fastly.publicIpList() ⇒ <code>Promise</code>
@@ -297,6 +374,17 @@ Fastly's services IP ranges.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/tools#public_ip_list_ef2e9900a1c9522b58f5abed92ec785e  
+**Example**  
+```js
+instance.publicIpList()
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+edgeCheck"></a>
 
 #### fastly.edgeCheck(url) ⇒ <code>Promise</code>
@@ -304,11 +392,22 @@ Retrieve headers and MD5 hash of the content for a particular URL from each Fast
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/tools#content_4d2d4548b29c7661e17ebe7098872d6d  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | url | <code>String</code> | Full URL (host and path) to check on all nodes. If protocol is omitted, http will be assumed. |
 
+**Example**  
+```js
+instance.edgeCheck('api.example.com')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+readServices"></a>
 
 #### fastly.readServices() ⇒ <code>Promise</code>
@@ -316,6 +415,17 @@ List all services.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#service_74d98f7e5d018256e44d1cf820388ef8  
+**Example**  
+```js
+instance.readServices()
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+readVersions"></a>
 
 #### fastly.readVersions() ⇒ <code>Promise</code>
@@ -323,6 +433,18 @@ List the versions for a particular service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#version_dfde9093f4eb0aa2497bbfd1d9415987  
+**Example**  
+```js
+instance.readVersions()
+   .then(res => {
+     const active = res.data.filter(version => version.active);
+     console.log(active);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+cloneVersion"></a>
 
 #### fastly.cloneVersion(version) ⇒ <code>Promise</code>
@@ -330,11 +452,22 @@ Clone the current configuration into a new version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#version_7f4937d0663a27fbb765820d4c76c709  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | version | <code>String</code> | The version to be cloned. |
 
+**Example**  
+```js
+instance.cloneVersion('45')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+activateVersion"></a>
 
 #### fastly.activateVersion(version) ⇒ <code>Promise</code>
@@ -342,11 +475,22 @@ Activate the current version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#version_0b79ae1ba6aee61d64cc4d43fed1e0d5  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | version | <code>String</code> | The version to be activated. |
 
+**Example**  
+```js
+instance.activateVersion('23')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+domainCheckAll"></a>
 
 #### fastly.domainCheckAll(version) ⇒ <code>Promise</code>
@@ -354,11 +498,22 @@ Checks the status of all domains for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#domain_e33a599694c3316f00b6b8d53a2db7d9  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | version | <code>String</code> | The current version of a service. |
 
+**Example**  
+```js
+instance.domainCheckAll('182')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+readDomains"></a>
 
 #### fastly.readDomains(version) ⇒ <code>Promise</code>
@@ -366,11 +521,22 @@ List all the domains for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | version | <code>String</code> | The current version of a service. |
 
+**Example**  
+```js
+instance.readDomains('182')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+readBackends"></a>
 
 #### fastly.readBackends(version) ⇒ <code>Promise</code>
@@ -378,11 +544,22 @@ List all backends for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#backend_fb0e875c9a7669f071cbf89ca32c7f69  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | version | <code>String</code> | The current version of a service. |
 
+**Example**  
+```js
+instance.readBackends('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+updateBackend"></a>
 
 #### fastly.updateBackend(version, name, data) ⇒ <code>Promise</code>
@@ -390,6 +567,7 @@ Update the backend for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#backend_fb3b3529417c70f57458644f7aec652e  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -397,6 +575,16 @@ Update the backend for a particular service and version.
 | name | <code>String</code> | The name of the backend. |
 | data | <code>Object</code> | The data to be sent as the request body. |
 
+**Example**  
+```js
+instance.updateBackend('34', 'slow-server', { name: 'fast-server' })
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+createSnippet"></a>
 
 #### fastly.createSnippet(version, data) ⇒ <code>Promise</code>
@@ -404,12 +592,29 @@ Create a snippet for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#snippet_41e0e11c662d4d56adada215e707f30d  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | version | <code>String</code> | The current version of a service. |
 | data | [<code>Snippet</code>](#Snippet) | The data to be sent as the request body. |
 
+**Example**  
+```js
+instance.createSnippet('36', {
+    name: 'your_snippet',
+    priority: 10,
+    dynamic: 1,
+    content: 'table referer_blacklist {}',
+    type: 'init'
+  })
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
 <a name="Fastly+updateSnippet"></a>
 
 #### fastly.updateSnippet(version, name, data) ⇒ <code>Promise</code>

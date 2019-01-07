@@ -6,3 +6,4 @@
 
 /* Istanbul */
 /coverage
+.nyc_output
