@@ -34,9 +34,9 @@ jobs:
     steps:
     - setup
     - run: mkdir junit
-    - run:
-        name: Lint
-        command: npm run lint
+    # - run:
+    #     name: Lint
+    #     command: npm run lint
 
     # test & get code coverage
     - run:
