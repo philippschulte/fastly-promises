@@ -1,22 +1,19 @@
-# fastly-promises
+# fastly-native-promises
 
-> Promise based Fastly API client for Node.js
-
-[![travis build](https://img.shields.io/travis/philippschulte/fastly-promises.svg?style=flat-square)](https://travis-ci.org/philippschulte/fastly-promises)
-[![codecov coverage](https://img.shields.io/codecov/c/github/philippschulte/fastly-promises.svg?style=flat-square)](https://codecov.io/gh/philippschulte/fastly-promises)
-[![npm version](https://img.shields.io/npm/v/fastly-promises.svg?style=flat-square)](https://npm.im/fastly-promises)
-[![npm downloads](https://img.shields.io/npm/dm/fastly-promises.svg?style=flat-square)](https://npm.im/fastly-promises)
-[![npm license](https://img.shields.io/npm/l/fastly-promises.svg?style=flat-square)](LICENSE)
-
-[![NPM](https://nodei.co/npm/fastly-promises.png)](https://nodei.co/npm/fastly-promises/)
+> Native Promise based Fastly API client for Node.js
 
 ## Problem
 
-The callback based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/)!
+The callback based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/). [Philipp Schulte's fastly-native-promises](https://github.com/philippschulte/fastly-native-promises) client seemed almost perfect, except:
+
+- it uses Axios, which is an additional dependency we'd like to avoid, especially when running inside Adobe I/O Runtime
+- it has been missing features and pull requests were merged only slowly
+
+This fork addresses the concerns above, but breaks compatibility with Browsers, so that it can only be used in Node JS environments.
 
 ## Solution
 
-The `fastly-promises` package uses the promise based HTTP client [Axios](https://www.npmjs.com/package/axios) to perform requests to the [Fastly](https://docs.fastly.com/api/) API. [Axios](https://www.npmjs.com/package/axios) supports the native JavaScript [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API and automatically transforms the data into JSON. Each `fastly-promises` API method returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which represents either the completion or failure of the request. 
+The `fastly-native-promises` package uses the promise based HTTP client [Request-Promise-Native](https://github.com/request/request-promise-native) to perform requests to the [Fastly](https://docs.fastly.com/api/) API. [Request-Promise-Native](https://github.com/request/request-promise-native) supports the native JavaScript [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API and automatically transforms the data into JSON. Each `fastly-native-promises` API method returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which represents either the completion or failure of the request. 
 
 ## Table of Contents
 
@@ -30,20 +27,20 @@ The `fastly-promises` package uses the promise based HTTP client [Axios](https:/
 
 ## Security
 
-You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in order to use the `fastly-promises` library. I recommend to use a token with a [global scope](https://docs.fastly.com/api/auth#access) to be able to use all `fastly-promises` API methods.
+You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in order to use the `fastly-native-promises` library. I recommend to use a token with a [global scope](https://docs.fastly.com/api/auth#access) to be able to use all `fastly-native-promises` API methods.
 
 ## Install
 
 This is a [Node.js](https://nodejs.org/) module available through the [npm registry](https://www.npmjs.com/). Installation is done using the [`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
 ```bash
-$ npm install fastly-promises
+$ npm install fastly-native-promises
 ```
 
 ## Usage
 
 ```javascript
-const fastly = require('fastly-promises');
+const fastly = require('fastly-native-promises');
 
 // create one or more instances
 const service_1 = fastly('token', 'service_id_1');
@@ -67,7 +64,7 @@ Purge all domains of the active version:
 5. Log the status text for each purge request
 
 ```javascript
-const fastly = require('fastly-promises');
+const fastly = require('fastly-native-promises');
 
 const service = fastly('token', 'service_id');
 
@@ -106,7 +103,7 @@ Update `first_byte_timeout` property for every backend and service if the value 
 11. Activate the cloned version
 
 ```javascript
-const fastly = require('fastly-promises');
+const fastly = require('fastly-native-promises');
 
 const account = fastly('token');
 
@@ -136,7 +133,7 @@ async function handler() {
 
 ### Response Schema
 
-Each `fastly-promises` API method returns the following response object:
+Each `fastly-native-promises` API method returns the following response object:
 
 ```javascript
 {
@@ -149,7 +146,7 @@ Each `fastly-promises` API method returns the following response object:
   // the headers that the server responded with
   headers: {},
 
-  // the config that was provided to axios for the request
+  // the options that were provided to request for the request
   config: {},
 
   // the request that generated the response
@@ -195,14 +192,14 @@ Each `fastly-promises` API method returns the following response object:
 
 <a name="constructor"></a>
 
-### [constructor(token, service_id)](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L12)
+### [constructor(token, service_id)](https://github.com/philippschulte/fastly-native-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L12)
 
-*Method for creating and initializing a new fastly-promises instance.*
+*Method for creating and initializing a new fastly-native-promises instance.*
 
 **Example**:
 
 ```javascript
-const fastly = require('fastly-promises');
+const fastly = require('fastly-native-promises');
 
 // create one or more instances
 const instance = fastly('token', 'service_id');
@@ -211,7 +208,7 @@ const instance = fastly('token', 'service_id');
 **Kind**: method  
 **Param**: token {string} The Fastly API token.  
 **Param**: service_id {string} The Fastly service ID.  
-**Return**: instance {object} A new fastly-promises instance.
+**Return**: instance {object} A new fastly-native-promises instance.
 
 ---
 
@@ -219,7 +216,7 @@ const instance = fastly('token', 'service_id');
 
 <a name="baseURL"></a>
 
-### [.request.defaults.baseURL](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L15)
+### [.request.defaults.baseURL](https://github.com/philippschulte/fastly-native-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L15)
 
 *The main entry point for the Fastly API.*
 
@@ -238,7 +235,7 @@ instance.request.defaults.baseURL = 'https://api.fastly.com/v1';
 
 <a name="timeout"></a>
 
-### [.request.defaults.timeout](https://github.com/philippschulte/fastly-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L16)
+### [.request.defaults.timeout](https://github.com/philippschulte/fastly-native-promises/blob/a9ca4b9f69bca63c62ca2be0ee5e8752c4536adf/src/index.js#L16)
 
 *The number of milliseconds before the request times out.*
 

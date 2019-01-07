@@ -1,6 +1,6 @@
 'use strict';
 
-const axios = require('axios');
+const axios = require('./httpclient');
 const config = require('./config');
 
 class Fastly {
