@@ -2,6 +2,9 @@
 
 > Native Promise based Fastly API client for Node.js
 
+[![Known Vulnerabilities](https://snyk.io/test/github/adobe/fastly-native-promises/badge.svg?targetFile=package.json)](https://snyk.io/test/github/adobe/fastly-native-promises?targetFile=package.json)
+
+
 ## Problem
 
 The callback based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/). [Philipp Schulte's fastly-native-promises](https://github.com/philippschulte/fastly-native-promises) client seemed almost perfect, except:
