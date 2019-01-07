@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env mocha */
+
 const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
@@ -33,7 +35,7 @@ describe('#setMainVCL', () => {
   it('response body properties should be created', () => {
     expect(res.data.name).toBe('test-vcl');
     expect(res.data.main).toBe(true);
-    expect(res.data.content).toBe('backend default {\n  .host = \"127.0.0.1\";\n  .port = \"9092\";\n}\n\nsub vcl_recv {\n    set req.backend = default;\n}\n\nsub vcl_hash {\n    set req.hash += req.url;\n    set req.hash += req.http.host;\n    set req.hash += \"0\";\n}');
+    expect(res.data.content).toBe('backend default {\n  .host = "127.0.0.1";\n  .port = "9092";\n}\n\nsub vcl_recv {\n    set req.backend = default;\n}\n\nsub vcl_hash {\n    set req.hash += req.url;\n    set req.hash += req.http.host;\n    set req.hash += "0";\n}');
   });
 
   it('response body should contain all properties', () => {
@@ -42,7 +44,7 @@ describe('#setMainVCL', () => {
       'content',
       'main',
       'service_id',
-      'version' 
+      'version',
     ]);
   });
 });

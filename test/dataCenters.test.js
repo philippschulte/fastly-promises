@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env mocha */
+
 const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
@@ -21,7 +23,7 @@ describe('#dataCenters', () => {
   it('response should be a status 200', () => {
     expect(res.status).toBe(200);
   });
-  
+
   it('response body should exist', () => {
     expect(res.data).toExist();
   });
@@ -31,13 +33,13 @@ describe('#dataCenters', () => {
   });
 
   it('response body should be an array of objects', () => {
-    res.data.forEach(item => {
+    res.data.forEach((item) => {
       expect(item).toBeA('object');
     });
   });
 
   it('response body should contain all properties', () => {
-    res.data.forEach(item => {
+    res.data.forEach((item) => {
       expect(item).toIncludeKeys(['code', 'name', 'group', 'coordinates', 'shield']);
     });
   });

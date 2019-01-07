@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env mocha */
+
 const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
@@ -31,13 +33,13 @@ describe('#readVersions', () => {
   });
 
   it('response body should be an array of objects', () => {
-    res.data.forEach(item => {
+    res.data.forEach((item) => {
       expect(item).toBeA('object');
     });
   });
 
   it('response body should contain all properties', () => {
-    res.data.forEach(item => {
+    res.data.forEach((item) => {
       expect(item).toIncludeKeys([
         'active',
         'comment',
@@ -49,7 +51,7 @@ describe('#readVersions', () => {
         'service_id',
         'staging',
         'testing',
-        'updated_at'
+        'updated_at',
       ]);
     });
   });

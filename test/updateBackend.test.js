@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-env mocha */
+
 const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
@@ -21,7 +23,7 @@ describe('#updateBackend', () => {
   it('response should be a status 200', () => {
     expect(res.status).toBe(200);
   });
-  
+
   it('response body should exist', () => {
     expect(res.data).toExist();
   });
@@ -70,7 +72,7 @@ describe('#updateBackend', () => {
       'max_conn',
       'use_ssl',
       'created_at',
-      'comment'
+      'comment',
     ]);
   });
 });
