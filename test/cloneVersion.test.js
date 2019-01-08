@@ -25,7 +25,7 @@ describe('#cloneVersion', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an object', () => {
@@ -37,7 +37,7 @@ describe('#cloneVersion', () => {
   });
 
   it('response body should contain all properties', () => {
-    expect(res.data).toIncludeKeys([
+    [
       'testing',
       'locked',
       'number',
@@ -49,6 +49,8 @@ describe('#cloneVersion', () => {
       'comment',
       'updated_at',
       'deployed',
-    ]);
+    ].forEach((e) => {
+      expect(Object.keys(res.data)).toContain(e);
+    });
   });
 });

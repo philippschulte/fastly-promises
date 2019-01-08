@@ -25,7 +25,7 @@ describe('#readBackends', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an array', () => {
@@ -40,7 +40,7 @@ describe('#readBackends', () => {
 
   it('response body should contain all properties', () => {
     res.data.forEach((item) => {
-      expect(item).toIncludeKeys([
+      [
         'max_tls_version',
         'ssl_client_cert',
         'hostname',
@@ -76,7 +76,9 @@ describe('#readBackends', () => {
         'use_ssl',
         'created_at',
         'comment',
-      ]);
+      ].forEach((e) => {
+        expect(Object.keys(item)).toContain(e);
+      });
     });
   });
 });

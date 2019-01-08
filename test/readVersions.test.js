@@ -25,7 +25,7 @@ describe('#readVersions', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an array', () => {
@@ -40,7 +40,7 @@ describe('#readVersions', () => {
 
   it('response body should contain all properties', () => {
     res.data.forEach((item) => {
-      expect(item).toIncludeKeys([
+      [
         'active',
         'comment',
         'created_at',
@@ -52,7 +52,9 @@ describe('#readVersions', () => {
         'staging',
         'testing',
         'updated_at',
-      ]);
+      ].forEach((e) => {
+        expect(Object.keys(item)).toContain(e);
+      });
     });
   });
 });

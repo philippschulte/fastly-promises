@@ -27,7 +27,7 @@ describe('#createSnippet', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an object', () => {
@@ -42,7 +42,7 @@ describe('#createSnippet', () => {
   });
 
   it('response body should contain all properties', () => {
-    expect(res.data).toIncludeKeys([
+    [
       'name',
       'priority',
       'dynamic',
@@ -54,6 +54,8 @@ describe('#createSnippet', () => {
       'created_at',
       'updated_at',
       'id',
-    ]);
+    ].forEach((e) => {
+      expect(Object.keys(res.data)).toContain(e);
+    });
   });
 });

@@ -25,7 +25,7 @@ describe('#dataCenters', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an array', () => {
@@ -40,7 +40,9 @@ describe('#dataCenters', () => {
 
   it('response body should contain all properties', () => {
     res.data.forEach((item) => {
-      expect(item).toIncludeKeys(['code', 'name', 'group', 'coordinates', 'shield']);
+      ['code', 'name', 'group', 'coordinates', 'shield'].forEach((e) => {
+        expect(Object.keys(item)).toContain(e);
+      });
     });
   });
 });

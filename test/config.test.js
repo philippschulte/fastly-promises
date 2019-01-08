@@ -7,7 +7,7 @@ const config = require('../src/config');
 
 describe('#mainEntryPoint', () => {
   it('property should exist', () => {
-    expect(config.mainEntryPoint).toExist();
+    expect(config.mainEntryPoint).toBeTruthy();
   });
 
   it('property should be a string', () => {

@@ -9,10 +9,12 @@ describe('#constructor', () => {
   const instance = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
 
   it('class instance should exist', () => {
-    expect(instance).toExist();
+    expect(instance).toBeTruthy();
   });
 
   it('class instance should have service_id and request properties', () => {
-    expect(instance).toIncludeKeys(['service_id', 'request']);
+    ['service_id', 'request'].forEach((e) => {
+      expect(Object.keys(instance)).toContain(e);
+    });
   });
 });
