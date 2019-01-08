@@ -7,8 +7,9 @@ class Fastly {
   /* eslint-disable camelcase */
   /**
    * The constructor method for creating a fastly-promises instance.
-   * @param token {String} The Fastly API token.
-   * @param service_id {String} The Fastly service ID.
+   *
+   * @param {string} token - The Fastly API token.
+   * @param {string} service_id - The Fastly service ID.
    */
   constructor(token, service_id) {
     this.service_id = service_id;
@@ -31,9 +32,10 @@ class Fastly {
 
   /**
    * Instant Purge an individual URL.
+   *
    * @see https://docs.fastly.com/api/purge#purge_3aa1d66ee81dbfed0b03deed0fa16a9a
-   * @param url {String} The URL to purge.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} url - The URL to purge.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    * @example
    * instance.purgeIndividual('www.example.com')
@@ -50,6 +52,7 @@ class Fastly {
 
   /**
    * Instant Purge everything from a service.
+   *
    * @see https://docs.fastly.com/api/purge#purge_bee5ed1a0cfd541e8b9f970a44718546
    * @example
    * instance.purgeAll()
@@ -59,7 +62,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   purgeAll() {
@@ -68,6 +71,7 @@ class Fastly {
 
   /**
    * Instant Purge a particular service of items tagged with a Surrogate Key.
+   *
    * @see https://docs.fastly.com/api/purge#purge_d8b8e8be84c350dd92492453a3df3230
    * @example
    * instance.purgeKey('key_1')
@@ -77,8 +81,8 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @param key {String} The surrogate key to purge.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} key - The surrogate key to purge.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   purgeKey(key = '') {
@@ -87,6 +91,7 @@ class Fastly {
 
   /**
    * Instant Purge a particular service of items tagged with Surrogate Keys in a batch.
+   *
    * @see https://docs.fastly.com/api/purge#purge_db35b293f8a724717fcf25628d713583
    * @example
    * instance.purgeKeys(['key_2', 'key_3', 'key_4'])
@@ -96,8 +101,8 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @param keys {Array} The array of surrogate keys to purge.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {Array} keys - The array of surrogate keys to purge.
+   * @returns {Promise} The response object representing the completion or failure.
    */
   purgeKeys(keys = []) {
     return this.request.post(`/service/${this.service_id}/purge`, { surrogate_keys: keys });
@@ -105,7 +110,8 @@ class Fastly {
 
   /**
    * Soft Purge an individual URL.
-   * @param url {String} The URL to soft purge.
+   *
+   * @param {string} url - The URL to soft purge.
    * @see https://docs.fastly.com/api/purge#soft_purge_0c4f56f3d68e9bed44fb8b638b78ea36
    * @example
    * instance.softPurgeIndividual('www.example.com/images')
@@ -115,7 +121,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   softPurgeIndividual(url = '') {
@@ -124,6 +130,7 @@ class Fastly {
 
   /**
    * Soft Purge a particular service of items tagged with a Surrogate Key.
+   *
    * @see https://docs.fastly.com/api/purge#soft_purge_2e4d29085640127739f8467f27a5b549
    * @example
    * instance.softPurgeKey('key_5')
@@ -133,8 +140,8 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @param key {String} The surrogate key to soft purge.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} key - The surrogate key to soft purge.
+   * @returns {Promise} The response object representing the completion or failure.
    */
   softPurgeKey(key = '') {
     return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
@@ -142,6 +149,7 @@ class Fastly {
 
   /**
    * Get a list of all Fastly datacenters.
+   *
    * @see https://docs.fastly.com/api/tools#datacenter_1c8d3b9dd035e301155b44eae05e0554
    * @example
    * instance.dataCenters()
@@ -151,7 +159,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   dataCenters() {
@@ -160,6 +168,7 @@ class Fastly {
 
   /**
    * Fastly's services IP ranges.
+   *
    * @see https://docs.fastly.com/api/tools#public_ip_list_ef2e9900a1c9522b58f5abed92ec785e
    * @example
    * instance.publicIpList()
@@ -169,7 +178,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    */
   publicIpList() {
     return this.request.get('/public-ip-list');
@@ -177,6 +186,7 @@ class Fastly {
 
   /**
    * Retrieve headers and MD5 hash of the content for a particular URL from each Fastly edge server.
+   *
    * @see https://docs.fastly.com/api/tools#content_4d2d4548b29c7661e17ebe7098872d6d
    * @example
    * instance.edgeCheck('api.example.com')
@@ -186,9 +196,9 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @param url {String} Full URL (host and path) to check on all nodes. If protocol is omitted,
+   * @param {string} url - Full URL (host and path) to check on all nodes. If protocol is omitted,
    http will be assumed.
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   edgeCheck(url = '') {
@@ -197,6 +207,7 @@ class Fastly {
 
   /**
    * List all services.
+   *
    * @see https://docs.fastly.com/api/config#service_74d98f7e5d018256e44d1cf820388ef8
    * @example
    * instance.readServices()
@@ -206,7 +217,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    */
   readServices() {
     return this.request.get('/service');
@@ -214,6 +225,7 @@ class Fastly {
 
   /**
    * List the versions for a particular service.
+   *
    * @see https://docs.fastly.com/api/config#version_dfde9093f4eb0aa2497bbfd1d9415987
    * @example
    * instance.readVersions()
@@ -224,7 +236,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   readVersions() {
@@ -233,7 +245,8 @@ class Fastly {
 
   /**
    * Clone the current configuration into a new version.
-   * @param version {String} The version to be cloned.
+   *
+   * @param {string} version - The version to be cloned.
    * @see https://docs.fastly.com/api/config#version_7f4937d0663a27fbb765820d4c76c709
    * @example
    * instance.cloneVersion('45')
@@ -243,7 +256,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    */
   cloneVersion(version = '') {
     return this.request.put(`/service/${this.service_id}/version/${version}/clone`);
@@ -251,7 +264,8 @@ class Fastly {
 
   /**
    * Activate the current version.
-   * @param version {String} The version to be activated.
+   *
+   * @param {string} version - The version to be activated.
    * @see https://docs.fastly.com/api/config#version_0b79ae1ba6aee61d64cc4d43fed1e0d5
    * @example
    * instance.activateVersion('23')
@@ -261,7 +275,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   activateVersion(version = '') {
@@ -270,7 +284,8 @@ class Fastly {
 
   /**
    * Checks the status of all domains for a particular service and version.
-   * @param version {String} The current version of a service.
+   *
+   * @param {string} version - The current version of a service.
    * @see https://docs.fastly.com/api/config#domain_e33a599694c3316f00b6b8d53a2db7d9
    * @example
    * instance.domainCheckAll('182')
@@ -280,7 +295,7 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    */
   domainCheckAll(version = '') {
     return this.request.get(`/service/${this.service_id}/version/${version}/domain/check_all`);
@@ -288,7 +303,8 @@ class Fastly {
 
   /**
    * List all the domains for a particular service and version.
-   * @param version {String} The current version of a service.
+   *
+   * @param {string} version - The current version of a service.
    * @see https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d
    * @example
    * instance.readDomains('182')
@@ -299,7 +315,7 @@ class Fastly {
      console.log(err.message);
    });
 
-   * @return {Promise} The response object representing the completion or failure.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   readDomains(version = '') {
@@ -308,6 +324,7 @@ class Fastly {
 
   /**
    * List all backends for a particular service and version.
+   *
    * @see https://docs.fastly.com/api/config#backend_fb0e875c9a7669f071cbf89ca32c7f69
    * @example
    * instance.readBackends('12')
@@ -317,8 +334,8 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @param version {String} The current version of a service.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} version - The current version of a service.
+   * @returns {Promise} The response object representing the completion or failure.
    */
   readBackends(version = '') {
     return this.request.get(`/service/${this.service_id}/version/${version}/backend`);
@@ -326,6 +343,7 @@ class Fastly {
 
   /**
    * Update the backend for a particular service and version.
+   *
    * @see https://docs.fastly.com/api/config#backend_fb3b3529417c70f57458644f7aec652e
    * @example
    * instance.updateBackend('34', 'slow-server', { name: 'fast-server' })
@@ -335,10 +353,10 @@ class Fastly {
    .catch(err => {
      console.log(err.message);
    });
-   * @param version {String} The current version of a service.
-   * @param name {String} The name of the backend.
-   * @param data {Object} The data to be sent as the request body.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the backend.
+   * @param {Object} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   updateBackend(version = '', name = '', data = {}) {
@@ -352,6 +370,7 @@ class Fastly {
 
   /**
    * Create a snippet for a particular service and version.
+   *
    * @see https://docs.fastly.com/api/config#snippet_41e0e11c662d4d56adada215e707f30d
    * @example
    * instance.createSnippet('36', {
@@ -367,9 +386,9 @@ class Fastly {
   .catch(err => {
     console.log(err.message);
   });
-   * @param version {String} The current version of a service.
-   * @param data {Snippet} The data to be sent as the request body.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} version - The current version of a service.
+   * @param {Snippet} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
    */
   createSnippet(version = '', data = {}) {
     return this.request.post(`/service/${this.service_id}/version/${version}/snippet`, data);
@@ -377,10 +396,11 @@ class Fastly {
 
   /**
    * Update a VCL snippet for a particular service and version.
-   * @param {String} version The current version of a service.
-   * @param {String} name The name of the snippet to update.
-   * @param {Snippet} data The data to be sent as the request body.
-   * @return {Promise} The response object representing the completion or failure.
+   *
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the snippet to update.
+   * @param {Snippet} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   updateSnippet(version = '', name = '', data = {}) {
@@ -397,10 +417,11 @@ class Fastly {
 
   /**
    * Create custom VCL for a particular service and version.
+   *
    * @see https://docs.fastly.com/api/config#vcl_7ade6ab5926b903b6acf3335a85060cc
-   * @param version {String} The current version of a service.
-   * @param data {VCL} The data to be sent as the request body.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} version - The current version of a service.
+   * @param {VCL} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   createVCL(version = '', data = {}) {
@@ -409,11 +430,12 @@ class Fastly {
 
   /**
    * Update custom VCL for a particular service and version.
+   *
    * @see https://docs.fastly.com/api/config#vcl_0971365908e17086751c5ef2a8053087
-   * @param {String} version The current version of a service.
-   * @param {String} name The name of the VCL to update.
-   * @param {VCL} data The data to be sent as the request body.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the VCL to update.
+   * @param {VCL} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   updateVCL(version = '', name = '', data = {}) {
@@ -422,10 +444,11 @@ class Fastly {
 
   /**
    * Define a custom VCL to be the main VCL for a particular service and version.
+   *
    * @see https://docs.fastly.com/api/config#vcl_5576c38e7652f5a7261bfcad41c0faf1
-   * @param {String} version The current version of a service.
-   * @param {String} name The name of the VCL to declare main.
-   * @return {Promise} The response object representing the completion or failure.
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the VCL to declare main.
+   * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
   setMainVCL(version = '', name = '') {
@@ -435,11 +458,8 @@ class Fastly {
 
 /**
  * Function to create a new fastly-promises instance.
- * @param token {String} The Fastly API token.
- * @param service_id {String} The Fastly service ID.
- * @return {Object} {
- *    service_id : The alphanumeric string identifying a service
- *    request    : Axios instance
- * }
+ *
+ * @param {string} token - The Fastly API token.
+ * @param {string} service_id - The Fastly service ID.
  */
 module.exports = (token = '', service_id = '') => new Fastly(token, service_id);

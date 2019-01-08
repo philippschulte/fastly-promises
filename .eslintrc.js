@@ -23,11 +23,30 @@ module.exports = {
     'ecmaVersion': 10,
   },
   'plugins': [
-    'header',
+    'header', 'jsdoc'
   ],
   'extends': 'airbnb',
   'rules': {
     'strict': 0,
+
+    "jsdoc/check-examples": 0,
+    "jsdoc/check-param-names": 1,
+    "jsdoc/check-tag-names": 1,
+    "jsdoc/check-types": 1,
+    "jsdoc/newline-after-description": 1,
+    "jsdoc/no-undefined-types": 1,
+    "jsdoc/require-description": 0,
+    "jsdoc/require-description-complete-sentence": 1,
+    "jsdoc/require-example": 0,
+    "jsdoc/require-hyphen-before-param-description": 1,
+    "jsdoc/require-param": 1,
+    "jsdoc/require-param-description": 1,
+    "jsdoc/require-param-name": 1,
+    "jsdoc/require-param-type": 1,
+    "jsdoc/require-returns": 1,
+    "jsdoc/require-returns-description": 1,
+    "jsdoc/require-returns-type": 1,
+    "jsdoc/valid-types": 1,
 
     // allow dangling underscores for 'fields'
     'no-underscore-dangle': ['error', {'allowAfterThis': true}],
@@ -45,5 +64,12 @@ module.exports = {
     //   ' * governing permissions and limitations under the License.',
     //   ' ',
     // ]]
-  }
+  },
+  "settings": {
+    "jsdoc": {
+        "additionalTagNames": {
+            "customTags": ["fulfil"]
+        }
+    }
+}
 };
