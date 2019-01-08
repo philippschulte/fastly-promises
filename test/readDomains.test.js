@@ -34,7 +34,7 @@ describe('#readDomains', () => {
 
   it('response body should be an array of objects', () => {
     res.data.forEach((item) => {
-      expect(item).toBeA('object');
+      expect(typeof item).toBe('object');
     });
   });
 

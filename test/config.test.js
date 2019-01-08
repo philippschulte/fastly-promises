@@ -11,6 +11,6 @@ describe('#mainEntryPoint', () => {
   });
 
   it('property should be a string', () => {
-    expect(config.mainEntryPoint).toBeA('string');
+    expect(typeof config.mainEntryPoint).toBe('string');
   });
 });

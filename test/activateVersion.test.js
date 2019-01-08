@@ -29,7 +29,7 @@ describe('#activateVersion', () => {
   });
 
   it('response body should be an object', () => {
-    expect(res.data).toBeA('object');
+    expect(typeof res.data).toBe('object');
   });
 
   it('response body property should be true', () => {
