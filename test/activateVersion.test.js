@@ -25,11 +25,11 @@ describe('#activateVersion', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an object', () => {
-    expect(res.data).toBeA('object');
+    expect(typeof res.data).toBe('object');
   });
 
   it('response body property should be true', () => {
@@ -38,7 +38,7 @@ describe('#activateVersion', () => {
   });
 
   it('response body should contain all properties', () => {
-    expect(res.data).toIncludeKeys([
+    [
       'testing',
       'locked',
       'number',
@@ -51,6 +51,8 @@ describe('#activateVersion', () => {
       'updated_at',
       'deployed',
       'msg',
-    ]);
+    ].forEach((e) => {
+      expect(Object.keys(res.data)).toContain(e);
+    });
   });
 });

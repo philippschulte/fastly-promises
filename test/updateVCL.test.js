@@ -25,11 +25,11 @@ describe('#updateVCL', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an object', () => {
-    expect(res.data).toBeA('object');
+    expect(typeof res.data).toBe('object');
   });
 
   it('response body properties should be created', () => {
@@ -39,12 +39,14 @@ describe('#updateVCL', () => {
   });
 
   it('response body should contain all properties', () => {
-    expect(res.data).toIncludeKeys([
+    [
       'name',
       'content',
       'main',
       'service_id',
       'version',
-    ]);
+    ].forEach((e) => {
+      expect(Object.keys(res.data)).toContain(e);
+    });
   });
 });

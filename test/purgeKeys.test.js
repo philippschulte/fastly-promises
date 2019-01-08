@@ -25,14 +25,16 @@ describe('#purgeKeys', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an object', () => {
-    expect(res.data).toBeA('object');
+    expect(typeof res.data).toBe('object');
   });
 
   it('response body should contain all properties', () => {
-    expect(res.data).toIncludeKeys(['key_1', 'key_2', 'key_3']);
+    ['key_1', 'key_2', 'key_3'].forEach((e) => {
+      expect(Object.keys(res.data)).toContain(e);
+    });
   });
 });

@@ -25,11 +25,11 @@ describe('#updateBackend', () => {
   });
 
   it('response body should exist', () => {
-    expect(res.data).toExist();
+    expect(res.data).toBeTruthy();
   });
 
   it('response body should be an object', () => {
-    expect(res.data).toBeA('object');
+    expect(typeof res.data).toBe('object');
   });
 
   it('response body property should be updated', () => {
@@ -37,7 +37,7 @@ describe('#updateBackend', () => {
   });
 
   it('response body should contain all properties', () => {
-    expect(res.data).toIncludeKeys([
+    [
       'max_tls_version',
       'ssl_client_cert',
       'hostname',
@@ -73,6 +73,8 @@ describe('#updateBackend', () => {
       'use_ssl',
       'created_at',
       'comment',
-    ]);
+    ].forEach((e) => {
+      expect(Object.keys(res.data)).toContain(e);
+    });
   });
 });

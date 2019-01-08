@@ -45,13 +45,13 @@
     "mocha-junit-reporter": "^1.17.0",
     "mocha-parallel-tests": "^2.0.3",
     "nyc": "^13.0.1",
-    "commitizen": "2.9.6",
-    "cz-conventional-changelog": "2.0.0",
-    "expect": "1.20.2",
-    "ghooks": "2.0.0",
+    "commitizen": "3.0.5",
+    "cz-conventional-changelog": "2.1.0",
+    "expect": "23.6.0",
+    "ghooks": "2.0.4",
     "jsdoc-to-markdown": "^4.0.1",
-    "nock": "9.1.6",
-    "semantic-release": "^6.3.6"
+    "nock": "10.0.6",
+    "semantic-release": "^15.13.2"
   },
   "dependencies": {
     "request": "^2.88.0",
