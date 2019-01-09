@@ -215,6 +215,7 @@ Each `fastly-native-promises` API method returns the following response object:
         * [.setMainVCL(version, name)](#Fastly+setMainVCL) ⇒ <code>Promise</code>
     * _static_
         * [.readLogsFn(service)](#Fastly.readLogsFn) ⇒ <code>function</code>
+        * [.readLogFn(service)](#Fastly.readLogFn) ⇒ <code>function</code>
 
 <a name="new_Fastly_new"></a>
 
@@ -701,6 +702,20 @@ Define a custom VCL to be the main VCL for a particular service and version.
 
 #### Fastly.readLogsFn(service) ⇒ <code>function</code>
 Create a new function that lists all log configurations for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: static method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>function</code> - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly.readLogFn"></a>
+
+#### Fastly.readLogFn(service) ⇒ <code>function</code>
+Create a new function that returns a named log configuration for a given service
 and version. The function can be parametrized with the name of the logging
 service.
 

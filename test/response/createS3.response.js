@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.readS3 = {
+module.exports.createS3 = {
   access_key: 'AKIAIOSFODNN7EXAMPLE',
   bucket_name: 'my_bucket_name',
   created_at: '2016-05-23T19:48:33+00:00',
@@ -10,7 +10,7 @@ module.exports.readS3 = {
   format_version: '2',
   gzip_level: 0,
   message_type: 'classic',
-  name: 'test-s3canary',
+  name: 'test-s3',
   path: null,
   period: '3600',
   placement: null,
@@ -21,10 +21,4 @@ module.exports.readS3 = {
   timestamp_format: '%Y-%m-%dT%H:%M:%S.000',
   updated_at: '2016-05-23T19:48:33+00:00',
   version: '1',
-};
-
-module.exports.readS3404 = {
-  msg: 'Record not found',
-  detail:
-    "Couldn't find syslog '{ deleted =\u003e 0000-00-00 00:00:00, name =\u003e test-s3-does-not-exist, service =\u003e SU1Z0isxPaozGVKXdv0eY, version =\u003e 1 }'",
 };

@@ -10,7 +10,7 @@ function create({ baseURL, timeout, headers }) {
         method,
         uri: `${baseURL}${path}`,
         json: true,
-        body,
+        form: body,
         timeout,
         myheaders,
         resolveWithFullResponse: true,

@@ -38,6 +38,23 @@ class Fastly {
     };
   }
 
+  /**
+   * Create a new function that creates a named log configuration for a given service
+   * and version. The function can be parametrized with the name of the logging
+   * service.
+   *
+   * @param {string} service - The id of the logging service. Supported services are:
+   * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
+   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * sumologic, syslog.
+   * @returns {Function} A logging function.
+   */
+  static createLogFn(service) {
+    return function createLog(version, data) {
+      return this.request.post(`/service/${this.service_id}/version/${version}/logging/${service}`, data);
+    };
+  }
+
   /* eslint-disable camelcase */
   /**
    * The constructor method for creating a fastly-promises instance.
@@ -92,6 +109,26 @@ class Fastly {
     this.readSplunk = Fastly.readLogFn('splunk');
     this.readSumologic = Fastly.readLogFn('sumologic');
     this.readSyslog = Fastly.readLogFn('syslog');
+
+    this.createS3 = Fastly.createLogFn('s3');
+    this.createS3canary = Fastly.createLogFn('s3canary');
+    this.createAzureblob = Fastly.createLogFn('azureblob');
+    this.createCloudfiles = Fastly.createLogFn('cloudfiles');
+    this.createDigitalocean = Fastly.createLogFn('digitalocean');
+    this.createFtp = Fastly.createLogFn('ftp');
+    this.createBigquery = Fastly.createLogFn('bigquery');
+    this.createGcs = Fastly.createLogFn('gcs');
+    this.createHoneycomb = Fastly.createLogFn('honeycomb');
+    this.createLogshuttle = Fastly.createLogFn('logshuttle');
+    this.createLogentries = Fastly.createLogFn('logentries');
+    this.createLoggly = Fastly.createLogFn('loggly');
+    this.createHeroku = Fastly.createLogFn('heroku');
+    this.createOpenstack = Fastly.createLogFn('openstack');
+    this.createPapertrail = Fastly.createLogFn('papertrail');
+    this.createScalyr = Fastly.createLogFn('scalyr');
+    this.createSplunk = Fastly.createLogFn('splunk');
+    this.createSumologic = Fastly.createLogFn('sumologic');
+    this.createSyslog = Fastly.createLogFn('syslog');
   }
 
   /**
