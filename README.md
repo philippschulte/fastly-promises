@@ -175,6 +175,19 @@ Each `fastly-native-promises` API method returns the following response object:
 ### Typedefs
 
 <dl>
+<dt><a href="#FastlyError">FastlyError</a> : <code>Object</code></dt>
+<dd><p>The FastlyError class describes the most common errors that can occur
+when working with the Fastly API. Using <code>error.status</code>, the underlying
+HTTP status code can be retrieved. Known error status codes include:</p>
+<ul>
+<li>400: attempting to activate invalid VCL</li>
+<li>401: invalid credentials</li>
+<li>404: resource not found</li>
+<li>409: confict when trying to POST a resource that already exists</li>
+<li>422: attempting to modify a service config that is not checked out</li>
+<li>429: rate limit exceeded, try again later</li>
+</ul>
+</dd>
 <dt><a href="#Response">Response</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#Snippet">Snippet</a> : <code>Object</code></dt>
@@ -262,6 +275,7 @@ Instant Purge everything from a service.
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
 **Fulfil**: [<code>Response</code>](#Response)  
+**Reject**: [<code>FastlyError</code>](#FastlyError)  
 **See**: https://docs.fastly.com/api/purge#purge_bee5ed1a0cfd541e8b9f970a44718546  
 **Example**  
 ```js
@@ -756,6 +770,29 @@ service.
 | --- | --- | --- |
 | service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
 
+<a name="FastlyError"></a>
+
+### FastlyError : <code>Object</code>
+The FastlyError class describes the most common errors that can occur
+when working with the Fastly API. Using `error.status`, the underlying
+HTTP status code can be retrieved. Known error status codes include:
+- 400: attempting to activate invalid VCL
+- 401: invalid credentials
+- 404: resource not found
+- 409: confict when trying to POST a resource that already exists
+- 422: attempting to modify a service config that is not checked out
+- 429: rate limit exceeded, try again later
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| status | <code>Number</code> | The HTTP status code from the server response, e.g. 200. |
+| data | <code>Object</code> | the parsed body of the HTTP response |
+| code | <code>string</code> | a short error message |
+| message | <code>string</code> | a more detailed error message |
+
 <a name="Response"></a>
 
 ### Response : <code>Object</code>
@@ -765,7 +802,7 @@ service.
 | Name | Type | Description |
 | --- | --- | --- |
 | status | <code>Number</code> | The HTTP status code from the server response, e.g. 200. |
-| statusText | <code>String</code> | The HTTP status text, e.g. 'OK' |
+| statusText | <code>string</code> | The HTTP status text, e.g. 'OK' |
 | headers | <code>Object</code> | The HTTP headers of the reponse |
 | config | <code>Object</code> | The original request configuration used for the HTTP client |
 | request | <code>Object</code> | the HTTP request |
