@@ -17,4 +17,32 @@ describe('#constructor', () => {
       expect(Object.keys(instance)).toContain(e);
     });
   });
+
+  it('class instance should have logging functions', () => {
+    ['s3',
+      's3canary',
+      'azureblob',
+      'cloudfiles',
+      'digitalocean',
+      'ftp',
+      'bigquery',
+      'gcs',
+      'honeycomb',
+      'logshuttle',
+      'logentries',
+      'loggly',
+      'heroku',
+      'openstack',
+      'papertrail',
+      'scalyr',
+      'splunk',
+      'sumologic',
+      'syslog']
+      .map(e => e.replace(/(^|\s)\S/g, l => l.toUpperCase()))
+      .forEach((e) => {
+        ['read'].forEach((f) => {
+          expect(typeof instance[f + e]).toBe('function');
+        });
+      });
+  });
 });

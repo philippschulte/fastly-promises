@@ -4,6 +4,75 @@ const axios = require('./httpclient');
 const config = require('./config');
 
 class Fastly {
+  /**
+   * Create a new function that lists all log configurations for a given service
+   * and version. The function can be parametrized with the name of the logging
+   * service.
+   *
+   * @param {string} service - The id of the logging service. Supported services are:
+   * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
+   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * sumologic, syslog.
+   * @returns {Function} A logging function.
+   */
+  static readLogsFn(service) {
+    return function readLogs(version) {
+      return this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}`);
+    };
+  }
+
+  /**
+   * Create a new function that returns a named log configuration for a given service
+   * and version. The function can be parametrized with the name of the logging
+   * service.
+   *
+   * @param {string} service - The id of the logging service. Supported services are:
+   * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
+   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * sumologic, syslog.
+   * @returns {Function} A logging function.
+   */
+  static readLogFn(service) {
+    return function readLog(version, name) {
+      return this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`);
+    };
+  }
+
+  /**
+   * Create a new function that creates a named log configuration for a given service
+   * and version. The function can be parametrized with the name of the logging
+   * service.
+   *
+   * @param {string} service - The id of the logging service. Supported services are:
+   * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
+   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * sumologic, syslog.
+   * @returns {Function} A logging function.
+   */
+  static createLogFn(service) {
+    return function createLog(version, data) {
+      return this.request.post(`/service/${this.service_id}/version/${version}/logging/${service}`, data);
+    };
+  }
+
+  /**
+   * Create a new function that updates a named log configuration for a given service
+   * and version. The function can be parametrized with the name of the logging
+   * service.
+   *
+   * @param {string} service - The id of the logging service. Supported services are:
+   * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
+   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * sumologic, syslog.
+   * @returns {Function} A logging function.
+   */
+  static updateLogFn(service) {
+    return function updateLog(version, name, data) {
+      return this.request.put(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`, data);
+    };
+  }
+
+
   /* eslint-disable camelcase */
   /**
    * The constructor method for creating a fastly-promises instance.
@@ -18,6 +87,86 @@ class Fastly {
       timeout: 3000,
       headers: { 'Fastly-Key': token },
     });
+
+    this.readS3Logs = Fastly.readLogsFn('s3');
+    this.readS3canaryLogs = Fastly.readLogsFn('s3canary');
+    this.readAzureblobLogs = Fastly.readLogsFn('azureblob');
+    this.readCloudfilesLogs = Fastly.readLogsFn('cloudfiles');
+    this.readDigitaloceanLogs = Fastly.readLogsFn('digitalocean');
+    this.readFtpLogs = Fastly.readLogsFn('ftp');
+    this.readBigqueryLogs = Fastly.readLogsFn('bigquery');
+    this.readGcsLogs = Fastly.readLogsFn('gcs');
+    this.readHoneycombLogs = Fastly.readLogsFn('honeycomb');
+    this.readLogshuttleLogs = Fastly.readLogsFn('logshuttle');
+    this.readLogentriesLogs = Fastly.readLogsFn('logentries');
+    this.readLogglyLogs = Fastly.readLogsFn('loggly');
+    this.readHerokuLogs = Fastly.readLogsFn('heroku');
+    this.readOpenstackLogs = Fastly.readLogsFn('openstack');
+    this.readPapertrailLogs = Fastly.readLogsFn('papertrail');
+    this.readScalyrLogs = Fastly.readLogsFn('scalyr');
+    this.readSplunkLogs = Fastly.readLogsFn('splunk');
+    this.readSumologicLogs = Fastly.readLogsFn('sumologic');
+    this.readSyslogLogs = Fastly.readLogsFn('syslog');
+
+    this.readS3 = Fastly.readLogFn('s3');
+    this.readS3canary = Fastly.readLogFn('s3canary');
+    this.readAzureblob = Fastly.readLogFn('azureblob');
+    this.readCloudfiles = Fastly.readLogFn('cloudfiles');
+    this.readDigitalocean = Fastly.readLogFn('digitalocean');
+    this.readFtp = Fastly.readLogFn('ftp');
+    this.readBigquery = Fastly.readLogFn('bigquery');
+    this.readGcs = Fastly.readLogFn('gcs');
+    this.readHoneycomb = Fastly.readLogFn('honeycomb');
+    this.readLogshuttle = Fastly.readLogFn('logshuttle');
+    this.readLogentries = Fastly.readLogFn('logentries');
+    this.readLoggly = Fastly.readLogFn('loggly');
+    this.readHeroku = Fastly.readLogFn('heroku');
+    this.readOpenstack = Fastly.readLogFn('openstack');
+    this.readPapertrail = Fastly.readLogFn('papertrail');
+    this.readScalyr = Fastly.readLogFn('scalyr');
+    this.readSplunk = Fastly.readLogFn('splunk');
+    this.readSumologic = Fastly.readLogFn('sumologic');
+    this.readSyslog = Fastly.readLogFn('syslog');
+
+    this.createS3 = Fastly.createLogFn('s3');
+    this.createS3canary = Fastly.createLogFn('s3canary');
+    this.createAzureblob = Fastly.createLogFn('azureblob');
+    this.createCloudfiles = Fastly.createLogFn('cloudfiles');
+    this.createDigitalocean = Fastly.createLogFn('digitalocean');
+    this.createFtp = Fastly.createLogFn('ftp');
+    this.createBigquery = Fastly.createLogFn('bigquery');
+    this.createGcs = Fastly.createLogFn('gcs');
+    this.createHoneycomb = Fastly.createLogFn('honeycomb');
+    this.createLogshuttle = Fastly.createLogFn('logshuttle');
+    this.createLogentries = Fastly.createLogFn('logentries');
+    this.createLoggly = Fastly.createLogFn('loggly');
+    this.createHeroku = Fastly.createLogFn('heroku');
+    this.createOpenstack = Fastly.createLogFn('openstack');
+    this.createPapertrail = Fastly.createLogFn('papertrail');
+    this.createScalyr = Fastly.createLogFn('scalyr');
+    this.createSplunk = Fastly.createLogFn('splunk');
+    this.createSumologic = Fastly.createLogFn('sumologic');
+    this.createSyslog = Fastly.createLogFn('syslog');
+
+    this.updateS3 = Fastly.updateLogFn('s3');
+    this.updateS3canary = Fastly.updateLogFn('s3canary');
+    this.updateAzureblob = Fastly.updateLogFn('azureblob');
+    this.updateCloudfiles = Fastly.updateLogFn('cloudfiles');
+    this.updateDigitalocean = Fastly.updateLogFn('digitalocean');
+    this.updateFtp = Fastly.updateLogFn('ftp');
+    this.updateBigquery = Fastly.updateLogFn('bigquery');
+    this.updateGcs = Fastly.updateLogFn('gcs');
+    this.updateHoneycomb = Fastly.updateLogFn('honeycomb');
+    this.updateLogshuttle = Fastly.updateLogFn('logshuttle');
+    this.updateLogentries = Fastly.updateLogFn('logentries');
+    this.updateLoggly = Fastly.updateLogFn('loggly');
+    this.updateHeroku = Fastly.updateLogFn('heroku');
+    this.updateOpenstack = Fastly.updateLogFn('openstack');
+    this.updatePapertrail = Fastly.updateLogFn('papertrail');
+    this.updateScalyr = Fastly.updateLogFn('scalyr');
+    this.updateSplunk = Fastly.updateLogFn('splunk');
+    this.updateSumologic = Fastly.updateLogFn('sumologic');
+    this.updateSyslog = Fastly.updateLogFn('syslog');
   }
 
   /**

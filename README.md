@@ -8,7 +8,6 @@
 [![GitHub license](https://img.shields.io/github/license/adobe/fastly-native-promises.svg)](https://github.com/adobe/fastly-native-promises/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/adobe/fastly-native-promises.svg)](https://github.com/adobe/fastly-native-promises/issues) [![Greenkeeper badge](https://badges.greenkeeper.io/adobe/fastly-native-promises.svg)](https://greenkeeper.io/)
 
-
 ## Problem
 
 The callback based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/). [Philipp Schulte's fastly-native-promises](https://github.com/philippschulte/fastly-native-promises) client seemed almost perfect, except:
@@ -191,28 +190,34 @@ Each `fastly-native-promises` API method returns the following response object:
 
 * [Fastly](#Fastly)
     * [new Fastly(token, service_id)](#new_Fastly_new)
-    * [.purgeIndividual(url)](#Fastly+purgeIndividual) ⇒ <code>Promise</code>
-    * [.purgeAll()](#Fastly+purgeAll) ⇒ <code>Promise</code>
-    * [.purgeKey(key)](#Fastly+purgeKey) ⇒ <code>Promise</code>
-    * [.purgeKeys(keys)](#Fastly+purgeKeys) ⇒ <code>Promise</code>
-    * [.softPurgeIndividual(url)](#Fastly+softPurgeIndividual) ⇒ <code>Promise</code>
-    * [.softPurgeKey(key)](#Fastly+softPurgeKey) ⇒ <code>Promise</code>
-    * [.dataCenters()](#Fastly+dataCenters) ⇒ <code>Promise</code>
-    * [.publicIpList()](#Fastly+publicIpList) ⇒ <code>Promise</code>
-    * [.edgeCheck(url)](#Fastly+edgeCheck) ⇒ <code>Promise</code>
-    * [.readServices()](#Fastly+readServices) ⇒ <code>Promise</code>
-    * [.readVersions()](#Fastly+readVersions) ⇒ <code>Promise</code>
-    * [.cloneVersion(version)](#Fastly+cloneVersion) ⇒ <code>Promise</code>
-    * [.activateVersion(version)](#Fastly+activateVersion) ⇒ <code>Promise</code>
-    * [.domainCheckAll(version)](#Fastly+domainCheckAll) ⇒ <code>Promise</code>
-    * [.readDomains(version)](#Fastly+readDomains) ⇒ <code>Promise</code>
-    * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
-    * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
-    * [.createSnippet(version, data)](#Fastly+createSnippet) ⇒ <code>Promise</code>
-    * [.updateSnippet(version, name, data)](#Fastly+updateSnippet) ⇒ <code>Promise</code>
-    * [.createVCL(version, data)](#Fastly+createVCL) ⇒ <code>Promise</code>
-    * [.updateVCL(version, name, data)](#Fastly+updateVCL) ⇒ <code>Promise</code>
-    * [.setMainVCL(version, name)](#Fastly+setMainVCL) ⇒ <code>Promise</code>
+    * _instance_
+        * [.purgeIndividual(url)](#Fastly+purgeIndividual) ⇒ <code>Promise</code>
+        * [.purgeAll()](#Fastly+purgeAll) ⇒ <code>Promise</code>
+        * [.purgeKey(key)](#Fastly+purgeKey) ⇒ <code>Promise</code>
+        * [.purgeKeys(keys)](#Fastly+purgeKeys) ⇒ <code>Promise</code>
+        * [.softPurgeIndividual(url)](#Fastly+softPurgeIndividual) ⇒ <code>Promise</code>
+        * [.softPurgeKey(key)](#Fastly+softPurgeKey) ⇒ <code>Promise</code>
+        * [.dataCenters()](#Fastly+dataCenters) ⇒ <code>Promise</code>
+        * [.publicIpList()](#Fastly+publicIpList) ⇒ <code>Promise</code>
+        * [.edgeCheck(url)](#Fastly+edgeCheck) ⇒ <code>Promise</code>
+        * [.readServices()](#Fastly+readServices) ⇒ <code>Promise</code>
+        * [.readVersions()](#Fastly+readVersions) ⇒ <code>Promise</code>
+        * [.cloneVersion(version)](#Fastly+cloneVersion) ⇒ <code>Promise</code>
+        * [.activateVersion(version)](#Fastly+activateVersion) ⇒ <code>Promise</code>
+        * [.domainCheckAll(version)](#Fastly+domainCheckAll) ⇒ <code>Promise</code>
+        * [.readDomains(version)](#Fastly+readDomains) ⇒ <code>Promise</code>
+        * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
+        * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
+        * [.createSnippet(version, data)](#Fastly+createSnippet) ⇒ <code>Promise</code>
+        * [.updateSnippet(version, name, data)](#Fastly+updateSnippet) ⇒ <code>Promise</code>
+        * [.createVCL(version, data)](#Fastly+createVCL) ⇒ <code>Promise</code>
+        * [.updateVCL(version, name, data)](#Fastly+updateVCL) ⇒ <code>Promise</code>
+        * [.setMainVCL(version, name)](#Fastly+setMainVCL) ⇒ <code>Promise</code>
+    * _static_
+        * [.readLogsFn(service)](#Fastly.readLogsFn) ⇒ <code>function</code>
+        * [.readLogFn(service)](#Fastly.readLogFn) ⇒ <code>function</code>
+        * [.createLogFn(service)](#Fastly.createLogFn) ⇒ <code>function</code>
+        * [.updateLogFn(service)](#Fastly.updateLogFn) ⇒ <code>function</code>
 
 <a name="new_Fastly_new"></a>
 
@@ -222,8 +227,8 @@ The constructor method for creating a fastly-promises instance.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| token | <code>String</code> | The Fastly API token. |
-| service_id | <code>String</code> | The Fastly service ID. |
+| token | <code>string</code> | The Fastly API token. |
+| service_id | <code>string</code> | The Fastly service ID. |
 
 <a name="Fastly+purgeIndividual"></a>
 
@@ -237,7 +242,7 @@ Instant Purge an individual URL.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| url | <code>String</code> | The URL to purge. |
+| url | <code>string</code> | The URL to purge. |
 
 **Example**  
 ```js
@@ -280,7 +285,7 @@ Instant Purge a particular service of items tagged with a Surrogate Key.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| key | <code>String</code> | The surrogate key to purge. |
+| key | <code>string</code> | The surrogate key to purge. |
 
 **Example**  
 ```js
@@ -327,7 +332,7 @@ Soft Purge an individual URL.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| url | <code>String</code> | The URL to soft purge. |
+| url | <code>string</code> | The URL to soft purge. |
 
 **Example**  
 ```js
@@ -350,7 +355,7 @@ Soft Purge a particular service of items tagged with a Surrogate Key.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| key | <code>String</code> | The surrogate key to soft purge. |
+| key | <code>string</code> | The surrogate key to soft purge. |
 
 **Example**  
 ```js
@@ -411,7 +416,7 @@ Retrieve headers and MD5 hash of the content for a particular URL from each Fast
 
 | Param | Type | Description |
 | --- | --- | --- |
-| url | <code>String</code> | Full URL (host and path) to check on all nodes. If protocol is omitted,    http will be assumed. |
+| url | <code>string</code> | Full URL (host and path) to check on all nodes. If protocol is omitted,    http will be assumed. |
 
 **Example**  
 ```js
@@ -472,7 +477,7 @@ Clone the current configuration into a new version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The version to be cloned. |
+| version | <code>string</code> | The version to be cloned. |
 
 **Example**  
 ```js
@@ -496,7 +501,7 @@ Activate the current version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The version to be activated. |
+| version | <code>string</code> | The version to be activated. |
 
 **Example**  
 ```js
@@ -519,7 +524,7 @@ Checks the status of all domains for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
+| version | <code>string</code> | The current version of a service. |
 
 **Example**  
 ```js
@@ -543,7 +548,7 @@ List all the domains for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
+| version | <code>string</code> | The current version of a service. |
 
 **Example**  
 ```js
@@ -566,7 +571,7 @@ List all backends for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
+| version | <code>string</code> | The current version of a service. |
 
 **Example**  
 ```js
@@ -590,8 +595,8 @@ Update the backend for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
-| name | <code>String</code> | The name of the backend. |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the backend. |
 | data | <code>Object</code> | The data to be sent as the request body. |
 
 **Example**  
@@ -615,7 +620,7 @@ Create a snippet for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
+| version | <code>string</code> | The current version of a service. |
 | data | [<code>Snippet</code>](#Snippet) | The data to be sent as the request body. |
 
 **Example**  
@@ -645,8 +650,8 @@ Update a VCL snippet for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
-| name | <code>String</code> | The name of the snippet to update. |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the snippet to update. |
 | data | [<code>Snippet</code>](#Snippet) | The data to be sent as the request body. |
 
 <a name="Fastly+createVCL"></a>
@@ -661,7 +666,7 @@ Create custom VCL for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
+| version | <code>string</code> | The current version of a service. |
 | data | [<code>VCL</code>](#VCL) | The data to be sent as the request body. |
 
 <a name="Fastly+updateVCL"></a>
@@ -676,8 +681,8 @@ Update custom VCL for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
-| name | <code>String</code> | The name of the VCL to update. |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the VCL to update. |
 | data | [<code>VCL</code>](#VCL) | The data to be sent as the request body. |
 
 <a name="Fastly+setMainVCL"></a>
@@ -692,8 +697,64 @@ Define a custom VCL to be the main VCL for a particular service and version.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| version | <code>String</code> | The current version of a service. |
-| name | <code>String</code> | The name of the VCL to declare main. |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the VCL to declare main. |
+
+<a name="Fastly.readLogsFn"></a>
+
+#### Fastly.readLogsFn(service) ⇒ <code>function</code>
+Create a new function that lists all log configurations for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: static method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>function</code> - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly.readLogFn"></a>
+
+#### Fastly.readLogFn(service) ⇒ <code>function</code>
+Create a new function that returns a named log configuration for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: static method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>function</code> - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly.createLogFn"></a>
+
+#### Fastly.createLogFn(service) ⇒ <code>function</code>
+Create a new function that creates a named log configuration for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: static method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>function</code> - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly.updateLogFn"></a>
+
+#### Fastly.updateLogFn(service) ⇒ <code>function</code>
+Create a new function that updates a named log configuration for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: static method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>function</code> - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
 
 <a name="Response"></a>
 
