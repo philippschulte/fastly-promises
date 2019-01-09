@@ -22,3 +22,7 @@ module.exports.updateS3 = {
   updated_at: '2016-05-23T19:48:33+00:00',
   version: '1',
 };
+
+module.exports.updateS3422 = { msg: 'Version locked', detail: "Version '995' for service '3l2MjGcHgWw5NUJz7OKYH3' is locked" };
+
+module.exports.updateS3409 = { msg: 'Duplicate record', detail: "Duplicate logging_syslog: 'test-s3'" };
