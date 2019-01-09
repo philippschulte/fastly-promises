@@ -28,3 +28,5 @@ module.exports.readS3404 = {
   detail:
     "Couldn't find syslog '{ deleted =\u003e 0000-00-00 00:00:00, name =\u003e test-s3-does-not-exist, service =\u003e SU1Z0isxPaozGVKXdv0eY, version =\u003e 1 }'",
 };
+
+module.exports.readS3401 = { msg: 'Provided credentials are missing or invalid' };

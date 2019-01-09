@@ -2,7 +2,7 @@ const request = require('request-promise-native');
 
 class FastlyError extends Error {
   constructor(response) {
-    super(response.body.detail);
+    super(response.body.detail || response.body.msg);
 
     this.data = response.body;
     this.status = response.statusCode;
