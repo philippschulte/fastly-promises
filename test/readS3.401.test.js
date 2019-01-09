@@ -9,13 +9,13 @@ const fastlyPromises = require('../src/index');
 const response = require('./response/readS3.response');
 
 describe('#readS3', () => {
-  const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
+  const fastly = fastlyPromises('invalid', 'SU1Z0isxPaozGVKXdv0eY');
   let res;
   let err;
 
   nock(config.mainEntryPoint)
     .get('/service/SU1Z0isxPaozGVKXdv0eY/version/1/logging/s3/test-s3-does-not-exist')
-    .reply(404, response.readS3404);
+    .reply(401, response.readS3401);
 
   before(async () => {
     err = undefined;
@@ -26,10 +26,10 @@ describe('#readS3', () => {
     }
   });
 
-  it('response should be a status 404', () => {
+  it('response should be a status 401', () => {
     expect(res).not.toBeDefined();
     expect(err instanceof Error).toBeTruthy();
-    expect(err.status).toBe(404);
+    expect(err.status).toBe(401);
   });
 
   it('error body should exist', () => {
@@ -38,7 +38,7 @@ describe('#readS3', () => {
 
   it('error code should exist', () => {
     expect(err.code).toBeTruthy();
-    expect(err.code).toBe('Record not found');
+    expect(err.code).toBe('Provided credentials are missing or invalid');
   });
 
   it('error message should exist', () => {
@@ -52,7 +52,6 @@ describe('#readS3', () => {
   it('response err should contain all properties', () => {
     [
       'msg',
-      'detail',
     ].forEach((e) => {
       expect(Object.keys(err.data)).toContain(e);
     });

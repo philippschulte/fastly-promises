@@ -68,7 +68,7 @@ module.exports = {
   "settings": {
     "jsdoc": {
         "additionalTagNames": {
-            "customTags": ["fulfil"]
+            "customTags": ["fulfil", "reject"]
         }
     }
 }

@@ -14,3 +14,7 @@ module.exports.activateVersion = {
   deployed: false,
   msg: null,
 };
+
+module.exports.activateVersion400 = { msg: 'Bad request', detail: 'Syntax error: Expected one of: `acl`, `callback`, `sub`, `backend`, `director`, `import`, `table`, or `pragma`\nat: (input Line 1001 Pos 1)\n{\n#' };
+
+module.exports.activateVersion429 = { msg: 'You have exceeded your hourly rate limit. Please contact support@fastly.com if you think this is a mistake.' };

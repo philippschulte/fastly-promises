@@ -168,11 +168,27 @@ class Fastly {
     this.updateSumologic = Fastly.updateLogFn('sumologic');
     this.updateSyslog = Fastly.updateLogFn('syslog');
   }
+  /**
+   * @typedef {Object} FastlyError
+   * The FastlyError class describes the most common errors that can occur
+   * when working with the Fastly API. Using `error.status`, the underlying
+   * HTTP status code can be retrieved. Known error status codes include:
+   * - 400: attempting to activate invalid VCL
+   * - 401: invalid credentials
+   * - 404: resource not found
+   * - 409: confict when trying to POST a resource that already exists
+   * - 422: attempting to modify a service config that is not checked out
+   * - 429: rate limit exceeded, try again later
+   * @property {Number} status The HTTP status code from the server response, e.g. 200.
+   * @property {Object} data the parsed body of the HTTP response
+   * @property {string} code a short error message
+   * @property {string} message a more detailed error message
+   */
 
   /**
    * @typedef {Object} Response
    * @property {Number} status The HTTP status code from the server response, e.g. 200.
-   * @property {String} statusText The HTTP status text, e.g. 'OK'
+   * @property {string} statusText The HTTP status text, e.g. 'OK'
    * @property {Object} headers The HTTP headers of the reponse
    * @property {Object} config The original request configuration used for the HTTP client
    * @property {Object} request the HTTP request
@@ -213,6 +229,7 @@ class Fastly {
    });
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
+   * @reject {FastlyError}
    */
   purgeAll() {
     return this.request.post(`/service/${this.service_id}/purge_all`);

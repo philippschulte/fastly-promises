@@ -1,35 +1,35 @@
-'use strict';
-
 /* eslint-env mocha */
+
+'use strict';
 
 const nock = require('nock');
 const expect = require('expect');
 const config = require('../src/config');
 const fastlyPromises = require('../src/index');
-const response = require('./response/readS3.response');
+const response = require('./response/activateVersion.response');
 
-describe('#readS3', () => {
+describe('#activateVersion', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
   let res;
   let err;
 
   nock(config.mainEntryPoint)
-    .get('/service/SU1Z0isxPaozGVKXdv0eY/version/1/logging/s3/test-s3-does-not-exist')
-    .reply(404, response.readS3404);
+    .put('/service/SU1Z0isxPaozGVKXdv0eY/version/253/activate')
+    .reply(400, response.activateVersion400);
 
   before(async () => {
     err = undefined;
     try {
-      res = await fastly.readS3('1', 'test-s3-does-not-exist');
+      res = await fastly.activateVersion('253');
     } catch (e) {
       err = e;
     }
   });
 
-  it('response should be a status 404', () => {
+  it('response should be a status 400', () => {
     expect(res).not.toBeDefined();
     expect(err instanceof Error).toBeTruthy();
-    expect(err.status).toBe(404);
+    expect(err.status).toBe(400);
   });
 
   it('error body should exist', () => {
@@ -38,7 +38,7 @@ describe('#readS3', () => {
 
   it('error code should exist', () => {
     expect(err.code).toBeTruthy();
-    expect(err.code).toBe('Record not found');
+    expect(err.code).toBe('Bad request');
   });
 
   it('error message should exist', () => {
