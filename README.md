@@ -216,6 +216,8 @@ Each `fastly-native-promises` API method returns the following response object:
     * _static_
         * [.readLogsFn(service)](#Fastly.readLogsFn) ⇒ <code>function</code>
         * [.readLogFn(service)](#Fastly.readLogFn) ⇒ <code>function</code>
+        * [.createLogFn(service)](#Fastly.createLogFn) ⇒ <code>function</code>
+        * [.updateLogFn(service)](#Fastly.updateLogFn) ⇒ <code>function</code>
 
 <a name="new_Fastly_new"></a>
 
@@ -716,6 +718,34 @@ service.
 
 #### Fastly.readLogFn(service) ⇒ <code>function</code>
 Create a new function that returns a named log configuration for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: static method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>function</code> - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly.createLogFn"></a>
+
+#### Fastly.createLogFn(service) ⇒ <code>function</code>
+Create a new function that creates a named log configuration for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: static method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>function</code> - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly.updateLogFn"></a>
+
+#### Fastly.updateLogFn(service) ⇒ <code>function</code>
+Create a new function that updates a named log configuration for a given service
 and version. The function can be parametrized with the name of the logging
 service.
 

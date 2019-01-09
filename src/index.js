@@ -55,6 +55,24 @@ class Fastly {
     };
   }
 
+  /**
+   * Create a new function that updates a named log configuration for a given service
+   * and version. The function can be parametrized with the name of the logging
+   * service.
+   *
+   * @param {string} service - The id of the logging service. Supported services are:
+   * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
+   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * sumologic, syslog.
+   * @returns {Function} A logging function.
+   */
+  static updateLogFn(service) {
+    return function updateLog(version, name, data) {
+      return this.request.put(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`, data);
+    };
+  }
+
+
   /* eslint-disable camelcase */
   /**
    * The constructor method for creating a fastly-promises instance.
@@ -129,6 +147,26 @@ class Fastly {
     this.createSplunk = Fastly.createLogFn('splunk');
     this.createSumologic = Fastly.createLogFn('sumologic');
     this.createSyslog = Fastly.createLogFn('syslog');
+
+    this.updateS3 = Fastly.updateLogFn('s3');
+    this.updateS3canary = Fastly.updateLogFn('s3canary');
+    this.updateAzureblob = Fastly.updateLogFn('azureblob');
+    this.updateCloudfiles = Fastly.updateLogFn('cloudfiles');
+    this.updateDigitalocean = Fastly.updateLogFn('digitalocean');
+    this.updateFtp = Fastly.updateLogFn('ftp');
+    this.updateBigquery = Fastly.updateLogFn('bigquery');
+    this.updateGcs = Fastly.updateLogFn('gcs');
+    this.updateHoneycomb = Fastly.updateLogFn('honeycomb');
+    this.updateLogshuttle = Fastly.updateLogFn('logshuttle');
+    this.updateLogentries = Fastly.updateLogFn('logentries');
+    this.updateLoggly = Fastly.updateLogFn('loggly');
+    this.updateHeroku = Fastly.updateLogFn('heroku');
+    this.updateOpenstack = Fastly.updateLogFn('openstack');
+    this.updatePapertrail = Fastly.updateLogFn('papertrail');
+    this.updateScalyr = Fastly.updateLogFn('scalyr');
+    this.updateSplunk = Fastly.updateLogFn('splunk');
+    this.updateSumologic = Fastly.updateLogFn('sumologic');
+    this.updateSyslog = Fastly.updateLogFn('syslog');
   }
 
   /**
