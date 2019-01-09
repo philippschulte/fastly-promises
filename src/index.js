@@ -21,6 +21,23 @@ class Fastly {
     };
   }
 
+  /**
+   * Create a new function that returns a named log configuration for a given service
+   * and version. The function can be parametrized with the name of the logging
+   * service.
+   *
+   * @param {string} service - The id of the logging service. Supported services are:
+   * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
+   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * sumologic, syslog.
+   * @returns {Function} A logging function.
+   */
+  static readLogFn(service) {
+    return function readLog(version, name) {
+      return this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`);
+    };
+  }
+
   /* eslint-disable camelcase */
   /**
    * The constructor method for creating a fastly-promises instance.
@@ -36,25 +53,45 @@ class Fastly {
       headers: { 'Fastly-Key': token },
     });
 
-    this.readS3 = Fastly.readLogsFn('s3');
-    this.readS3canary = Fastly.readLogsFn('s3canary');
-    this.readAzureblob = Fastly.readLogsFn('azureblob');
-    this.readCloudfiles = Fastly.readLogsFn('cloudfiles');
-    this.readDigitalocean = Fastly.readLogsFn('digitalocean');
-    this.readFtp = Fastly.readLogsFn('ftp');
-    this.readBigquery = Fastly.readLogsFn('bigquery');
-    this.readGcs = Fastly.readLogsFn('gcs');
-    this.readHoneycomb = Fastly.readLogsFn('honeycomb');
-    this.readLogshuttle = Fastly.readLogsFn('logshuttle');
-    this.readLogentries = Fastly.readLogsFn('logentries');
-    this.readLoggly = Fastly.readLogsFn('loggly');
-    this.readHeroku = Fastly.readLogsFn('heroku');
-    this.readOpenstack = Fastly.readLogsFn('openstack');
-    this.readPapertrail = Fastly.readLogsFn('papertrail');
-    this.readScalyr = Fastly.readLogsFn('scalyr');
-    this.readSplunk = Fastly.readLogsFn('splunk');
-    this.readSumologic = Fastly.readLogsFn('sumologic');
-    this.readSyslog = Fastly.readLogsFn('syslog');
+    this.readS3Logs = Fastly.readLogsFn('s3');
+    this.readS3canaryLogs = Fastly.readLogsFn('s3canary');
+    this.readAzureblobLogs = Fastly.readLogsFn('azureblob');
+    this.readCloudfilesLogs = Fastly.readLogsFn('cloudfiles');
+    this.readDigitaloceanLogs = Fastly.readLogsFn('digitalocean');
+    this.readFtpLogs = Fastly.readLogsFn('ftp');
+    this.readBigqueryLogs = Fastly.readLogsFn('bigquery');
+    this.readGcsLogs = Fastly.readLogsFn('gcs');
+    this.readHoneycombLogs = Fastly.readLogsFn('honeycomb');
+    this.readLogshuttleLogs = Fastly.readLogsFn('logshuttle');
+    this.readLogentriesLogs = Fastly.readLogsFn('logentries');
+    this.readLogglyLogs = Fastly.readLogsFn('loggly');
+    this.readHerokuLogs = Fastly.readLogsFn('heroku');
+    this.readOpenstackLogs = Fastly.readLogsFn('openstack');
+    this.readPapertrailLogs = Fastly.readLogsFn('papertrail');
+    this.readScalyrLogs = Fastly.readLogsFn('scalyr');
+    this.readSplunkLogs = Fastly.readLogsFn('splunk');
+    this.readSumologicLogs = Fastly.readLogsFn('sumologic');
+    this.readSyslogLogs = Fastly.readLogsFn('syslog');
+
+    this.readS3 = Fastly.readLogFn('s3');
+    this.readS3canary = Fastly.readLogFn('s3canary');
+    this.readAzureblob = Fastly.readLogFn('azureblob');
+    this.readCloudfiles = Fastly.readLogFn('cloudfiles');
+    this.readDigitalocean = Fastly.readLogFn('digitalocean');
+    this.readFtp = Fastly.readLogFn('ftp');
+    this.readBigquery = Fastly.readLogFn('bigquery');
+    this.readGcs = Fastly.readLogFn('gcs');
+    this.readHoneycomb = Fastly.readLogFn('honeycomb');
+    this.readLogshuttle = Fastly.readLogFn('logshuttle');
+    this.readLogentries = Fastly.readLogFn('logentries');
+    this.readLoggly = Fastly.readLogFn('loggly');
+    this.readHeroku = Fastly.readLogFn('heroku');
+    this.readOpenstack = Fastly.readLogFn('openstack');
+    this.readPapertrail = Fastly.readLogFn('papertrail');
+    this.readScalyr = Fastly.readLogFn('scalyr');
+    this.readSplunk = Fastly.readLogFn('splunk');
+    this.readSumologic = Fastly.readLogFn('sumologic');
+    this.readSyslog = Fastly.readLogFn('syslog');
   }
 
   /**

@@ -13,11 +13,11 @@ describe('#readS3', () => {
   let res;
 
   nock(config.mainEntryPoint)
-    .get('/service/SU1Z0isxPaozGVKXdv0eY/version/128/logging/s3')
+    .get('/service/SU1Z0isxPaozGVKXdv0eY/version/1/logging/s3/test-s3')
     .reply(200, response.readS3);
 
   before(async () => {
-    res = await fastly.readS3('128');
+    res = await fastly.readS3('1', 'test-s3');
   });
 
   it('response should be a status 200', () => {
@@ -28,42 +28,34 @@ describe('#readS3', () => {
     expect(res.data).toBeTruthy();
   });
 
-  it('response body should be an array', () => {
-    expect(Array.isArray(res.data)).toBe(true);
-  });
-
-  it('response body should be an array of objects', () => {
-    res.data.forEach((item) => {
-      expect(typeof item).toBe('object');
-    });
+  it('response body should be an object', () => {
+    expect(typeof res.data).toBe('object');
   });
 
   it('response body should contain all properties', () => {
-    res.data.forEach((item) => {
-      [
-        'access_key',
-        'bucket_name',
-        'created_at',
-        'deleted_at',
-        'domain',
-        'format',
-        'format_version',
-        'gzip_level',
-        'message_type',
-        'name',
-        'path',
-        'period',
-        'placement',
-        'redundancy',
-        'response_condition',
-        'secret_key',
-        'service_id',
-        'timestamp_format',
-        'updated_at',
-        'version',
-      ].forEach((e) => {
-        expect(Object.keys(item)).toContain(e);
-      });
+    [
+      'access_key',
+      'bucket_name',
+      'created_at',
+      'deleted_at',
+      'domain',
+      'format',
+      'format_version',
+      'gzip_level',
+      'message_type',
+      'name',
+      'path',
+      'period',
+      'placement',
+      'redundancy',
+      'response_condition',
+      'secret_key',
+      'service_id',
+      'timestamp_format',
+      'updated_at',
+      'version',
+    ].forEach((e) => {
+      expect(Object.keys(res.data)).toContain(e);
     });
   });
 });
