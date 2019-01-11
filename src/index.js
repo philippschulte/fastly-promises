@@ -5,6 +5,51 @@ const config = require('./config');
 
 class Fastly {
   /**
+   * @typedef {Function} CreateFunction
+   * A function that creates a resource of a specific type. If a resource of that
+   * name already exists, it will reject the returned promise with an error.
+   * @param {string} version - The service config version to operate on. Needs to be checked out.
+   * @param {Object} data - The data object describing the resource to be created
+   * @param {string} data.name - The name of the resource to be created
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   * @reject {FastlyError}
+   */
+
+  /**
+   * @typedef {Function} UpdateFunction
+   * A function that updates an already existing resource of a specific type.
+   * If no resource of that name exists, it will reject the returned promise with an error.
+   * @param {string} version - The service config version to operate on. Needs to be checked out.
+   * @param {string} name - The name of the resource to be updated. The old name in case of renaming
+   * something.
+   * @param {Object} data - The data object describing the resource to be updated
+   * @param {string} data.name - The new name of the resource to be updated
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   * @reject {FastlyError}
+   */
+
+  /**
+   * @typedef {Function} ReadFunction
+   * A function that retrieves a representation of a resource of a specific type.
+   * If no resource of that name exists, it will reject the returned promise with an error.
+   * @param {string} version - The service config version to operate on. Needs to be checked out.
+   * @param {string} name - The name of the resource to be retrieved.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   * @reject {FastlyError}
+   */
+
+  /**
+   * @typedef {Function} ListFunction
+   * A function that retrieves a list of resources of a specific type.
+   * @param {string} version - The service config version to operate on. Needs to be checked out.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @reject {FastlyError}
+   */
+
+  /**
    * Create a new function that lists all log configurations for a given service
    * and version. The function can be parametrized with the name of the logging
    * service.
@@ -13,12 +58,10 @@ class Fastly {
    * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
    * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
    * sumologic, syslog.
-   * @returns {Function} A logging function.
+   * @returns {ListFunction} A logging function.
    */
-  static readLogsFn(service) {
-    return function readLogs(version) {
-      return this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}`);
-    };
+  readLogsFn(service) {
+    return version => this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}`);
   }
 
   /**
@@ -30,12 +73,10 @@ class Fastly {
    * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
    * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
    * sumologic, syslog.
-   * @returns {Function} A logging function.
+   * @returns {ReadFunction} A logging function.
    */
-  static readLogFn(service) {
-    return function readLog(version, name) {
-      return this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`);
-    };
+  readLogFn(service) {
+    return (version, name) => this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`);
   }
 
   /**
@@ -47,12 +88,10 @@ class Fastly {
    * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
    * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
    * sumologic, syslog.
-   * @returns {Function} A logging function.
+   * @returns {CreateFunction} A logging function.
    */
-  static createLogFn(service) {
-    return function createLog(version, data) {
-      return this.request.post(`/service/${this.service_id}/version/${version}/logging/${service}`, data);
-    };
+  createLogFn(service) {
+    return (version, data) => this.request.post(`/service/${this.service_id}/version/${version}/logging/${service}`, data);
   }
 
   /**
@@ -64,12 +103,35 @@ class Fastly {
    * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
    * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
    * sumologic, syslog.
-   * @returns {Function} A logging function.
+   * @returns {UpdateFunction} A logging function.
    */
-  static updateLogFn(service) {
-    return function updateLog(version, name, data) {
-      return this.request.put(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`, data);
-    };
+  updateLogFn(service) {
+    return (version, name, data) => this.request.put(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`, data);
+  }
+
+  /**
+   * Creates an update-or-create or "safe create" function that will either create
+   * (if it does not exist) or update (if it does) a named resource. The function
+   * will attempt to check if the resource exists first (if a reader function has been
+   * provided), alternatively, it will just blindly create and fall back with an
+   * update.
+   *
+   * @param {CreateFunction} createFn - A function that creates a resource.
+   * @param {UpdateFunction} updateFn - A function that updates a resource.
+   * @param {ReadFunction} readFn - An optional function that checks for the existence
+   * of a resource.
+   * @returns {UpdateFunction} An update function that does not fail on conflict.
+   */
+  upsertFn(createFn, updateFn, readFn) {
+    if (readFn) {
+      // careful
+      return (version, name, data) => readFn(version, name)
+        .then(() => updateFn(version, name, data))
+        .catch(() => createFn(version, name, data));
+    }
+    // stubborn
+    return (version, name, data) => createFn.apply(this, [version, data])
+      .catch(() => updateFn.apply(this, [version, name, data]));
   }
 
 
@@ -88,85 +150,127 @@ class Fastly {
       headers: { 'Fastly-Key': token },
     });
 
-    this.readS3Logs = Fastly.readLogsFn('s3');
-    this.readS3canaryLogs = Fastly.readLogsFn('s3canary');
-    this.readAzureblobLogs = Fastly.readLogsFn('azureblob');
-    this.readCloudfilesLogs = Fastly.readLogsFn('cloudfiles');
-    this.readDigitaloceanLogs = Fastly.readLogsFn('digitalocean');
-    this.readFtpLogs = Fastly.readLogsFn('ftp');
-    this.readBigqueryLogs = Fastly.readLogsFn('bigquery');
-    this.readGcsLogs = Fastly.readLogsFn('gcs');
-    this.readHoneycombLogs = Fastly.readLogsFn('honeycomb');
-    this.readLogshuttleLogs = Fastly.readLogsFn('logshuttle');
-    this.readLogentriesLogs = Fastly.readLogsFn('logentries');
-    this.readLogglyLogs = Fastly.readLogsFn('loggly');
-    this.readHerokuLogs = Fastly.readLogsFn('heroku');
-    this.readOpenstackLogs = Fastly.readLogsFn('openstack');
-    this.readPapertrailLogs = Fastly.readLogsFn('papertrail');
-    this.readScalyrLogs = Fastly.readLogsFn('scalyr');
-    this.readSplunkLogs = Fastly.readLogsFn('splunk');
-    this.readSumologicLogs = Fastly.readLogsFn('sumologic');
-    this.readSyslogLogs = Fastly.readLogsFn('syslog');
+    this.readS3Logs = this.readLogsFn('s3');
+    this.readS3canaryLogs = this.readLogsFn('s3canary');
+    this.readAzureblobLogs = this.readLogsFn('azureblob');
+    this.readCloudfilesLogs = this.readLogsFn('cloudfiles');
+    this.readDigitaloceanLogs = this.readLogsFn('digitalocean');
+    this.readFtpLogs = this.readLogsFn('ftp');
+    this.readBigqueryLogs = this.readLogsFn('bigquery');
+    this.readGcsLogs = this.readLogsFn('gcs');
+    this.readHoneycombLogs = this.readLogsFn('honeycomb');
+    this.readLogshuttleLogs = this.readLogsFn('logshuttle');
+    this.readLogentriesLogs = this.readLogsFn('logentries');
+    this.readLogglyLogs = this.readLogsFn('loggly');
+    this.readHerokuLogs = this.readLogsFn('heroku');
+    this.readOpenstackLogs = this.readLogsFn('openstack');
+    this.readPapertrailLogs = this.readLogsFn('papertrail');
+    this.readScalyrLogs = this.readLogsFn('scalyr');
+    this.readSplunkLogs = this.readLogsFn('splunk');
+    this.readSumologicLogs = this.readLogsFn('sumologic');
+    this.readSyslogLogs = this.readLogsFn('syslog');
 
-    this.readS3 = Fastly.readLogFn('s3');
-    this.readS3canary = Fastly.readLogFn('s3canary');
-    this.readAzureblob = Fastly.readLogFn('azureblob');
-    this.readCloudfiles = Fastly.readLogFn('cloudfiles');
-    this.readDigitalocean = Fastly.readLogFn('digitalocean');
-    this.readFtp = Fastly.readLogFn('ftp');
-    this.readBigquery = Fastly.readLogFn('bigquery');
-    this.readGcs = Fastly.readLogFn('gcs');
-    this.readHoneycomb = Fastly.readLogFn('honeycomb');
-    this.readLogshuttle = Fastly.readLogFn('logshuttle');
-    this.readLogentries = Fastly.readLogFn('logentries');
-    this.readLoggly = Fastly.readLogFn('loggly');
-    this.readHeroku = Fastly.readLogFn('heroku');
-    this.readOpenstack = Fastly.readLogFn('openstack');
-    this.readPapertrail = Fastly.readLogFn('papertrail');
-    this.readScalyr = Fastly.readLogFn('scalyr');
-    this.readSplunk = Fastly.readLogFn('splunk');
-    this.readSumologic = Fastly.readLogFn('sumologic');
-    this.readSyslog = Fastly.readLogFn('syslog');
+    this.readS3 = this.readLogFn('s3');
+    this.readS3canary = this.readLogFn('s3canary');
+    this.readAzureblob = this.readLogFn('azureblob');
+    this.readCloudfiles = this.readLogFn('cloudfiles');
+    this.readDigitalocean = this.readLogFn('digitalocean');
+    this.readFtp = this.readLogFn('ftp');
+    this.readBigquery = this.readLogFn('bigquery');
+    this.readGcs = this.readLogFn('gcs');
+    this.readHoneycomb = this.readLogFn('honeycomb');
+    this.readLogshuttle = this.readLogFn('logshuttle');
+    this.readLogentries = this.readLogFn('logentries');
+    this.readLoggly = this.readLogFn('loggly');
+    this.readHeroku = this.readLogFn('heroku');
+    this.readOpenstack = this.readLogFn('openstack');
+    this.readPapertrail = this.readLogFn('papertrail');
+    this.readScalyr = this.readLogFn('scalyr');
+    this.readSplunk = this.readLogFn('splunk');
+    this.readSumologic = this.readLogFn('sumologic');
+    this.readSyslog = this.readLogFn('syslog');
 
-    this.createS3 = Fastly.createLogFn('s3');
-    this.createS3canary = Fastly.createLogFn('s3canary');
-    this.createAzureblob = Fastly.createLogFn('azureblob');
-    this.createCloudfiles = Fastly.createLogFn('cloudfiles');
-    this.createDigitalocean = Fastly.createLogFn('digitalocean');
-    this.createFtp = Fastly.createLogFn('ftp');
-    this.createBigquery = Fastly.createLogFn('bigquery');
-    this.createGcs = Fastly.createLogFn('gcs');
-    this.createHoneycomb = Fastly.createLogFn('honeycomb');
-    this.createLogshuttle = Fastly.createLogFn('logshuttle');
-    this.createLogentries = Fastly.createLogFn('logentries');
-    this.createLoggly = Fastly.createLogFn('loggly');
-    this.createHeroku = Fastly.createLogFn('heroku');
-    this.createOpenstack = Fastly.createLogFn('openstack');
-    this.createPapertrail = Fastly.createLogFn('papertrail');
-    this.createScalyr = Fastly.createLogFn('scalyr');
-    this.createSplunk = Fastly.createLogFn('splunk');
-    this.createSumologic = Fastly.createLogFn('sumologic');
-    this.createSyslog = Fastly.createLogFn('syslog');
+    this.createS3 = this.createLogFn('s3');
+    this.createS3canary = this.createLogFn('s3canary');
+    this.createAzureblob = this.createLogFn('azureblob');
+    this.createCloudfiles = this.createLogFn('cloudfiles');
+    this.createDigitalocean = this.createLogFn('digitalocean');
+    this.createFtp = this.createLogFn('ftp');
+    this.createBigquery = this.createLogFn('bigquery');
+    this.createGcs = this.createLogFn('gcs');
+    this.createHoneycomb = this.createLogFn('honeycomb');
+    this.createLogshuttle = this.createLogFn('logshuttle');
+    this.createLogentries = this.createLogFn('logentries');
+    this.createLoggly = this.createLogFn('loggly');
+    this.createHeroku = this.createLogFn('heroku');
+    this.createOpenstack = this.createLogFn('openstack');
+    this.createPapertrail = this.createLogFn('papertrail');
+    this.createScalyr = this.createLogFn('scalyr');
+    this.createSplunk = this.createLogFn('splunk');
+    this.createSumologic = this.createLogFn('sumologic');
+    this.createSyslog = this.createLogFn('syslog');
 
-    this.updateS3 = Fastly.updateLogFn('s3');
-    this.updateS3canary = Fastly.updateLogFn('s3canary');
-    this.updateAzureblob = Fastly.updateLogFn('azureblob');
-    this.updateCloudfiles = Fastly.updateLogFn('cloudfiles');
-    this.updateDigitalocean = Fastly.updateLogFn('digitalocean');
-    this.updateFtp = Fastly.updateLogFn('ftp');
-    this.updateBigquery = Fastly.updateLogFn('bigquery');
-    this.updateGcs = Fastly.updateLogFn('gcs');
-    this.updateHoneycomb = Fastly.updateLogFn('honeycomb');
-    this.updateLogshuttle = Fastly.updateLogFn('logshuttle');
-    this.updateLogentries = Fastly.updateLogFn('logentries');
-    this.updateLoggly = Fastly.updateLogFn('loggly');
-    this.updateHeroku = Fastly.updateLogFn('heroku');
-    this.updateOpenstack = Fastly.updateLogFn('openstack');
-    this.updatePapertrail = Fastly.updateLogFn('papertrail');
-    this.updateScalyr = Fastly.updateLogFn('scalyr');
-    this.updateSplunk = Fastly.updateLogFn('splunk');
-    this.updateSumologic = Fastly.updateLogFn('sumologic');
-    this.updateSyslog = Fastly.updateLogFn('syslog');
+    this.updateS3 = this.updateLogFn('s3');
+    this.updateS3canary = this.updateLogFn('s3canary');
+    this.updateAzureblob = this.updateLogFn('azureblob');
+    this.updateCloudfiles = this.updateLogFn('cloudfiles');
+    this.updateDigitalocean = this.updateLogFn('digitalocean');
+    this.updateFtp = this.updateLogFn('ftp');
+    this.updateBigquery = this.updateLogFn('bigquery');
+    this.updateGcs = this.updateLogFn('gcs');
+    this.updateHoneycomb = this.updateLogFn('honeycomb');
+    this.updateLogshuttle = this.updateLogFn('logshuttle');
+    this.updateLogentries = this.updateLogFn('logentries');
+    this.updateLoggly = this.updateLogFn('loggly');
+    this.updateHeroku = this.updateLogFn('heroku');
+    this.updateOpenstack = this.updateLogFn('openstack');
+    this.updatePapertrail = this.updateLogFn('papertrail');
+    this.updateScalyr = this.updateLogFn('scalyr');
+    this.updateSplunk = this.updateLogFn('splunk');
+    this.updateSumologic = this.updateLogFn('sumologic');
+    this.updateSyslog = this.updateLogFn('syslog');
+
+    this.writeS3 = this
+      .upsertFn(this.createS3, this.updateS3, this.readS3);
+    this.writeS3canary = this
+      .upsertFn(this.createS3canary, this.updateS3canary, this.readS3canary);
+    this.writeAzureblob = this
+      .upsertFn(this.createAzureblob, this.updateAzureblob, this.readAzureblob);
+    this.writeCloudfiles = this
+      .upsertFn(this.createCloudfiles, this.updateCloudfiles, this.readCloudfiles);
+    this.writeDigitalocean = this
+      .upsertFn(this.createDigitalocean, this.updateDigitalocean, this.readDigitalocean);
+    this.writeFtp = this
+      .upsertFn(this.createFtp, this.updateFtp, this.readFtp);
+    this.writeBigquery = this
+      .upsertFn(this.createBigquery, this.updateBigquery, this.readBigquery);
+    this.writeGcs = this
+      .upsertFn(this.createGcs, this.updateGcs, this.readGcs);
+    this.writeHoneycomb = this
+      .upsertFn(this.createHoneycomb, this.updateHoneycomb, this.readHoneycomb);
+    this.writeLogshuttle = this
+      .upsertFn(this.createLogshuttle, this.updateLogshuttle, this.readLogshuttle);
+    this.writeLogentries = this
+      .upsertFn(this.createLogentries, this.updateLogentries, this.readLogentries);
+    this.writeLoggly = this
+      .upsertFn(this.createLoggly, this.updateLoggly, this.readLoggly);
+    this.writeHeroku = this
+      .upsertFn(this.createHeroku, this.updateHeroku, this.readHeroku);
+    this.writeOpenstack = this
+      .upsertFn(this.createOpenstack, this.updateOpenstack, this.readOpenstack);
+    this.writePapertrail = this
+      .upsertFn(this.createPapertrail, this.updatePapertrail, this.readPapertrail);
+    this.writeScalyr = this
+      .upsertFn(this.createScalyr, this.updateScalyr, this.readScalyr);
+    this.writeSplunk = this
+      .upsertFn(this.createSplunk, this.updateSplunk, this.readSplunk);
+    this.writeSumologic = this
+      .upsertFn(this.createSumologic, this.updateSumologic, this.readSumologic);
+    this.writeSyslog = this
+      .upsertFn(this.createSyslog, this.updateSyslog, this.readSyslog);
+
+    this.writeVCL = this.upsertFn(this.createVCL, this.updateVCL);
+    this.writeSnippet = this.upsertFn(this.createSnippet, this.updateSnippet);
   }
   /**
    * @typedef {Object} FastlyError

@@ -175,6 +175,21 @@ Each `fastly-native-promises` API method returns the following response object:
 ### Typedefs
 
 <dl>
+<dt><a href="#CreateFunction">CreateFunction</a> ⇒ <code>Promise</code></dt>
+<dd><p>A function that creates a resource of a specific type. If a resource of that
+name already exists, it will reject the returned promise with an error.</p>
+</dd>
+<dt><a href="#UpdateFunction">UpdateFunction</a> ⇒ <code>Promise</code></dt>
+<dd><p>A function that updates an already existing resource of a specific type.
+If no resource of that name exists, it will reject the returned promise with an error.</p>
+</dd>
+<dt><a href="#ReadFunction">ReadFunction</a> ⇒ <code>Promise</code></dt>
+<dd><p>A function that retrieves a representation of a resource of a specific type.
+If no resource of that name exists, it will reject the returned promise with an error.</p>
+</dd>
+<dt><a href="#ListFunction">ListFunction</a> ⇒ <code>Promise</code></dt>
+<dd><p>A function that retrieves a list of resources of a specific type.</p>
+</dd>
 <dt><a href="#FastlyError">FastlyError</a> : <code>Object</code></dt>
 <dd><p>The FastlyError class describes the most common errors that can occur
 when working with the Fastly API. Using <code>error.status</code>, the underlying
@@ -203,34 +218,33 @@ HTTP status code can be retrieved. Known error status codes include:</p>
 
 * [Fastly](#Fastly)
     * [new Fastly(token, service_id)](#new_Fastly_new)
-    * _instance_
-        * [.purgeIndividual(url)](#Fastly+purgeIndividual) ⇒ <code>Promise</code>
-        * [.purgeAll()](#Fastly+purgeAll) ⇒ <code>Promise</code>
-        * [.purgeKey(key)](#Fastly+purgeKey) ⇒ <code>Promise</code>
-        * [.purgeKeys(keys)](#Fastly+purgeKeys) ⇒ <code>Promise</code>
-        * [.softPurgeIndividual(url)](#Fastly+softPurgeIndividual) ⇒ <code>Promise</code>
-        * [.softPurgeKey(key)](#Fastly+softPurgeKey) ⇒ <code>Promise</code>
-        * [.dataCenters()](#Fastly+dataCenters) ⇒ <code>Promise</code>
-        * [.publicIpList()](#Fastly+publicIpList) ⇒ <code>Promise</code>
-        * [.edgeCheck(url)](#Fastly+edgeCheck) ⇒ <code>Promise</code>
-        * [.readServices()](#Fastly+readServices) ⇒ <code>Promise</code>
-        * [.readVersions()](#Fastly+readVersions) ⇒ <code>Promise</code>
-        * [.cloneVersion(version)](#Fastly+cloneVersion) ⇒ <code>Promise</code>
-        * [.activateVersion(version)](#Fastly+activateVersion) ⇒ <code>Promise</code>
-        * [.domainCheckAll(version)](#Fastly+domainCheckAll) ⇒ <code>Promise</code>
-        * [.readDomains(version)](#Fastly+readDomains) ⇒ <code>Promise</code>
-        * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
-        * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
-        * [.createSnippet(version, data)](#Fastly+createSnippet) ⇒ <code>Promise</code>
-        * [.updateSnippet(version, name, data)](#Fastly+updateSnippet) ⇒ <code>Promise</code>
-        * [.createVCL(version, data)](#Fastly+createVCL) ⇒ <code>Promise</code>
-        * [.updateVCL(version, name, data)](#Fastly+updateVCL) ⇒ <code>Promise</code>
-        * [.setMainVCL(version, name)](#Fastly+setMainVCL) ⇒ <code>Promise</code>
-    * _static_
-        * [.readLogsFn(service)](#Fastly.readLogsFn) ⇒ <code>function</code>
-        * [.readLogFn(service)](#Fastly.readLogFn) ⇒ <code>function</code>
-        * [.createLogFn(service)](#Fastly.createLogFn) ⇒ <code>function</code>
-        * [.updateLogFn(service)](#Fastly.updateLogFn) ⇒ <code>function</code>
+    * [.readLogsFn(service)](#Fastly+readLogsFn) ⇒ [<code>ListFunction</code>](#ListFunction)
+    * [.readLogFn(service)](#Fastly+readLogFn) ⇒ [<code>ReadFunction</code>](#ReadFunction)
+    * [.createLogFn(service)](#Fastly+createLogFn) ⇒ [<code>CreateFunction</code>](#CreateFunction)
+    * [.updateLogFn(service)](#Fastly+updateLogFn) ⇒ [<code>UpdateFunction</code>](#UpdateFunction)
+    * [.upsertFn(createFn, updateFn, readFn)](#Fastly+upsertFn) ⇒ [<code>UpdateFunction</code>](#UpdateFunction)
+    * [.purgeIndividual(url)](#Fastly+purgeIndividual) ⇒ <code>Promise</code>
+    * [.purgeAll()](#Fastly+purgeAll) ⇒ <code>Promise</code>
+    * [.purgeKey(key)](#Fastly+purgeKey) ⇒ <code>Promise</code>
+    * [.purgeKeys(keys)](#Fastly+purgeKeys) ⇒ <code>Promise</code>
+    * [.softPurgeIndividual(url)](#Fastly+softPurgeIndividual) ⇒ <code>Promise</code>
+    * [.softPurgeKey(key)](#Fastly+softPurgeKey) ⇒ <code>Promise</code>
+    * [.dataCenters()](#Fastly+dataCenters) ⇒ <code>Promise</code>
+    * [.publicIpList()](#Fastly+publicIpList) ⇒ <code>Promise</code>
+    * [.edgeCheck(url)](#Fastly+edgeCheck) ⇒ <code>Promise</code>
+    * [.readServices()](#Fastly+readServices) ⇒ <code>Promise</code>
+    * [.readVersions()](#Fastly+readVersions) ⇒ <code>Promise</code>
+    * [.cloneVersion(version)](#Fastly+cloneVersion) ⇒ <code>Promise</code>
+    * [.activateVersion(version)](#Fastly+activateVersion) ⇒ <code>Promise</code>
+    * [.domainCheckAll(version)](#Fastly+domainCheckAll) ⇒ <code>Promise</code>
+    * [.readDomains(version)](#Fastly+readDomains) ⇒ <code>Promise</code>
+    * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
+    * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
+    * [.createSnippet(version, data)](#Fastly+createSnippet) ⇒ <code>Promise</code>
+    * [.updateSnippet(version, name, data)](#Fastly+updateSnippet) ⇒ <code>Promise</code>
+    * [.createVCL(version, data)](#Fastly+createVCL) ⇒ <code>Promise</code>
+    * [.updateVCL(version, name, data)](#Fastly+updateVCL) ⇒ <code>Promise</code>
+    * [.setMainVCL(version, name)](#Fastly+setMainVCL) ⇒ <code>Promise</code>
 
 <a name="new_Fastly_new"></a>
 
@@ -242,6 +256,80 @@ The constructor method for creating a fastly-promises instance.
 | --- | --- | --- |
 | token | <code>string</code> | The Fastly API token. |
 | service_id | <code>string</code> | The Fastly service ID. |
+
+<a name="Fastly+readLogsFn"></a>
+
+#### fastly.readLogsFn(service) ⇒ [<code>ListFunction</code>](#ListFunction)
+Create a new function that lists all log configurations for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: [<code>ListFunction</code>](#ListFunction) - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly+readLogFn"></a>
+
+#### fastly.readLogFn(service) ⇒ [<code>ReadFunction</code>](#ReadFunction)
+Create a new function that returns a named log configuration for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: [<code>ReadFunction</code>](#ReadFunction) - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly+createLogFn"></a>
+
+#### fastly.createLogFn(service) ⇒ [<code>CreateFunction</code>](#CreateFunction)
+Create a new function that creates a named log configuration for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: [<code>CreateFunction</code>](#CreateFunction) - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly+updateLogFn"></a>
+
+#### fastly.updateLogFn(service) ⇒ [<code>UpdateFunction</code>](#UpdateFunction)
+Create a new function that updates a named log configuration for a given service
+and version. The function can be parametrized with the name of the logging
+service.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: [<code>UpdateFunction</code>](#UpdateFunction) - A logging function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+
+<a name="Fastly+upsertFn"></a>
+
+#### fastly.upsertFn(createFn, updateFn, readFn) ⇒ [<code>UpdateFunction</code>](#UpdateFunction)
+Creates an update-or-create or "safe create" function that will either create
+(if it does not exist) or update (if it does) a named resource. The function
+will attempt to check if the resource exists first (if a reader function has been
+provided), alternatively, it will just blindly create and fall back with an
+update.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: [<code>UpdateFunction</code>](#UpdateFunction) - An update function that does not fail on conflict.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| createFn | [<code>CreateFunction</code>](#CreateFunction) | A function that creates a resource. |
+| updateFn | [<code>UpdateFunction</code>](#UpdateFunction) | A function that updates a resource. |
+| readFn | [<code>ReadFunction</code>](#ReadFunction) | An optional function that checks for the existence of a resource. |
 
 <a name="Fastly+purgeIndividual"></a>
 
@@ -714,61 +802,69 @@ Define a custom VCL to be the main VCL for a particular service and version.
 | version | <code>string</code> | The current version of a service. |
 | name | <code>string</code> | The name of the VCL to declare main. |
 
-<a name="Fastly.readLogsFn"></a>
+<a name="CreateFunction"></a>
 
-#### Fastly.readLogsFn(service) ⇒ <code>function</code>
-Create a new function that lists all log configurations for a given service
-and version. The function can be parametrized with the name of the logging
-service.
+### CreateFunction ⇒ <code>Promise</code>
+A function that creates a resource of a specific type. If a resource of that
+name already exists, it will reject the returned promise with an error.
 
-**Kind**: static method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>function</code> - A logging function.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
-
-<a name="Fastly.readLogFn"></a>
-
-#### Fastly.readLogFn(service) ⇒ <code>function</code>
-Create a new function that returns a named log configuration for a given service
-and version. The function can be parametrized with the name of the logging
-service.
-
-**Kind**: static method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>function</code> - A logging function.  
+**Kind**: global typedef  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**Reject**: [<code>FastlyError</code>](#FastlyError)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+| version | <code>string</code> | The service config version to operate on. Needs to be checked out. |
+| data | <code>Object</code> | The data object describing the resource to be created |
+| data.name | <code>string</code> | The name of the resource to be created |
 
-<a name="Fastly.createLogFn"></a>
+<a name="UpdateFunction"></a>
 
-#### Fastly.createLogFn(service) ⇒ <code>function</code>
-Create a new function that creates a named log configuration for a given service
-and version. The function can be parametrized with the name of the logging
-service.
+### UpdateFunction ⇒ <code>Promise</code>
+A function that updates an already existing resource of a specific type.
+If no resource of that name exists, it will reject the returned promise with an error.
 
-**Kind**: static method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>function</code> - A logging function.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
-
-<a name="Fastly.updateLogFn"></a>
-
-#### Fastly.updateLogFn(service) ⇒ <code>function</code>
-Create a new function that updates a named log configuration for a given service
-and version. The function can be parametrized with the name of the logging
-service.
-
-**Kind**: static method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>function</code> - A logging function.  
+**Kind**: global typedef  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**Reject**: [<code>FastlyError</code>](#FastlyError)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+| version | <code>string</code> | The service config version to operate on. Needs to be checked out. |
+| name | <code>string</code> | The name of the resource to be updated. The old name in case of renaming something. |
+| data | <code>Object</code> | The data object describing the resource to be updated |
+| data.name | <code>string</code> | The new name of the resource to be updated |
+
+<a name="ReadFunction"></a>
+
+### ReadFunction ⇒ <code>Promise</code>
+A function that retrieves a representation of a resource of a specific type.
+If no resource of that name exists, it will reject the returned promise with an error.
+
+**Kind**: global typedef  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**Reject**: [<code>FastlyError</code>](#FastlyError)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The service config version to operate on. Needs to be checked out. |
+| name | <code>string</code> | The name of the resource to be retrieved. |
+
+<a name="ListFunction"></a>
+
+### ListFunction ⇒ <code>Promise</code>
+A function that retrieves a list of resources of a specific type.
+
+**Kind**: global typedef  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Reject**: [<code>FastlyError</code>](#FastlyError)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The service config version to operate on. Needs to be checked out. |
 
 <a name="FastlyError"></a>
 
