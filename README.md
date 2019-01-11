@@ -578,7 +578,7 @@ instance.readVersions()
 Gets the version footprint for the service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: [<code>Versions</code>](#Versions) - the latest, current, and active versions of the service  
+**Returns**: [<code>Versions</code>](#Versions) - The latest, current, and active versions of the service.  
 <a name="Fastly+cloneVersion"></a>
 
 #### fastly.cloneVersion(version) ⇒ <code>Promise</code>

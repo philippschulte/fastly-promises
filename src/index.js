@@ -568,8 +568,11 @@ class Fastly {
    });
    * @returns {Promise} The response object representing the completion or failure.
    */
-  cloneVersion(version = '') {
-    return this.request.put(`/service/${this.service_id}/version/${version}/clone`);
+  async cloneVersion(version) {
+    const versions = await this.request.put(`/service/${this.service_id}/version/${version || (await this.getVersions()).active}/clone`);
+    this.versions.current = versions.data.number;
+    this.versions.latest = versions.data.number;
+    return versions;
   }
 
   /**
