@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/philippschulte/fastly-promises.git"
+    "url": "https://github.com/adobe/fastly-native-promises.git"
   },
   "keywords": [
     "fastly",
@@ -25,11 +25,11 @@
   "author": "Philipp Schulte <philipp.schulte@ymail.com> (http://www.philippschulte.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/philippschulte/fastly-promises/issues"
+    "url": "https://github.com/adobe/fastly-native-promises/issues"
   },
-  "homepage": "https://github.com/philippschulte/fastly-promises#readme",
+  "homepage": "https://github.com/adobe/fastly-native-promises#readme",
   "engines": {
-    "node": ">=7.6.0"
+    "node": ">=8.0.0"
   },
   "devDependencies": {
     "codecov": "^3.0.2",
