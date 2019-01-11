@@ -1,5 +1,5 @@
 {
-  "name": "fastly-promises",
+  "name": "@adobe/fastly-native-promises",
   "version": "0.0.0-semantically-released",
   "description": "Promise based Fastly API client for Node.js",
   "main": "src/index.js",
@@ -9,7 +9,7 @@
     "lint": "./node_modules/.bin/eslint .",
     "junit": "nyc --reporter=text --reporter=lcov --check-coverage --statements 100 --lines 100 mocha --exit -R mocha-junit-reporter && codecov",
     "docs": "jsdoc2md --files src/*.js -t README.md.hbs -d 3 > README.md",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
