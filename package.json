@@ -55,7 +55,7 @@
     "mocha-parallel-tests": "^2.0.3",
     "nock": "10.0.6",
     "nyc": "^13.0.1",
-    "semantic-release": "^15.13.2"
+    "semantic-release": "^15.13.3"
   },
   "dependencies": {
     "request": "^2.88.0",
