@@ -40,13 +40,17 @@ You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in ord
 This is a [Node.js](https://nodejs.org/) module available through the [npm registry](https://www.npmjs.com/). Installation is done using the [`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
 ```bash
-$ npm install fastly-native-promises
+$ npm install @adobe/fastly-native-promises
 ```
+
+## Changes
+
+See the [changelog](CHANGELOG.md).
 
 ## Usage
 
 ```javascript
-const fastly = require('fastly-native-promises');
+const fastly = require('@adobe/fastly-native-promises');
 
 // create one or more instances
 const service_1 = fastly('token', 'service_id_1');

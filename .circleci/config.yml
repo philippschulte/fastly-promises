@@ -72,7 +72,7 @@ jobs:
 
     - run:
         name: Semantic Release
-        command: npx semantic-release
+        command: npm run semantic-release
         environment:
           MOCHA_FILE: junit/test-results.xml
 
