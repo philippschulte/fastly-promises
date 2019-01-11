@@ -150,6 +150,12 @@ class Fastly {
       headers: { 'Fastly-Key': token },
     });
 
+    this.versions = {
+      current: undefined,
+      active: undefined,
+      latest: undefined,
+    };
+
     this.readS3Logs = this.readLogsFn('s3');
     this.readS3canaryLogs = this.readLogsFn('s3canary');
     this.readAzureblobLogs = this.readLogsFn('azureblob');
@@ -511,6 +517,40 @@ class Fastly {
    */
   readVersions() {
     return this.request.get(`/service/${this.service_id}/version`);
+  }
+
+  /**
+   * @typedef {Object} Versions
+   *
+   * Describes the most relevant versions of the service.
+   *
+   * @property {number} latest - the latest version of the service
+   * @property {number} active - the currently active version number
+   * @property {number} current - the latest editable version number
+   */
+  /**
+   * Gets the version footprint for the service.
+   *
+   * @returns {Versions} The latest, current, and active versions of the service.
+   */
+  async getVersions() {
+    if (this.versions.latest) {
+      return this.versions;
+    }
+    const { data } = await this.readVersions();
+    this.versions.latest = data
+      .map(({ number }) => number)
+      .pop();
+    this.versions.active = data
+      .filter(version => version.active)
+      .map(({ number }) => number)
+      .pop();
+    this.versions.current = data
+      .filter(version => !version.locked)
+      .map(({ number }) => number)
+      .pop();
+
+    return this.versions;
   }
 
   /**
