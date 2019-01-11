@@ -7,3 +7,5 @@ module.exports.createVCL = {
   service_id: 'SU1Z0isxPaozGVKXdv0eY',
   version: 1,
 };
+
+module.exports.createVCL409 = { msg: 'Duplicate record', detail: 'Duplicate VCL…' };
