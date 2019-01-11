@@ -61,7 +61,7 @@ class Fastly {
    * @returns {ListFunction} A logging function.
    */
   readLogsFn(service) {
-    return version => this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}`);
+    return async version => this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/logging/${service}`);
   }
 
   /**
@@ -76,7 +76,7 @@ class Fastly {
    * @returns {ReadFunction} A logging function.
    */
   readLogFn(service) {
-    return (version, name) => this.request.get(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`);
+    return async (version, name) => this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/logging/${service}/${name}`);
   }
 
   /**
@@ -91,7 +91,7 @@ class Fastly {
    * @returns {CreateFunction} A logging function.
    */
   createLogFn(service) {
-    return (version, data) => this.request.post(`/service/${this.service_id}/version/${version}/logging/${service}`, data);
+    return async (version, data) => this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/logging/${service}`, data);
   }
 
   /**
@@ -106,7 +106,7 @@ class Fastly {
    * @returns {UpdateFunction} A logging function.
    */
   updateLogFn(service) {
-    return (version, name, data) => this.request.put(`/service/${this.service_id}/version/${version}/logging/${service}/${name}`, data);
+    return async (version, name, data) => this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/logging/${service}/${name}`, data);
   }
 
   /**
@@ -149,6 +149,12 @@ class Fastly {
       timeout: 3000,
       headers: { 'Fastly-Key': token },
     });
+
+    this.versions = {
+      current: undefined,
+      active: undefined,
+      latest: undefined,
+    };
 
     this.readS3Logs = this.readLogsFn('s3');
     this.readS3canaryLogs = this.readLogsFn('s3canary');
@@ -355,7 +361,7 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
-  purgeKey(key = '') {
+  purgeKey(key) {
     return this.request.post(`/service/${this.service_id}/purge/${key}`);
   }
 
@@ -413,7 +419,7 @@ class Fastly {
    * @param {string} key - The surrogate key to soft purge.
    * @returns {Promise} The response object representing the completion or failure.
    */
-  softPurgeKey(key = '') {
+  softPurgeKey(key) {
     return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
   }
 
@@ -514,6 +520,48 @@ class Fastly {
   }
 
   /**
+   * @typedef {Object} Versions
+   *
+   * Describes the most relevant versions of the service.
+   *
+   * @property {number} latest - the latest version of the service
+   * @property {number} active - the currently active version number
+   * @property {number} current - the latest editable version number
+   */
+  /**
+   * Gets the version footprint for the service.
+   *
+   * @returns {Versions} The latest, current, and active versions of the service.
+   */
+  async getVersions() {
+    if (this.versions.latest) {
+      return this.versions;
+    }
+    const { data } = await this.readVersions();
+    this.versions.latest = data
+      .map(({ number }) => number)
+      .pop();
+    this.versions.active = data
+      .filter(version => version.active)
+      .map(({ number }) => number)
+      .pop();
+    this.versions.current = data
+      .filter(version => !version.locked)
+      .map(({ number }) => number)
+      .pop();
+
+    return this.versions;
+  }
+
+  async getVersion(version, fallbackname) {
+    if (version) {
+      return version;
+    }
+    const versions = await this.getVersions();
+    return versions[fallbackname];
+  }
+
+  /**
    * Clone the current configuration into a new version.
    *
    * @param {string} version - The version to be cloned.
@@ -528,8 +576,11 @@ class Fastly {
    });
    * @returns {Promise} The response object representing the completion or failure.
    */
-  cloneVersion(version = '') {
-    return this.request.put(`/service/${this.service_id}/version/${version}/clone`);
+  async cloneVersion(version) {
+    const versions = await this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'active')}/clone`);
+    this.versions.current = versions.data.number;
+    this.versions.latest = versions.data.number;
+    return versions;
   }
 
   /**
@@ -548,8 +599,11 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
-  activateVersion(version = '') {
-    return this.request.put(`/service/${this.service_id}/version/${version}/activate`);
+  async activateVersion(version) {
+    const versions = await this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/activate`);
+    this.versions.active = versions.data.number;
+    this.versions.latest = versions.data.number;
+    return versions;
   }
 
   /**
@@ -567,8 +621,8 @@ class Fastly {
    });
    * @returns {Promise} The response object representing the completion or failure.
    */
-  domainCheckAll(version = '') {
-    return this.request.get(`/service/${this.service_id}/version/${version}/domain/check_all`);
+  async domainCheckAll(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/domain/check_all`);
   }
 
   /**
@@ -588,8 +642,8 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
-  readDomains(version = '') {
-    return this.request.get(`/service/${this.service_id}/version/${version}/domain`);
+  async readDomains(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/domain`);
   }
 
   /**
@@ -607,8 +661,8 @@ class Fastly {
    * @param {string} version - The current version of a service.
    * @returns {Promise} The response object representing the completion or failure.
    */
-  readBackends(version = '') {
-    return this.request.get(`/service/${this.service_id}/version/${version}/backend`);
+  async readBackends(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/backend`);
   }
 
   /**
@@ -629,8 +683,8 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
-  updateBackend(version = '', name = '', data = {}) {
-    return this.request.put(`/service/${this.service_id}/version/${version}/backend/${encodeURIComponent(name)}`, data);
+  async updateBackend(version, name, data) {
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/backend/${encodeURIComponent(name)}`, data);
   }
   /**
    * @typedef {Object} Snippet
@@ -660,8 +714,8 @@ class Fastly {
    * @param {Snippet} data - The data to be sent as the request body.
    * @returns {Promise} The response object representing the completion or failure.
    */
-  createSnippet(version = '', data = {}) {
-    return this.request.post(`/service/${this.service_id}/version/${version}/snippet`, data);
+  async createSnippet(version, data) {
+    return this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/snippet`, data);
   }
 
   /**
@@ -673,8 +727,8 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
-  updateSnippet(version = '', name = '', data = {}) {
-    return this.request.put(`/service/${this.service_id}/version/${version}/snippet/${name}`, data);
+  async updateSnippet(version, name, data) {
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/snippet/${name}`, data);
   }
 
   /**
@@ -694,8 +748,8 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
-  createVCL(version = '', data = {}) {
-    return this.request.post(`/service/${this.service_id}/version/${version}/vcl`, data);
+  async createVCL(version, data) {
+    return this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/vcl`, data);
   }
 
   /**
@@ -708,8 +762,8 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
-  updateVCL(version = '', name = '', data = {}) {
-    return this.request.put(`/service/${this.service_id}/version/${version}/vcl/${name}`, data);
+  async updateVCL(version, name, data) {
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/vcl/${name}`, data);
   }
 
   /**
@@ -721,8 +775,8 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    * @fulfil {Response}
    */
-  setMainVCL(version = '', name = '') {
-    return this.request.put(`/service/${this.service_id}/version/${version}/vcl/${name}/main`, {});
+  async setMainVCL(version, name) {
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/vcl/${name}/main`, {});
   }
 }
 
@@ -732,4 +786,4 @@ class Fastly {
  * @param {string} token - The Fastly API token.
  * @param {string} service_id - The Fastly service ID.
  */
-module.exports = (token = '', service_id = '') => new Fastly(token, service_id);
+module.exports = (token, service_id) => new Fastly(token, service_id);

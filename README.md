@@ -205,6 +205,9 @@ HTTP status code can be retrieved. Known error status codes include:</p>
 </dd>
 <dt><a href="#Response">Response</a> : <code>Object</code></dt>
 <dd></dd>
+<dt><a href="#Versions">Versions</a> : <code>Object</code></dt>
+<dd><p>Describes the most relevant versions of the service.</p>
+</dd>
 <dt><a href="#Snippet">Snippet</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#VCL">VCL</a> : <code>Object</code></dt>
@@ -234,6 +237,7 @@ HTTP status code can be retrieved. Known error status codes include:</p>
     * [.edgeCheck(url)](#Fastly+edgeCheck) ⇒ <code>Promise</code>
     * [.readServices()](#Fastly+readServices) ⇒ <code>Promise</code>
     * [.readVersions()](#Fastly+readVersions) ⇒ <code>Promise</code>
+    * [.getVersions()](#Fastly+getVersions) ⇒ [<code>Versions</code>](#Versions)
     * [.cloneVersion(version)](#Fastly+cloneVersion) ⇒ <code>Promise</code>
     * [.activateVersion(version)](#Fastly+activateVersion) ⇒ <code>Promise</code>
     * [.domainCheckAll(version)](#Fastly+domainCheckAll) ⇒ <code>Promise</code>
@@ -568,6 +572,13 @@ instance.readVersions()
      console.log(err.message);
    });
 ```
+<a name="Fastly+getVersions"></a>
+
+#### fastly.getVersions() ⇒ [<code>Versions</code>](#Versions)
+Gets the version footprint for the service.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: [<code>Versions</code>](#Versions) - The latest, current, and active versions of the service.  
 <a name="Fastly+cloneVersion"></a>
 
 #### fastly.cloneVersion(version) ⇒ <code>Promise</code>
@@ -903,6 +914,20 @@ HTTP status code can be retrieved. Known error status codes include:
 | config | <code>Object</code> | The original request configuration used for the HTTP client |
 | request | <code>Object</code> | the HTTP request |
 | data | <code>Object</code> | the parsed body of the HTTP response |
+
+<a name="Versions"></a>
+
+### Versions : <code>Object</code>
+Describes the most relevant versions of the service.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| latest | <code>number</code> | the latest version of the service |
+| active | <code>number</code> | the currently active version number |
+| current | <code>number</code> | the latest editable version number |
 
 <a name="Snippet"></a>
 
