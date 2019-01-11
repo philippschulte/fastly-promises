@@ -32,6 +32,9 @@
     "node": ">=8.0.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/git": "^7.0.7",
+    "@semantic-release/github": "^5.2.8",
     "codecov": "^3.0.2",
     "commitizen": "3.0.5",
     "cz-conventional-changelog": "2.1.0",
