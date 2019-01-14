@@ -56,11 +56,31 @@ const fastly = require('@adobe/fastly-native-promises');
 const service_1 = fastly('token', 'service_id_1');
 const serivce_2 = fastly('token', 'service_id_2');
 
-// read/write baseURL property
-console.log(service_1.request.defaults.baseURL); // https://api.fastly.com
+// make changes
 
-// read/write timeout property
-console.log(service_1.request.defaults.timeout); // 3000
+service_1.transact(async () => {
+  return this.writeS3('test-s3', {
+    name: 'test-s3',
+    bucket_name: 'my_corporate_bucket',
+    access_key: 'AKIAIOSFODNN7EXAMPLE',
+    secret_key: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+  });
+});
+
+
+service_2.transact(async () => {
+  return this.writeBigquery('test-bq', {
+    name: 'test-bq',
+    format: '{\n "timestamp":"%{begin:%Y-%m-%dT%H:%M:%S}t",\n  "time_elapsed":%{time.elapsed.usec}V,\n  "is_tls":%{if(req.is_ssl, "true", "false")}V,\n  "client_ip":"%{req.http.Fastly-Client-IP}V",\n  "geo_city":"%{client.geo.city}V",\n  "geo_country_code":"%{client.geo.country_code}V",\n  "request":"%{req.request}V",\n  "host":"%{req.http.Fastly-Orig-Host}V",\n  "url":"%{json.escape(req.url)}V",\n  "request_referer":"%{json.escape(req.http.Referer)}V",\n  "request_user_agent":"%{json.escape(req.http.User-Agent)}V",\n  "request_accept_language":"%{json.escape(req.http.Accept-Language)}V",\n  "request_accept_charset":"%{json.escape(req.http.Accept-Charset)}V",\n  "cache_status":"%{regsub(fastly_info.state, "^(HIT-(SYNTH)|(HITPASS|HIT|MISS|PASS|ERROR|PIPE)).*", "\\\\2\\\\3") }V"\n}',
+    user: 'fastly-bigquery-log@example-fastly-log.iam.gserviceaccount.com',
+    project_id: 'example-fastly-log',
+    dataset: 'fastly_log_test',
+    table: 'fastly_logs',
+    template_suffix: null,
+    secret_key: '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC7bPG9yaIYd5AL\nmvOaYvNozFJB/VWS53KWBll769kJvlmgMks6r6Xrv8w6rjxWKjZeDrnXVf7UDa0F\nckPPIFvXRxahftWFMGArw0lIvQzgT4/BlndXU5RNxfah/8m7q/GIF6oNYWzfJwvv\nzodxDUqIRH2e2JWidNRjElHuogYHLhV4O/od5pAkfDwak/ihuuh/2VA3Auwb3nph\ndX2F0JBs14oPKZUTYUUSzUQY5IMxSxYUA4Q7W4v21x1EnJt+biXOrERk1rm4ieEE\nU3WkjR5c5gvG8xcWyYod87RNFELmIhCCytI1+t5C3Em/jPsQFtLzwHpbNhdW4oEm\nn7d06n75AgMBAAECggEAWRh26lNZfOwJS5sDRlbXgu/uAnSdI1JmxC6Mhz4cVGdq\nT57Y6DLrWuA4A4UkJYm3gorZiSXWF5PQthAVb/bf8bxXY7nZYpEWhnc09SD5aAAq\nREp0vMx8aWQ709K2YUJg+zDUo7u2d3YmVH8HH5TD43c7iDFJIIsNE3N4A0p+NxZ+\nw06FFW+fz/etrWiNyhrlTsbkMbSgU+GpFFBq1pCd0ni5d1YM1rsaAaUpmkwdjgjL\noDs+M/L/HtqfEhyZNdw8JF7EJXVE1bIl7/NL0rBInhyO28FcB56t/AG5nzXKFI/c\nc+IO7d6MOOqiGRLRWZItEpnyzuV8DZo461wy1hSvqQKBgQDhSsg2cHkTrtBW8x0A\n3BwB/ygdkkxm1OIvfioT+JBneRufUPvVIM2aPZBBGKEedDAmIGn/8f9XAHhKjs8B\nEsPRgE206s4+hnrTcK7AeWWPvM9FDkrkQCoJFuJrNy9mJt8gs7AnnoBa9u/J4naW\ne1tfC8fUfsa7kdzblDhcRQ8FhwKBgQDU+N4kPzIdUuJDadd6TkBbjUNPEfZzU5+t\nIike2VSRhApxAxviUnTDsTROwJRzKik9w7gIMka8Ek+nmLNMEtds77ttcGQRdu16\n+vT1iualiCJe+/iMbl+PiJtFwhEHECLU9QfgBVS6r2lDAlZA+w6nwCRiidlrObzO\nCXqVOzN3fwKBgAsrOuu//bClHP0ChnCReO38aU+1/gWnDiOOnKVq0DXhAiaOzD1P\nqAG6hZlEkFBDMPWzq62doKv+gPgpRkfmV0DenHuYnGrrHdG3p2IxYoCSuq/QupPA\nPpU+xjDMhpQI30zuu4/rQq+/yDl4+aoSKYB3xAtb0Zxg6dMU8QpZ/hmnAoGBAIFu\nIesbcQR7O8FGkMrmxZweNNrYCtQ57R/WU/FImWm6OnJGNmsMO6Q2jJiT12RKKjg8\nOxrYGz7vTfOIDOddyAiPhXPUSyyF/3uvCrIzUUsmeeUJ8xq9dVwQ5HS3pYuKVfDg\nXYHbG4w9UJaF1A+3xEdUsYglSLouo7z/67zH9tZXAoGBAKpsdjSd3R+llaAv2HQ8\nGMlN92UTr5i9w++QMXq4qspH5NEYqz3NHbKuYthZqxEsRUZbRP50eDWU4jvxFVJl\nLBFINp6B+3AsIme0YCyOaleB/Cy0347miSinSv2I6QiH6dQxHdHzrG+x1evS/76f\nKT0KS+ySjCAEWgg4v+mjUDUV\n-----END PRIVATE KEY-----\n',
+    response_condition: '',
+  });
+});
 ```
 
 ### Promises
@@ -253,6 +273,8 @@ HTTP status code can be retrieved. Known error status codes include:</p>
     * [.createVCL(version, data)](#Fastly+createVCL) ⇒ <code>Promise</code>
     * [.updateVCL(version, name, data)](#Fastly+updateVCL) ⇒ <code>Promise</code>
     * [.setMainVCL(version, name)](#Fastly+setMainVCL) ⇒ <code>Promise</code>
+    * [.transact(operations, activate)](#Fastly+transact) ⇒ <code>Object</code>
+    * [.dryrun(operations)](#Fastly+dryrun) ⇒ <code>Object</code>
 
 <a name="new_Fastly_new"></a>
 
@@ -816,6 +838,41 @@ Define a custom VCL to be the main VCL for a particular service and version.
 | --- | --- | --- |
 | version | <code>string</code> | The current version of a service. |
 | name | <code>string</code> | The name of the VCL to declare main. |
+
+<a name="Fastly+transact"></a>
+
+#### fastly.transact(operations, activate) ⇒ <code>Object</code>
+Creates a new version, runs the function `operations` and then
+optionally activates the newly created version. This function
+is useful for making modifications to a service config.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Object</code> - The return value of the wrapped function.  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| operations | <code>function</code> |  | A function that performs changes on the service config. |
+| activate | <code>boolean</code> | <code>true</code> | Set to false to prevent automatic activation. |
+
+**Example**  
+```javascript
+await fastly.transact(async (newversion) => {
+ await fastly.doSomething(newversion);
+});
+// new version has been activated
+```
+<a name="Fastly+dryrun"></a>
+
+#### fastly.dryrun(operations) ⇒ <code>Object</code>
+See `transact`, but this version does not activate the created version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Object</code> - Whatever `operations` returns.  
+**See**: #transact  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| operations | <code>function</code> | The operations that should be applied to the cloned service config version. |
 
 <a name="CreateFunction"></a>
 
