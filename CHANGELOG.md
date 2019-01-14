@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/adobe/fastly-native-promises/compare/v1.1.0...v1.1.1) (2019-01-14)
+
+
+### Performance Improvements
+
+* **httpclient:** Increase default timeout to 5 seconds ([115da20](https://github.com/adobe/fastly-native-promises/commit/115da20))
+
 # [1.1.0](https://github.com/adobe/fastly-native-promises/compare/v1.0.3...v1.1.0) (2019-01-14)
 
 
