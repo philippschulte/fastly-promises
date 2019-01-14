@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/adobe/fastly-native-promises/compare/v1.1.1...v1.1.2) (2019-01-14)
+
+
+### Bug Fixes
+
+* **index:** Fix arity of createFn in writeFn ([e5be90e](https://github.com/adobe/fastly-native-promises/commit/e5be90e))
+
 ## [1.1.1](https://github.com/adobe/fastly-native-promises/compare/v1.1.0...v1.1.1) (2019-01-14)
 
 
