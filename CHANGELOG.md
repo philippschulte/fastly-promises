@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/adobe/fastly-native-promises/compare/v1.0.3...v1.1.0) (2019-01-14)
+
+
+### Features
+
+* **fastly:** Add basic transaction support ([15a4f29](https://github.com/adobe/fastly-native-promises/commit/15a4f29)), closes [#21](https://github.com/adobe/fastly-native-promises/issues/21)
+
 ## [1.0.3](https://github.com/adobe/fastly-native-promises/compare/v1.0.2...v1.0.3) (2019-01-14)
 
 
