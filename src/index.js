@@ -146,7 +146,7 @@ class Fastly {
     this.service_id = service_id;
     this.request = axios.create({
       baseURL: config.mainEntryPoint,
-      timeout: 3000,
+      timeout: 5000,
       headers: { 'Fastly-Key': token },
     });
 
