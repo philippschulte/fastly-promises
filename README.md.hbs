@@ -2,6 +2,7 @@
 
 > Native Promise based Fastly API client for Node.js
 
+[![NPM Version](https://img.shields.io/npm/v/@adobe/fastly-native-promises.svg)](https://www.npmjs.com/package/@adobe/fastly-native-promises)
 [![Known Vulnerabilities](https://snyk.io/test/github/adobe/fastly-native-promises/badge.svg?targetFile=package.json)](https://snyk.io/test/github/adobe/fastly-native-promises?targetFile=package.json)
 [![codecov](https://img.shields.io/codecov/c/github/adobe/fastly-native-promises.svg)](https://codecov.io/gh/adobe/fastly-native-promises)
 [![CircleCI](https://img.shields.io/circleci/project/github/adobe/fastly-native-promises.svg)](https://circleci.com/gh/adobe/fastly-native-promises)
