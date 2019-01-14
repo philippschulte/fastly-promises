@@ -22,7 +22,7 @@ function create({ baseURL, timeout, headers }) {
         json: true,
         form: body,
         timeout,
-        myheaders,
+        headers: myheaders,
         resolveWithFullResponse: true,
         simple: false,
       };
