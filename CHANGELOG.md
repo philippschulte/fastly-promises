@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/adobe/fastly-native-promises/compare/v1.0.2...v1.0.3) (2019-01-14)
+
+
+### Bug Fixes
+
+* **httpclient:** Fix headers and authentication ([fa30c84](https://github.com/adobe/fastly-native-promises/commit/fa30c84)), closes [#20](https://github.com/adobe/fastly-native-promises/issues/20)
+
 ## [1.0.2](https://github.com/adobe/fastly-native-promises/compare/v1.0.1...v1.0.2) (2019-01-11)
 
 
