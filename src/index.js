@@ -778,6 +778,43 @@ class Fastly {
   async setMainVCL(version, name) {
     return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/vcl/${name}/main`, {});
   }
+
+  /**
+   * Creates a new version, runs the function `operations` and then
+   * optionally activates the newly created version. This function
+   * is useful for making modifications to a service config.
+   *
+   * @example
+   * ```javascript
+   * await fastly.transact(async (newversion) => {
+   *  await fastly.doSomething(newversion);
+   * });
+   * // new version has been activated
+   * ```
+   * @param {Function} operations - A function that performs changes on the service config.
+   * @param {boolean} activate - Set to false to prevent automatic activation.
+   * @returns {Object} The return value of the wrapped function.
+   */
+  async transact(operations, activate = true) {
+    const newversion = (await this.cloneVersion()).data.number;
+    const result = await operations.apply(this, [newversion]);
+    if (activate) {
+      await this.activateVersion(newversion);
+    }
+    return result;
+  }
+
+  /**
+   * See `transact`, but this version does not activate the created version.
+   *
+   * @see #transact
+   * @param {Function} operations - The operations that should be applied to the
+   * cloned service config version.
+   * @returns {Object} Whatever `operations` returns.
+   */
+  async dryrun(operations) {
+    return this.transact(operations, false);
+  }
 }
 
 /**
