@@ -269,6 +269,7 @@ HTTP status code can be retrieved. Known error status codes include:</p>
     * [.readDomains(version)](#Fastly+readDomains) ⇒ <code>Promise</code>
     * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
     * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
+    * [.createBackend(version, data)](#Fastly+createBackend) ⇒ <code>Promise</code>
     * [.createSnippet(version, data)](#Fastly+createSnippet) ⇒ <code>Promise</code>
     * [.updateSnippet(version, name, data)](#Fastly+updateSnippet) ⇒ <code>Promise</code>
     * [.createVCL(version, data)](#Fastly+createVCL) ⇒ <code>Promise</code>
@@ -749,6 +750,21 @@ instance.updateBackend('34', 'slow-server', { name: 'fast-server' })
      console.log(err.message);
    });
 ```
+<a name="Fastly+createBackend"></a>
+
+#### fastly.createBackend(version, data) ⇒ <code>Promise</code>
+Create a new backend for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The reponse object.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#backend_85c170418ee71191dbb3b5046aeb6c2c  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | The version number (current if omitted). |
+| data | <code>Object</code> | The backend definition. |
+
 <a name="Fastly+createSnippet"></a>
 
 #### fastly.createSnippet(version, data) ⇒ <code>Promise</code>

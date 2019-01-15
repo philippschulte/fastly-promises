@@ -277,6 +277,7 @@ class Fastly {
 
     this.writeVCL = this.upsertFn(this.createVCL, this.updateVCL);
     this.writeSnippet = this.upsertFn(this.createSnippet, this.updateSnippet);
+    this.writeBackend = this.upsertFn(this.createBackend, this.updateBackend);
   }
   /**
    * @typedef {Object} FastlyError
@@ -685,6 +686,19 @@ class Fastly {
    */
   async updateBackend(version, name, data) {
     return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/backend/${encodeURIComponent(name)}`, data);
+  }
+
+  /**
+   * Create a new backend for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#backend_85c170418ee71191dbb3b5046aeb6c2c
+   * @param {number} version - The version number (current if omitted).
+   * @param {Object} data - The backend definition.
+   * @returns {Promise} The reponse object.
+   * @fulfil {Response}
+   */
+  async createBackend(version, data) {
+    return this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/backend`, data);
   }
   /**
    * @typedef {Object} Snippet
