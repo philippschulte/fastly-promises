@@ -267,6 +267,17 @@ HTTP status code can be retrieved. Known error status codes include:</p>
     * [.activateVersion(version)](#Fastly+activateVersion) ⇒ <code>Promise</code>
     * [.domainCheckAll(version)](#Fastly+domainCheckAll) ⇒ <code>Promise</code>
     * [.readDomains(version)](#Fastly+readDomains) ⇒ <code>Promise</code>
+    * [.readDictItems(version, name)](#Fastly+readDictItems) ⇒ <code>Promise</code>
+    * [.readDictItem(version, name, key)](#Fastly+readDictItem) ⇒ <code>Promise</code>
+    * [.createDictItem(version, name, key, value)](#Fastly+createDictItem) ⇒ <code>Promise</code>
+    * [.updateDictItem(version, name, key, value)](#Fastly+updateDictItem) ⇒ <code>Promise</code>
+    * [.deleteDictItem(version, name, key)](#Fastly+deleteDictItem) ⇒ <code>Promise</code>
+    * [.writeDictItem(version, name, key, value)](#Fastly+writeDictItem) ⇒ <code>Promise</code>
+    * [.readDictionaries(version)](#Fastly+readDictionaries) ⇒ <code>Promise</code>
+    * [.readDictionary(version, name)](#Fastly+readDictionary) ⇒ <code>Promise</code>
+    * [.createDictionary(version, data)](#Fastly+createDictionary) ⇒ <code>Promise</code>
+    * [.updateDictionary(version, name, data)](#Fastly+updateDictionary) ⇒ <code>Promise</code>
+    * [.deleteDictionary(version, name)](#Fastly+deleteDictionary) ⇒ <code>Promise</code>
     * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
     * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
     * [.createBackend(version, data)](#Fastly+createBackend) ⇒ <code>Promise</code>
@@ -694,6 +705,253 @@ List all the domains for a particular service and version.
 **Example**  
 ```js
 instance.readDomains('182')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+readDictItems"></a>
+
+#### fastly.readDictItems(version, name) ⇒ <code>Promise</code>
+List all dictionary items for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#dictionary_item_a48de28cd7e76c1ea58523f39bb7204b  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The version of the dictionary. |
+| name | <code>string</code> | The name of the dictionary. |
+
+**Example**  
+```js
+instance.readDictItems(1, 'my_dictionary')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+readDictItem"></a>
+
+#### fastly.readDictItem(version, name, key) ⇒ <code>Promise</code>
+Get details of a single dictionary item.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#dictionary_item_08f090cd03ed4602ae63f131087e2f29  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | Name of the dictionary. |
+| key | <code>string</code> | The key to retrieve values by. |
+
+**Example**  
+```js
+instance.readDictItem('12', 'extensions', 'some_key')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+createDictItem"></a>
+
+#### fastly.createDictItem(version, name, key, value) ⇒ <code>Promise</code>
+Create a new dictionary item for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The reponse object.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#dictionary_item_6ec455c0ba1b21671789e1362bc7fe55  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | The version number (current if omitted). |
+| name | <code>Object</code> | The dictionary definition. |
+| key | <code>string</code> | The key. |
+| value | <code>string</code> | The value to write. |
+
+<a name="Fastly+updateDictItem"></a>
+
+#### fastly.updateDictItem(version, name, key, value) ⇒ <code>Promise</code>
+Update a dictionary item value for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#dictionary_item_34c884a7cdce84dfcfd38dac7a0b5bb0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the dictionary. |
+| key | <code>string</code> | The key to update data under. |
+| value | <code>string</code> | The value to update the dictionary with. |
+
+**Example**  
+```js
+instance.updateDictItem(1, 'extensions', 'html', 'text/html')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+deleteDictItem"></a>
+
+#### fastly.deleteDictItem(version, name, key) ⇒ <code>Promise</code>
+Delete a dictionary item for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#dictionary_item_664347e743b8eafc9a93c729d9da0427  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the dictionary. |
+| key | <code>string</code> | The key to update data under. |
+
+**Example**  
+```js
+instance.deleteDictItem('34', 'extensions', 'html')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+writeDictItem"></a>
+
+#### fastly.writeDictItem(version, name, key, value) ⇒ <code>Promise</code>
+Safely create, update or delete a dictionary item in a named dictionary.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | Service version to use for dictionary lookup. |
+| name | <code>string</code> | Name of the dictionary (not ID). |
+| key | <code>string</code> | Key to create, update or delete. |
+| value | <code>string</code> | Value to update. Empty strings will delete the dictionary entry. |
+
+<a name="Fastly+readDictionaries"></a>
+
+#### fastly.readDictionaries(version) ⇒ <code>Promise</code>
+List all dictionaries for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#dictionary_6d2cc293b994eb8c16d93e92e91f3915  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+
+**Example**  
+```js
+instance.readDictionaries('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+readDictionary"></a>
+
+#### fastly.readDictionary(version, name) ⇒ <code>Promise</code>
+Get details of a single dictionary.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#dictionary_0e16df083830ed3b6c30b73dcef64014  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | Name of the dictionary. |
+
+**Example**  
+```js
+instance.readDictionary('12', 'extensions')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+createDictionary"></a>
+
+#### fastly.createDictionary(version, data) ⇒ <code>Promise</code>
+Create a new dictionary for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The reponse object.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#dictionary_7d48b87bf82433162a3b209292722125  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | The version number (current if omitted). |
+| data | <code>Object</code> | The dictionary definition. |
+
+<a name="Fastly+updateDictionary"></a>
+
+#### fastly.updateDictionary(version, name, data) ⇒ <code>Promise</code>
+Update a dictionary for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#dictionary_8c9da370b1591d99e5389143a5589a32  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the dictionary. |
+| data | <code>Object</code> | The data to be sent as the request body. |
+
+**Example**  
+```js
+instance.updateDictionary('34', 'old-name', { name: 'new-name' })
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+deleteDictionary"></a>
+
+#### fastly.deleteDictionary(version, name) ⇒ <code>Promise</code>
+Delete a dictionary for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#dictionary_8c9da370b1591d99e5389143a5589a32  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the dictionary. |
+
+**Example**  
+```js
+instance.deleteDictionary('34', 'extensions')
    .then(res => {
      console.log(res.data);
    })
