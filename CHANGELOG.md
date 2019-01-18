@@ -1,3 +1,11 @@
+# [1.3.0](https://github.com/adobe/fastly-native-promises/compare/v1.2.0...v1.3.0) (2019-01-18)
+
+
+### Features
+
+* **fastly:** Add CRUD support for Dictionary Items ([f9769ec](https://github.com/adobe/fastly-native-promises/commit/f9769ec)), closes [#6](https://github.com/adobe/fastly-native-promises/issues/6)
+* **fastly:** Add CRUD support for edge dictionaries ([8458107](https://github.com/adobe/fastly-native-promises/commit/8458107)), closes [#6](https://github.com/adobe/fastly-native-promises/issues/6)
+
 # [1.2.0](https://github.com/adobe/fastly-native-promises/compare/v1.1.2...v1.2.0) (2019-01-15)
 
 
