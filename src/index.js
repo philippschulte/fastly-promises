@@ -652,6 +652,167 @@ class Fastly {
     return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/domain`);
   }
 
+  // === start ===
+
+  /**
+   * List all dictionary items for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_item_a48de28cd7e76c1ea58523f39bb7204b
+   * @example
+   * instance.readDictItems(1, 'my_dictionary')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The version of the dictionary.
+   * @param {string} name - The name of the dictionary.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readDictItems(version, name) {
+    return this.readDictionary(
+      await this.getVersion(version, 'latest'),
+      name,
+    ).then(({ data }) => this.request.get(`/service/${this.service_id}/dictionary/${data.id}/items`));
+  }
+
+  /**
+   * Get details of a single dictionary item.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_item_08f090cd03ed4602ae63f131087e2f29
+   * @example
+   * instance.readDictItem('12', 'extensions', 'some_key')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - Name of the dictionary.
+   * @param {string} key - The key to retrieve values by.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readDictItem(version, name, key) {
+    return this.readDictionary(
+      await this.getVersion(version, 'latest'),
+      name,
+    ).then(({ data }) => this.request.get(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`));
+  }
+
+  /**
+   * Create a new dictionary item for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_item_6ec455c0ba1b21671789e1362bc7fe55
+   * @param {number} version - The version number (current if omitted).
+   * @param {Object} name - The dictionary definition.
+   * @param {string} key - The key.
+   * @param {string} value - The value to write.
+   * @returns {Promise} The reponse object.
+   * @fulfil {Response}
+   */
+  async createDictItem(version, name, key, value) {
+    return this.readDictionary(
+      await this.getVersion(version, 'latest'),
+      name,
+    ).then(({ data }) => this.request.post(`/service/${this.service_id}/dictionary/${data.id}/item`, {
+      item_key: key,
+      item_value: value,
+    }));
+  }
+
+  /**
+   * Update a dictionary item value for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_item_34c884a7cdce84dfcfd38dac7a0b5bb0
+   * @example
+   * instance.updateDictItem(1, 'extensions', 'html', 'text/html')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the dictionary.
+   * @param {string} key - The key to update data under.
+   * @param {string} value - The value to update the dictionary with.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async updateDictItem(version, name, key, value) {
+    return this.readDictionary(
+      await this.getVersion(version, 'latest'),
+      name,
+    ).then(({ data }) => this.request.put(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`, {
+      item_value: value,
+    }));
+  }
+
+  /**
+   * Delete a dictionary item for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_item_664347e743b8eafc9a93c729d9da0427
+   * @example
+   * instance.deleteDictItem('34', 'extensions', 'html')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the dictionary.
+   * @param {string} key - The key to update data under.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async deleteDictItem(version, name, key) {
+    return this.readDictionary(
+      await this.getVersion(version, 'latest'),
+      name,
+    ).then(({ data }) => this.request.delete(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`));
+  }
+
+  /**
+   * Safely create, update or delete a dictionary item in a named dictionary.
+   *
+   * @param {number} version - Service version to use for dictionary lookup.
+   * @param {string} name - Name of the dictionary (not ID).
+   * @param {string} key - Key to create, update or delete.
+   * @param {string} value - Value to update. Empty strings will delete the dictionary entry.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  writeDictItem(version, name, key, value) {
+    return this.readDictItem(version, name, key)
+      .then(() => {
+        // the dictionary item already exists
+        if (value) {
+          // update existing value
+          return this.updateDictItem(version, name, key, value);
+        }
+        // value is undefined. Fastly does not support overwriting with empty
+        // values, so we delete the value
+        return this.deleteDictItem(version, name, key);
+      })
+      .catch(() => {
+        // the dictionary item does not exist
+        if (value) {
+          return this.createDictItem(version, name, key, value);
+        }
+        // the item does not exist and there is no data to write, we just pretend it went ok
+        return {
+          status: 200,
+          data: {
+            status: 'ok',
+          },
+        };
+      });
+  }
+
+  // === done ===
+
   /**
    * List all dictionaries for a particular service and version.
    *
