@@ -278,6 +278,11 @@ class Fastly {
     this.writeVCL = this.upsertFn(this.createVCL, this.updateVCL);
     this.writeSnippet = this.upsertFn(this.createSnippet, this.updateSnippet);
     this.writeBackend = this.upsertFn(this.createBackend, this.updateBackend);
+    this.writeDictionary = this.upsertFn(
+      this.createDictionary,
+      this.updateDictionary,
+      this.readDictionary,
+    );
   }
   /**
    * @typedef {Object} FastlyError
@@ -645,6 +650,101 @@ class Fastly {
    */
   async readDomains(version) {
     return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/domain`);
+  }
+
+  /**
+   * List all dictionaries for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_6d2cc293b994eb8c16d93e92e91f3915
+   * @example
+   * instance.readDictionaries('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readDictionaries(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/dictionary`);
+  }
+
+  /**
+   * Get details of a single dictionary.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_0e16df083830ed3b6c30b73dcef64014
+   * @example
+   * instance.readDictionary('12', 'extensions')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - Name of the dictionary.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readDictionary(version, name) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/dictionary/${name}`);
+  }
+
+  /**
+   * Create a new dictionary for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_7d48b87bf82433162a3b209292722125
+   * @param {number} version - The version number (current if omitted).
+   * @param {Object} data - The dictionary definition.
+   * @returns {Promise} The reponse object.
+   * @fulfil {Response}
+   */
+  async createDictionary(version, data) {
+    return this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/dictionary`, data);
+  }
+
+  /**
+   * Update a dictionary for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_8c9da370b1591d99e5389143a5589a32
+   * @example
+   * instance.updateDictionary('34', 'old-name', { name: 'new-name' })
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the dictionary.
+   * @param {Object} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async updateDictionary(version, name, data) {
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/dictionary/${encodeURIComponent(name)}`, data);
+  }
+
+  /**
+   * Delete a dictionary for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#dictionary_8c9da370b1591d99e5389143a5589a32
+   * @example
+   * instance.deleteDictionary('34', 'extensions')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the dictionary.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async deleteDictionary(version, name) {
+    return this.request.delete(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/dictionary/${encodeURIComponent(name)}`);
   }
 
   /**
