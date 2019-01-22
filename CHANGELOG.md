@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/adobe/fastly-native-promises/compare/v1.3.1...v1.3.2) (2019-01-22)
+
+
+### Bug Fixes
+
+* **fastly:** Return undefined for dict values of write-only edge dicts ([ab5972a](https://github.com/adobe/fastly-native-promises/commit/ab5972a)), closes [#27](https://github.com/adobe/fastly-native-promises/issues/27)
+
 ## [1.3.1](https://github.com/adobe/fastly-native-promises/compare/v1.3.0...v1.3.1) (2019-01-22)
 
 
