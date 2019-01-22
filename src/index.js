@@ -125,9 +125,9 @@ class Fastly {
   upsertFn(createFn, updateFn, readFn) {
     if (readFn) {
       // careful
-      return (version, name, data) => readFn(version, name)
-        .then(() => updateFn(version, name, data))
-        .catch(() => createFn(version, data));
+      return (version, name, data) => readFn.apply(this, [version, name])
+        .then(() => updateFn.apply(this, [version, name, data]))
+        .catch(() => createFn.apply(this, [version, data]));
     }
     // stubborn
     return (version, name, data) => createFn.apply(this, [version, data])
