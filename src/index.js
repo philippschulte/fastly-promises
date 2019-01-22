@@ -698,7 +698,23 @@ class Fastly {
     return this.readDictionary(
       await this.getVersion(version, 'latest'),
       name,
-    ).then(({ data }) => this.request.get(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`));
+    ).then(({ data }) => {
+      if (data.write_only) {
+        return {
+          status: 403, // not permitted to read from write-only dicts
+          data: {
+            dictionary_id: data.id,
+            service_id: this.service_id,
+            item_key: key,
+            item_value: undefined,
+            created_at: undefined,
+            deleted_at: undefined,
+            updated_at: undefined,
+          },
+        };
+      }
+      return this.request.get(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`);
+    });
   }
 
   /**
