@@ -22,6 +22,16 @@ module.exports = {
       version: 1,
       write_only: false,
     },
+    getsecret: {
+      created_at: '2016-05-03T16:11:41+00:00',
+      deleted_at: null,
+      id: '5clCytcTJrnvPi8wjqPH0q',
+      name: 'my_dictionary',
+      service_id: 'SU1Z0isxPaozGVKXdv0eY',
+      updated_at: '2016-05-03T16:20:35+00:00',
+      version: 1,
+      write_only: true,
+    },
     post: {
       created_at: '2016-05-03T16:11:41+00:00',
       deleted_at: null,
