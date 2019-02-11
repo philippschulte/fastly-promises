@@ -32,6 +32,7 @@
     "node": ">=8.0.0"
   },
   "devDependencies": {
+    "@adobe/helix-testutils": "^0.2.0",
     "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/git": "^7.0.7",
     "@semantic-release/github": "^5.2.8",
