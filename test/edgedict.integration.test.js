@@ -27,11 +27,27 @@ describe('#integration edge dictionary updates', () => {
     }, false);
   }).timeout(5000);
 
+  condit('Create Write-Only Edge Dictionary', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
+    await fastly.transact(async (version) => {
+      await fastly.writeDictionary(version, 'test_wo_dict', {
+        name: 'test_wo_dict',
+        write_only: true,
+      });
+    }, false);
+  }).timeout(5000);
+
   condit('Set Edge Dictionary Value', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
     const version = await fastly.getVersion(undefined, 'current');
     await fastly.writeDictItem(version, 'test_dict', 'some_key', 'some_value');
     const val = await fastly.readDictItem(version, 'test_dict', 'some_key');
     assert.deepEqual(val.data.item_value, 'some_value');
+  }).timeout(5000);
+
+  condit('Set Write-Only Edge Dictionary Value', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
+    const version = await fastly.getVersion(undefined, 'current');
+    await fastly.writeDictItem(version, 'test_wo_dict', 'some_key', 'some_value');
+    const val = await fastly.readDictItem(version, 'test_wo_dict', 'some_key');
+    assert.deepEqual(val.data.item_value, undefined);
   }).timeout(5000);
 
   condit('Update Edge Dictionary Value', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
@@ -40,6 +56,14 @@ describe('#integration edge dictionary updates', () => {
     await fastly.writeDictItem(version, 'test_dict', 'some_key', 'some_new_value');
     const val = await fastly.readDictItem(version, 'test_dict', 'some_key');
     assert.deepEqual(val.data.item_value, 'some_new_value');
+  }).timeout(10000);
+
+  condit('Update Write-Only Edge Dictionary Value', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
+    const version = await fastly.getVersion(undefined, 'current');
+    await fastly.writeDictItem(version, 'test_wo_dict', 'some_key', 'some_old_value');
+    await fastly.writeDictItem(version, 'test_wo_dict', 'some_key', 'some_new_value');
+    const val = await fastly.readDictItem(version, 'test_wo_dict', 'some_key');
+    assert.deepEqual(val.data.item_value, undefined);
   }).timeout(10000);
 
   condit('Delete Edge Dictionary Value', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
@@ -55,5 +79,14 @@ describe('#integration edge dictionary updates', () => {
       }
       assert.equal(e.status, 404);
     }
+  }).timeout(10000);
+
+
+  condit('Delete Write-Only Edge Dictionary Value', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
+    const version = await fastly.getVersion(undefined, 'current');
+    await fastly.writeDictItem(version, 'test_wo_dict', 'some_new_key', 'some_old_value');
+    await fastly.writeDictItem(version, 'test_wo_dict', 'some_new_key', undefined);
+    const val = await fastly.readDictItem(version, 'test_wo_dict', 'some_key');
+    assert.deepEqual(val.data.item_value, undefined);
   }).timeout(10000);
 });
