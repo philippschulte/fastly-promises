@@ -11,6 +11,7 @@ const response = require('./response/dictionary.response');
 describe('#updateDictionary', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
   let res;
+  let res2;
 
   nock(config.mainEntryPoint)
     .get('/service/SU1Z0isxPaozGVKXdv0eY/version/1/dictionary/my_dictionary')
@@ -18,6 +19,7 @@ describe('#updateDictionary', () => {
 
   before(async () => {
     res = await fastly.readDictionary(1, 'my_dictionary');
+    res2 = await fastly.readDictionary(1, 'my_dictionary');
   });
 
   it('response should be a status 200', () => {
@@ -30,6 +32,10 @@ describe('#updateDictionary', () => {
 
   it('response body should be an object', () => {
     expect(typeof res.data).toBe('object');
+  });
+
+  it('response should be the same for repeated invocations', () => {
+    expect(res2).toEqual(res);
   });
 
   it('response body properties should be created', () => {

@@ -59,6 +59,7 @@
     "semantic-release": "^15.13.3"
   },
   "dependencies": {
+    "lodash.memoize": "^4.1.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"
   },

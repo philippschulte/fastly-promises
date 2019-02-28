@@ -1,4 +1,5 @@
 const request = require('request-promise-native');
+const memo = require('lodash.memoize');
 
 class FastlyError extends Error {
   constructor(response) {
@@ -11,8 +12,18 @@ class FastlyError extends Error {
 }
 
 function create({ baseURL, timeout, headers }) {
-  function makereq(method) {
-    return function req(path, body, config) {
+  /**
+   * Creates a function that mimicks the Axios request API
+   * for the selected HTTP method. Optionally enables
+   * memoization (function will always return the same results
+   * for the same arguments).
+   *
+   * @param {string} method - The HTTP method (lowercase).
+   * @param {boolean} memoize - Cache results (off by default).
+   * @returns {Function} - A function that makes HTTP requests.
+   */
+  function makereq(method, memoize = false) {
+    const myreq = function req(path, body, config) {
       const myheaders = Object.assign(headers,
         config && config.headers ? config.headers : {});
 
@@ -41,14 +52,18 @@ function create({ baseURL, timeout, headers }) {
         };
       });
     };
+    return memoize ? memo(myreq) : myreq;
   }
 
-  return {
+  const client = {
     post: makereq('post'),
-    get: makereq('get'),
+    get: makereq('get', true),
     put: makereq('put'),
     delete: makereq('delete'),
   };
+
+  client.get.fresh = makereq('get');
+  return client;
 }
 
 module.exports = { create };
