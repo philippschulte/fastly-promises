@@ -8,7 +8,38 @@ class FastlyError extends Error {
     this.data = response.body;
     this.status = response.statusCode;
     this.code = response.body.msg;
+    this.name = 'FastlyError';
   }
+}
+
+function repeatError(error) {
+  if (error.name === 'FastlyError') {
+    return false;
+  }
+  return error.name === 'RequestError';
+}
+
+function repeatResponse({ statusCode }) {
+  if (statusCode === 429) {
+    return true;
+  }
+  if (statusCode > 500 && statusCode < 505) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Determines if a response or error indicates that the response is repeatable.
+ *
+ * @param {Object} responseOrError - – the error response or error object.
+ * @returns {boolean} - True, if another attempt can be made.
+ */
+function repeat(responseOrError) {
+  if (responseOrError instanceof Error) {
+    return repeatError(responseOrError);
+  }
+  return responseOrError.statusCode ? repeatResponse(responseOrError) : false;
 }
 
 function create({ baseURL, timeout, headers }) {
@@ -20,9 +51,10 @@ function create({ baseURL, timeout, headers }) {
    *
    * @param {string} method - The HTTP method (lowercase).
    * @param {boolean} memoize - Cache results (off by default).
+   * @param {number} retries - Number of retries in case of flaky servers (default 0).
    * @returns {Function} - A function that makes HTTP requests.
    */
-  function makereq(method, memoize = false) {
+  function makereq(method, memoize = false, retries = 0) {
     const myreq = function req(path, body, config) {
       const myheaders = Object.assign(headers,
         config && config.headers ? config.headers : {});
@@ -38,8 +70,11 @@ function create({ baseURL, timeout, headers }) {
         simple: false,
       };
 
-      return request(options).then((response) => {
+      const reqfn = attempt => request(options).then((response) => {
         if (response.statusCode >= 400) {
+          if (attempt < retries && repeat(response)) {
+            return reqfn(attempt + 1);
+          }
           throw new FastlyError(response);
         }
         return {
@@ -50,14 +85,20 @@ function create({ baseURL, timeout, headers }) {
           request: response.request,
           data: response.body,
         };
+      }).catch((reason) => {
+        if (attempt < retries && repeat(reason)) {
+          return reqfn(attempt + 1);
+        }
+        throw reason;
       });
+      return reqfn(0);
     };
     return memoize ? memo(myreq) : myreq;
   }
 
   const client = {
     post: makereq('post'),
-    get: makereq('get', true),
+    get: makereq('get', true, 2),
     put: makereq('put'),
     delete: makereq('delete'),
   };
