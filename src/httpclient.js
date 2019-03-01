@@ -47,6 +47,7 @@ function create({ baseURL, timeout, headers }) {
     post: makereq('post'),
     get: makereq('get'),
     put: makereq('put'),
+    patch: makereq('patch'),
     delete: makereq('delete'),
   };
 }
