@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/adobe/fastly-native-promises/compare/v1.3.2...v1.4.0) (2019-03-01)
+
+
+### Features
+
+* **http:** Add support for PATCH ([105d38d](https://github.com/adobe/fastly-native-promises/commit/105d38d)), closes [#38](https://github.com/adobe/fastly-native-promises/issues/38)
+
 ## [1.3.2](https://github.com/adobe/fastly-native-promises/compare/v1.3.1...v1.3.2) (2019-01-22)
 
 
