@@ -752,6 +752,15 @@ class Fastly {
    * @param  {...DictUpdate} items - The dictionary update operations.
    * @returns {Promise} The response object.
    * @fulfil {Response}
+   * @example
+   * // single item
+   * fastly.bulkUpdateDictItems(1, 'secret_dictionary',
+   *   { item_key: 'some_key', item_value: 'some_value', op: 'update' });
+   *
+   * // multiple items
+   * fastly.bulkUpdateDictItems(1, 'secret_dictionary',
+   *   { item_key: 'some_key', item_value: 'some_value', op: 'update' },
+   *   { item_key: 'other_key', item_value: 'other_value', op: 'update' });
    */
   async bulkUpdateDictItems(version, name, ...items) {
     return this.readDictionary(

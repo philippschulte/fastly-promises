@@ -796,6 +796,17 @@ Updates multiple dictionary items in bulk.
 | name | <code>string</code> | Name of the dictionary. |
 | ...items | [<code>DictUpdate</code>](#DictUpdate) | The dictionary update operations. |
 
+**Example**  
+```js
+// single item
+fastly.bulkUpdateDictItems(1, 'secret_dictionary',
+  { item_key: 'some_key', item_value: 'some_value', op: 'update' });
+
+// multiple items
+fastly.bulkUpdateDictItems(1, 'secret_dictionary',
+  { item_key: 'some_key', item_value: 'some_value', op: 'update' },
+  { item_key: 'other_key', item_value: 'other_value', op: 'update' });
+```
 <a name="Fastly+updateDictItem"></a>
 
 #### fastly.updateDictItem(version, name, key, value) ⇒ <code>Promise</code>
