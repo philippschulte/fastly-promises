@@ -57,6 +57,9 @@ module.exports = {
     },
   },
   item: {
+    bulk: {
+      status: 'ok',
+    },
     get: {
       dictionary_id: '5clCytcTJrnvPi8wjqPH0q',
       service_id: 'SU1Z0isxPaozGVKXdv0eY',

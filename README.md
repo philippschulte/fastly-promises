@@ -233,6 +233,8 @@ HTTP status code can be retrieved. Known error status codes include:</p>
 <dt><a href="#Versions">Versions</a> : <code>Object</code></dt>
 <dd><p>Describes the most relevant versions of the service.</p>
 </dd>
+<dt><a href="#DictUpdate">DictUpdate</a> : <code>Object</code></dt>
+<dd></dd>
 <dt><a href="#Snippet">Snippet</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#VCL">VCL</a> : <code>Object</code></dt>
@@ -270,6 +272,7 @@ HTTP status code can be retrieved. Known error status codes include:</p>
     * [.readDictItems(version, name)](#Fastly+readDictItems) ⇒ <code>Promise</code>
     * [.readDictItem(version, name, key)](#Fastly+readDictItem) ⇒ <code>Promise</code>
     * [.createDictItem(version, name, key, value)](#Fastly+createDictItem) ⇒ <code>Promise</code>
+    * [.bulkUpdateDictItems(version, name, ...items)](#Fastly+bulkUpdateDictItems) ⇒ <code>Promise</code>
     * [.updateDictItem(version, name, key, value)](#Fastly+updateDictItem) ⇒ <code>Promise</code>
     * [.deleteDictItem(version, name, key)](#Fastly+deleteDictItem) ⇒ <code>Promise</code>
     * [.writeDictItem(version, name, key, value)](#Fastly+writeDictItem) ⇒ <code>Promise</code>
@@ -778,6 +781,21 @@ Create a new dictionary item for a particular service and version.
 | key | <code>string</code> | The key. |
 | value | <code>string</code> | The value to write. |
 
+<a name="Fastly+bulkUpdateDictItems"></a>
+
+#### fastly.bulkUpdateDictItems(version, name, ...items) ⇒ <code>Promise</code>
+Updates multiple dictionary items in bulk.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object.  
+**Fulfil**: [<code>Response</code>](#Response)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | The version numer (current if ommitted). |
+| name | <code>string</code> | Name of the dictionary. |
+| ...items | [<code>DictUpdate</code>](#DictUpdate) | The dictionary update operations. |
+
 <a name="Fastly+updateDictItem"></a>
 
 #### fastly.updateDictItem(version, name, key, value) ⇒ <code>Promise</code>
@@ -1264,6 +1282,18 @@ Describes the most relevant versions of the service.
 | latest | <code>number</code> | the latest version of the service |
 | active | <code>number</code> | the currently active version number |
 | current | <code>number</code> | the latest editable version number |
+
+<a name="DictUpdate"></a>
+
+### DictUpdate : <code>Object</code>
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| op | <code>String</code> | The operation: `create`, `update`, or `delete` |
+| item_key | <code>String</code> | the lookup key |
+| item_value | <code>String</code> | the dictionary value |
 
 <a name="Snippet"></a>
 

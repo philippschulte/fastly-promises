@@ -739,6 +739,40 @@ class Fastly {
   }
 
   /**
+   * @typedef {Object} DictUpdate
+   * @property {String} op - The operation: `create`, `update`, or `delete`
+   * @property {String} item_key - the lookup key
+   * @property {String} item_value - the dictionary value
+   */
+  /**
+   * Updates multiple dictionary items in bulk.
+   *
+   * @param {number} version - The version numer (current if ommitted).
+   * @param {string} name - Name of the dictionary.
+   * @param  {...DictUpdate} items - The dictionary update operations.
+   * @returns {Promise} The response object.
+   * @fulfil {Response}
+   */
+  async bulkUpdateDictItems(version, name, ...items) {
+    return this.readDictionary(
+      await this.getVersion(version, 'latest'),
+      name,
+    ).then(({ data }) => this.request.patch(`/service/${this.service_id}/dictionary/${data.id}/items`, {
+      items: items.map((item) => {
+        // might not be needed
+        if (data.write_only && item.op === 'update') {
+          return {
+            op: 'create',
+            item_key: item.item_key,
+            item_value: item.item_value,
+          };
+        }
+        return item;
+      }),
+    }));
+  }
+
+  /**
    * Update a dictionary item value for a particular service and version.
    *
    * @see https://docs.fastly.com/api/config#dictionary_item_34c884a7cdce84dfcfd38dac7a0b5bb0
