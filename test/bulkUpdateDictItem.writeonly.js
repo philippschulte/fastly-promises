@@ -19,7 +19,7 @@ describe('#bulkUpdateDictItems.writeonly', () => {
     // then get the dict item
     .patch('/service/SU1Z0isxPaozGVKXdv0eY/dictionary/5clCytcTJrnvPi8wjqPH0q/items', {
       items: [
-        { item_key: 'some_key', item_value: 'some_value', op: 'create' },
+        { item_key: 'some_key', item_value: 'some_value', op: 'update' },
       ],
     })
     .reply(200, response.item.bulk);

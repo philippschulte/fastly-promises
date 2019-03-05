@@ -197,6 +197,14 @@ Each `fastly-native-promises` API method returns the following response object:
 <dd></dd>
 </dl>
 
+### Functions
+
+<dl>
+<dt><a href="#repeat">repeat(responseOrError)</a> ⇒ <code>boolean</code></dt>
+<dd><p>Determines if a response or error indicates that the response is repeatable.</p>
+</dd>
+</dl>
+
 ### Typedefs
 
 <dl>
@@ -1177,6 +1185,18 @@ See `transact`, but this version does not activate the created version.
 | Param | Type | Description |
 | --- | --- | --- |
 | operations | <code>function</code> | The operations that should be applied to the cloned service config version. |
+
+<a name="repeat"></a>
+
+### repeat(responseOrError) ⇒ <code>boolean</code>
+Determines if a response or error indicates that the response is repeatable.
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - - True, if another attempt can be made.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| responseOrError | <code>Object</code> | – the error response or error object. |
 
 <a name="CreateFunction"></a>
 

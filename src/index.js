@@ -768,17 +768,7 @@ class Fastly {
       await this.getVersion(version, 'latest'),
       name,
     ).then(({ data }) => this.request.patch(`/service/${this.service_id}/dictionary/${data.id}/items`, {
-      items: items.map((item) => {
-        // might not be needed
-        if (data.write_only && item.op === 'update') {
-          return {
-            op: 'create',
-            item_key: item.item_key,
-            item_value: item.item_value,
-          };
-        }
-        return item;
-      }),
+      items,
     }));
   }
 
