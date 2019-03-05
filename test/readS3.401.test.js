@@ -8,7 +8,7 @@ const config = require('../src/config');
 const fastlyPromises = require('../src/index');
 const response = require('./response/readS3.response');
 
-describe('#readS3', () => {
+describe('#readS3.401', () => {
   const fastly = fastlyPromises('invalid', 'SU1Z0isxPaozGVKXdv0eY');
   let res;
   let err;
