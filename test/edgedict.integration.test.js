@@ -107,13 +107,13 @@ describe('#integration edge dictionary updates', () => {
         { item_key: 'foo', item_value: 'one', op: 'create' },
         { item_key: 'bar', item_value: 'two', op: 'create' },
         { item_key: 'nope', item_value: 'three', op: 'create' },
-        { item_key: 'baz', item_value: 'four', op: 'create' });
+        { item_key: 'baz', item_value: 'four', op: 'upsert' });
       assert.deepEqual(res1.data, { status: 'ok' });
 
       // update
       const res2 = await fastly.bulkUpdateDictItems(version, 'test_dict',
         { item_key: 'foo', item_value: 'eins', op: 'update' },
-        { item_key: 'bar', item_value: 'zwei', op: 'update' },
+        { item_key: 'bar', item_value: 'zwei', op: 'upsert' },
         { item_key: 'nope', item_value: 'three', op: 'delete' },
         { item_key: 'baz', item_value: 'four', op: 'delete' });
       assert.deepEqual(res2.data, { status: 'ok' });
@@ -140,13 +140,13 @@ describe('#integration edge dictionary updates', () => {
         { item_key: 'foo', item_value: 'one', op: 'create' },
         { item_key: 'bar', item_value: 'two', op: 'create' },
         { item_key: 'nope', item_value: 'three', op: 'create' },
-        { item_key: 'baz', item_value: 'four', op: 'create' });
+        { item_key: 'baz', item_value: 'four', op: 'upsert' });
       assert.deepEqual(res1.data, { status: 'ok' });
 
       // update
       const res2 = await fastly.bulkUpdateDictItems(version, 'test_wo_dict',
         { item_key: 'foo', item_value: 'eins', op: 'update' },
-        { item_key: 'bar', item_value: 'zwei', op: 'update' },
+        { item_key: 'bar', item_value: 'zwei', op: 'upsert' },
         { item_key: 'nope', item_value: 'three', op: 'delete' },
         { item_key: 'baz', item_value: 'four', op: 'delete' });
       assert.deepEqual(res2.data, { status: 'ok' });
