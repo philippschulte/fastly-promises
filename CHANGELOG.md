@@ -1,3 +1,15 @@
+# [1.6.0](https://github.com/adobe/fastly-native-promises/compare/v1.5.0...v1.6.0) (2019-03-05)
+
+
+### Bug Fixes
+
+* **http:** Make PATCH requests use application/json ([46c0fa9](https://github.com/adobe/fastly-native-promises/commit/46c0fa9))
+
+
+### Features
+
+* **fastly:** Implement Dictionary Bulk Updates ([78481c6](https://github.com/adobe/fastly-native-promises/commit/78481c6)), closes [#38](https://github.com/adobe/fastly-native-promises/issues/38)
+
 # [1.5.0](https://github.com/adobe/fastly-native-promises/compare/v1.4.0...v1.5.0) (2019-03-05)
 
 
