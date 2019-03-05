@@ -13,7 +13,7 @@ describe('#bulkUpdateDictItems.multi', () => {
   const items = [
     { item_key: 'some_key', item_value: 'some_value', op: 'create' },
     { item_key: 'other_key', item_value: 'other_value', op: 'update' },
-    { item_key: 'foo_key', item_value: 'foo_value', op: 'delete' }
+    { item_key: 'foo_key', item_value: 'foo_value', op: 'delete' },
   ];
   let res;
 
@@ -23,7 +23,7 @@ describe('#bulkUpdateDictItems.multi', () => {
     .reply(200, response.dict.get)
     // then get the dict item
     .patch('/service/SU1Z0isxPaozGVKXdv0eY/dictionary/5clCytcTJrnvPi8wjqPH0q/items', {
-      items
+      items,
     })
     .reply(200, response.item.bulk);
 

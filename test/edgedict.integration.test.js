@@ -89,4 +89,37 @@ describe('#integration edge dictionary updates', () => {
     const val = await fastly.readDictItem(version, 'test_wo_dict', 'some_key');
     assert.deepEqual(val.data.item_value, undefined);
   }).timeout(10000);
+
+  condit('Bulk Create/Update/Delete Edge Dictionary Values', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
+    const version = await fastly.getVersion(undefined, 'current');
+
+    try {
+      // clean up the dictionary
+      await Promise.all([
+        fastly.writeDictItem(version, 'test_dict', 'foo', undefined),
+        fastly.writeDictItem(version, 'test_dict', 'bar', undefined),
+        fastly.writeDictItem(version, 'test_dict', 'nope', undefined),
+        fastly.writeDictItem(version, 'test_dict', 'baz', undefined),
+      ]);
+    } finally {
+    // create fresh
+      const res1 = await fastly.bulkUpdateDictItems(version, 'test_dict',
+        { item_key: 'foo', item_value: 'one', op: 'create' },
+        { item_key: 'bar', item_value: 'two', op: 'create' },
+        { item_key: 'nope', item_value: 'three', op: 'create' },
+        { item_key: 'baz', item_value: 'four', op: 'create' });
+      assert.deepEqual(res1.data, { status: 'ok' });
+
+      // update
+      const res2 = await fastly.bulkUpdateDictItems(version, 'test_dict',
+        { item_key: 'foo', item_value: 'eins', op: 'update' },
+        { item_key: 'bar', item_value: 'zwei', op: 'update' },
+        { item_key: 'nope', item_value: 'three', op: 'delete' },
+        { item_key: 'baz', item_value: 'four', op: 'delete' });
+      assert.deepEqual(res2.data, { status: 'ok' });
+
+      const val = await fastly.readDictItem(version, 'test_dict', 'bar');
+      assert.deepEqual(val.data.item_value, 'zwei');
+    }
+  }).timeout(15000);
 });
