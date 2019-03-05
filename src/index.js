@@ -713,7 +713,8 @@ class Fastly {
           },
         };
       }
-      return this.request.get(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`);
+      // always use uncached version here
+      return this.request.get.fresh(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`);
     });
   }
 

@@ -1,3 +1,15 @@
+# [1.5.0](https://github.com/adobe/fastly-native-promises/compare/v1.4.0...v1.5.0) (2019-03-05)
+
+
+### Bug Fixes
+
+* **http:** Repeat failed GET requests twice ([1ae8a51](https://github.com/adobe/fastly-native-promises/commit/1ae8a51))
+
+
+### Features
+
+* **http:** Memoize GET requests ([bc722f5](https://github.com/adobe/fastly-native-promises/commit/bc722f5)), closes [#36](https://github.com/adobe/fastly-native-promises/issues/36)
+
 # [1.4.0](https://github.com/adobe/fastly-native-promises/compare/v1.3.2...v1.4.0) (2019-03-01)
 
 
