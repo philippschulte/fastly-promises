@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/adobe/fastly-native-promises/compare/v1.6.0...v1.6.1) (2019-03-05)
+
+
+### Bug Fixes
+
+* **fastly:** Increase default timeout to 15 seconds ([984c133](https://github.com/adobe/fastly-native-promises/commit/984c133)), closes [#41](https://github.com/adobe/fastly-native-promises/issues/41)
+
 # [1.6.0](https://github.com/adobe/fastly-native-promises/compare/v1.5.0...v1.6.0) (2019-03-05)
 
 
