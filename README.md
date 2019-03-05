@@ -197,6 +197,14 @@ Each `fastly-native-promises` API method returns the following response object:
 <dd></dd>
 </dl>
 
+### Functions
+
+<dl>
+<dt><a href="#repeat">repeat(responseOrError)</a> ⇒ <code>boolean</code></dt>
+<dd><p>Determines if a response or error indicates that the response is repeatable.</p>
+</dd>
+</dl>
+
 ### Typedefs
 
 <dl>
@@ -232,6 +240,10 @@ HTTP status code can be retrieved. Known error status codes include:</p>
 <dd></dd>
 <dt><a href="#Versions">Versions</a> : <code>Object</code></dt>
 <dd><p>Describes the most relevant versions of the service.</p>
+</dd>
+<dt><a href="#DictUpdate">DictUpdate</a> : <code>Object</code></dt>
+<dd><p>Specifies a dictionary update operation. In most cases, <code>upsert</code> is the best way
+to update values, as it will work for existing and non-existing items.</p>
 </dd>
 <dt><a href="#Snippet">Snippet</a> : <code>Object</code></dt>
 <dd></dd>
@@ -270,6 +282,7 @@ HTTP status code can be retrieved. Known error status codes include:</p>
     * [.readDictItems(version, name)](#Fastly+readDictItems) ⇒ <code>Promise</code>
     * [.readDictItem(version, name, key)](#Fastly+readDictItem) ⇒ <code>Promise</code>
     * [.createDictItem(version, name, key, value)](#Fastly+createDictItem) ⇒ <code>Promise</code>
+    * [.bulkUpdateDictItems(version, name, ...items)](#Fastly+bulkUpdateDictItems) ⇒ <code>Promise</code>
     * [.updateDictItem(version, name, key, value)](#Fastly+updateDictItem) ⇒ <code>Promise</code>
     * [.deleteDictItem(version, name, key)](#Fastly+deleteDictItem) ⇒ <code>Promise</code>
     * [.writeDictItem(version, name, key, value)](#Fastly+writeDictItem) ⇒ <code>Promise</code>
@@ -778,6 +791,32 @@ Create a new dictionary item for a particular service and version.
 | key | <code>string</code> | The key. |
 | value | <code>string</code> | The value to write. |
 
+<a name="Fastly+bulkUpdateDictItems"></a>
+
+#### fastly.bulkUpdateDictItems(version, name, ...items) ⇒ <code>Promise</code>
+Updates multiple dictionary items in bulk.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object.  
+**Fulfil**: [<code>Response</code>](#Response)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | The version numer (current if ommitted). |
+| name | <code>string</code> | Name of the dictionary. |
+| ...items | [<code>DictUpdate</code>](#DictUpdate) | The dictionary update operations. |
+
+**Example**  
+```js
+// single item
+fastly.bulkUpdateDictItems(1, 'secret_dictionary',
+  { item_key: 'some_key', item_value: 'some_value', op: 'upsert' });
+
+// multiple items
+fastly.bulkUpdateDictItems(1, 'secret_dictionary',
+  { item_key: 'some_key', item_value: 'some_value', op: 'update' },
+  { item_key: 'other_key', item_value: 'other_value', op: 'update' });
+```
 <a name="Fastly+updateDictItem"></a>
 
 #### fastly.updateDictItem(version, name, key, value) ⇒ <code>Promise</code>
@@ -1149,6 +1188,18 @@ See `transact`, but this version does not activate the created version.
 | --- | --- | --- |
 | operations | <code>function</code> | The operations that should be applied to the cloned service config version. |
 
+<a name="repeat"></a>
+
+### repeat(responseOrError) ⇒ <code>boolean</code>
+Determines if a response or error indicates that the response is repeatable.
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - - True, if another attempt can be made.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| responseOrError | <code>Object</code> | – the error response or error object. |
+
 <a name="CreateFunction"></a>
 
 ### CreateFunction ⇒ <code>Promise</code>
@@ -1264,6 +1315,21 @@ Describes the most relevant versions of the service.
 | latest | <code>number</code> | the latest version of the service |
 | active | <code>number</code> | the currently active version number |
 | current | <code>number</code> | the latest editable version number |
+
+<a name="DictUpdate"></a>
+
+### DictUpdate : <code>Object</code>
+Specifies a dictionary update operation. In most cases, `upsert` is the best way
+to update values, as it will work for existing and non-existing items.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| op | <code>String</code> | The operation: `create`, `update`, `delete`, or `upsert` |
+| item_key | <code>String</code> | the lookup key |
+| item_value | <code>String</code> | the dictionary value |
 
 <a name="Snippet"></a>
 

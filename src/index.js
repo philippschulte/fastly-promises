@@ -740,6 +740,41 @@ class Fastly {
   }
 
   /**
+   * @typedef {Object} DictUpdate
+   * Specifies a dictionary update operation. In most cases, `upsert` is the best way
+   * to update values, as it will work for existing and non-existing items.
+   * @property {String} op - The operation: `create`, `update`, `delete`, or `upsert`
+   * @property {String} item_key - the lookup key
+   * @property {String} item_value - the dictionary value
+   */
+  /**
+   * Updates multiple dictionary items in bulk.
+   *
+   * @param {number} version - The version numer (current if ommitted).
+   * @param {string} name - Name of the dictionary.
+   * @param  {...DictUpdate} items - The dictionary update operations.
+   * @returns {Promise} The response object.
+   * @fulfil {Response}
+   * @example
+   * // single item
+   * fastly.bulkUpdateDictItems(1, 'secret_dictionary',
+   *   { item_key: 'some_key', item_value: 'some_value', op: 'upsert' });
+   *
+   * // multiple items
+   * fastly.bulkUpdateDictItems(1, 'secret_dictionary',
+   *   { item_key: 'some_key', item_value: 'some_value', op: 'update' },
+   *   { item_key: 'other_key', item_value: 'other_value', op: 'update' });
+   */
+  async bulkUpdateDictItems(version, name, ...items) {
+    return this.readDictionary(
+      await this.getVersion(version, 'latest'),
+      name,
+    ).then(({ data }) => this.request.patch(`/service/${this.service_id}/dictionary/${data.id}/items`, {
+      items,
+    }));
+  }
+
+  /**
    * Update a dictionary item value for a particular service and version.
    *
    * @see https://docs.fastly.com/api/config#dictionary_item_34c884a7cdce84dfcfd38dac7a0b5bb0
