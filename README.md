@@ -242,7 +242,9 @@ HTTP status code can be retrieved. Known error status codes include:</p>
 <dd><p>Describes the most relevant versions of the service.</p>
 </dd>
 <dt><a href="#DictUpdate">DictUpdate</a> : <code>Object</code></dt>
-<dd></dd>
+<dd><p>Specifies a dictionary update operation. In most cases, <code>upsert</code> is the best way
+to update values, as it will work for existing and non-existing items.</p>
+</dd>
 <dt><a href="#Snippet">Snippet</a> : <code>Object</code></dt>
 <dd></dd>
 <dt><a href="#VCL">VCL</a> : <code>Object</code></dt>
@@ -808,7 +810,7 @@ Updates multiple dictionary items in bulk.
 ```js
 // single item
 fastly.bulkUpdateDictItems(1, 'secret_dictionary',
-  { item_key: 'some_key', item_value: 'some_value', op: 'update' });
+  { item_key: 'some_key', item_value: 'some_value', op: 'upsert' });
 
 // multiple items
 fastly.bulkUpdateDictItems(1, 'secret_dictionary',
@@ -1317,12 +1319,15 @@ Describes the most relevant versions of the service.
 <a name="DictUpdate"></a>
 
 ### DictUpdate : <code>Object</code>
+Specifies a dictionary update operation. In most cases, `upsert` is the best way
+to update values, as it will work for existing and non-existing items.
+
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| op | <code>String</code> | The operation: `create`, `update`, or `delete` |
+| op | <code>String</code> | The operation: `create`, `update`, `delete`, or `upsert` |
 | item_key | <code>String</code> | the lookup key |
 | item_value | <code>String</code> | the dictionary value |
 

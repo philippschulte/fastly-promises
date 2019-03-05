@@ -741,7 +741,9 @@ class Fastly {
 
   /**
    * @typedef {Object} DictUpdate
-   * @property {String} op - The operation: `create`, `update`, or `delete`
+   * Specifies a dictionary update operation. In most cases, `upsert` is the best way
+   * to update values, as it will work for existing and non-existing items.
+   * @property {String} op - The operation: `create`, `update`, `delete`, or `upsert`
    * @property {String} item_key - the lookup key
    * @property {String} item_value - the dictionary value
    */
@@ -756,7 +758,7 @@ class Fastly {
    * @example
    * // single item
    * fastly.bulkUpdateDictItems(1, 'secret_dictionary',
-   *   { item_key: 'some_key', item_value: 'some_value', op: 'update' });
+   *   { item_key: 'some_key', item_value: 'some_value', op: 'upsert' });
    *
    * // multiple items
    * fastly.bulkUpdateDictItems(1, 'secret_dictionary',
