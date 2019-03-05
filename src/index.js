@@ -141,12 +141,13 @@ class Fastly {
    *
    * @param {string} token - The Fastly API token.
    * @param {string} service_id - The Fastly service ID.
+   * @param {number} timeout - HTTP timeout for requests to the Fastly API, default: 15 seconds.
    */
-  constructor(token, service_id) {
+  constructor(token, service_id, timeout = 15000) {
     this.service_id = service_id;
     this.request = axios.create({
       baseURL: config.mainEntryPoint,
-      timeout: 5000,
+      timeout,
       headers: { 'Fastly-Key': token },
     });
 

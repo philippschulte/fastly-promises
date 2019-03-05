@@ -257,7 +257,7 @@ to update values, as it will work for existing and non-existing items.</p>
 **Kind**: global class  
 
 * [Fastly](#Fastly)
-    * [new Fastly(token, service_id)](#new_Fastly_new)
+    * [new Fastly(token, service_id, timeout)](#new_Fastly_new)
     * [.readLogsFn(service)](#Fastly+readLogsFn) ⇒ [<code>ListFunction</code>](#ListFunction)
     * [.readLogFn(service)](#Fastly+readLogFn) ⇒ [<code>ReadFunction</code>](#ReadFunction)
     * [.createLogFn(service)](#Fastly+createLogFn) ⇒ [<code>CreateFunction</code>](#CreateFunction)
@@ -304,14 +304,15 @@ to update values, as it will work for existing and non-existing items.</p>
 
 <a name="new_Fastly_new"></a>
 
-#### new Fastly(token, service_id)
+#### new Fastly(token, service_id, timeout)
 The constructor method for creating a fastly-promises instance.
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| token | <code>string</code> | The Fastly API token. |
-| service_id | <code>string</code> | The Fastly service ID. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| token | <code>string</code> |  | The Fastly API token. |
+| service_id | <code>string</code> |  | The Fastly service ID. |
+| timeout | <code>number</code> | <code>15000</code> | HTTP timeout for requests to the Fastly API, default: 15 seconds. |
 
 <a name="Fastly+readLogsFn"></a>
 
