@@ -1,3 +1,11 @@
+# [1.7.0](https://github.com/adobe/fastly-native-promises/compare/v1.6.1...v1.7.0) (2019-03-07)
+
+
+### Features
+
+* **conditions:** Introduce helper for condition updates ([e70c7d6](https://github.com/adobe/fastly-native-promises/commit/e70c7d6)), closes [#38](https://github.com/adobe/fastly-native-promises/issues/38)
+* **fastly:** Support CRUD operations on conditions ([03eceea](https://github.com/adobe/fastly-native-promises/commit/03eceea)), closes [#34](https://github.com/adobe/fastly-native-promises/issues/34)
+
 ## [1.6.1](https://github.com/adobe/fastly-native-promises/compare/v1.6.0...v1.6.1) (2019-03-05)
 
 
