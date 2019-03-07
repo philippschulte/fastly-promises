@@ -288,6 +288,22 @@ to update values, as it will work for existing and non-existing items.</p>
 Helper class with high-level operations for condition-management
 
 **Kind**: global class  
+<a name="Conditions+multistepupdate"></a>
+
+#### conditions.multistepupdate(version, type, commentprefix, nameprefix) ⇒ <code>Array.&lt;function()&gt;</code>
+Creates functions for multi-step creation of missing and deletion of
+superflous conditions.
+
+**Kind**: instance method of [<code>Conditions</code>](#Conditions)  
+**Returns**: <code>Array.&lt;function()&gt;</code> - A pair of a create and cleanup function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | Service config version. |
+| type | <code>string</code> | Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`. |
+| commentprefix | <code>string</code> | The prefix to be used for comments. |
+| nameprefix | <code>string</code> | The prefix to be used for names. |
+
 <a name="Fastly"></a>
 
 ### Fastly
