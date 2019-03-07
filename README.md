@@ -333,6 +333,11 @@ Helper class with high-level operations for condition-management
     * [.createCondition(version, data)](#Fastly+createCondition) ⇒ <code>Promise</code>
     * [.updateCondition(version, name, data)](#Fastly+updateCondition) ⇒ <code>Promise</code>
     * [.deleteCondition(version, name)](#Fastly+deleteCondition) ⇒ <code>Promise</code>
+    * [.readHeaders(version)](#Fastly+readHeaders) ⇒ <code>Promise</code>
+    * [.readHeader(version, name)](#Fastly+readHeader) ⇒ <code>Promise</code>
+    * [.createHeader(version, data)](#Fastly+createHeader) ⇒ <code>Promise</code>
+    * [.updateHeader(version, name, data)](#Fastly+updateHeader) ⇒ <code>Promise</code>
+    * [.deleteHeader(version, name)](#Fastly+deleteHeader) ⇒ <code>Promise</code>
     * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
     * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
     * [.createBackend(version, data)](#Fastly+createBackend) ⇒ <code>Promise</code>
@@ -1147,6 +1152,119 @@ Delete a condition for a particular service and version.
 **Example**  
 ```js
 instance.deleteCondition('34', 'extensions')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+readHeaders"></a>
+
+#### fastly.readHeaders(version) ⇒ <code>Promise</code>
+List all headers for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#header_dd9da0592b2f1ff8ef0a4c1943f8abff  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+
+**Example**  
+```js
+instance.readHeaders('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+readHeader"></a>
+
+#### fastly.readHeader(version, name) ⇒ <code>Promise</code>
+Get details of a single named header.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#header_86469e5eba4e5d6b1463e81f82a847e0  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | Name of the header. |
+
+**Example**  
+```js
+instance.readHeader('12', 'returning')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+createHeader"></a>
+
+#### fastly.createHeader(version, data) ⇒ <code>Promise</code>
+Create a new header for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The reponse object.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#header_151df4ce647a8e222e730b260287cb39  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | The version number (current if omitted). |
+| data | <code>Object</code> | The header definition. |
+
+<a name="Fastly+updateHeader"></a>
+
+#### fastly.updateHeader(version, name, data) ⇒ <code>Promise</code>
+Update a header for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#header_c4257a0fd0eb017ea47b1fbb318fd61c  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the header. |
+| data | <code>Object</code> | The data to be sent as the request body. |
+
+**Example**  
+```js
+instance.updateHeader('34', 'returning', { name: 'returning-visitor' })
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+deleteHeader"></a>
+
+#### fastly.deleteHeader(version, name) ⇒ <code>Promise</code>
+Delete a header for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#header_4bbb73fffda4d189bf5a19b474399a83  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the header. |
+
+**Example**  
+```js
+instance.deleteHeader('34', 'extensions')
    .then(res => {
      console.log(res.data);
    })
