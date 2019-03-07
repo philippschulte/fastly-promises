@@ -2,6 +2,7 @@
 
 const axios = require('./httpclient');
 const config = require('./config');
+const Conditions = require('./conditions');
 
 class Fastly {
   /**
@@ -284,6 +285,14 @@ class Fastly {
       this.updateDictionary,
       this.readDictionary,
     );
+
+    this.writeCondition = this.upsertFn(
+      this.createCondition,
+      this.updateCondition,
+      this.readCondition,
+    );
+
+    this.conditions = new Conditions(this);
   }
   /**
    * @typedef {Object} FastlyError
@@ -959,6 +968,103 @@ class Fastly {
    */
   async deleteDictionary(version, name) {
     return this.request.delete(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/dictionary/${encodeURIComponent(name)}`);
+  }
+
+  /* ==CONDITIONS */
+
+  /**
+   * List all conditions for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#condition_b61196c572f473c89863a81cc5912861
+   * @example
+   * instance.readConditions('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readConditions(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/condition`);
+  }
+
+  /**
+   * Get details of a single named condition.
+   *
+   * @see https://docs.fastly.com/api/config#condition_149a2f48485ceb335f70504e5269b77e
+   * @example
+   * instance.readCondition('12', 'returning')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - Name of the condition.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readCondition(version, name) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/condition/${name}`);
+  }
+
+  /**
+   * Create a new condition for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#condition_551199dbec2271195319b675d8659226
+   * @param {number} version - The version number (current if omitted).
+   * @param {Object} data - The condition definition.
+   * @returns {Promise} The reponse object.
+   * @fulfil {Response}
+   */
+  async createCondition(version, data) {
+    return this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/condition`, data);
+  }
+
+  /**
+   * Update a condition for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#condition_01a2c4e4b44943b541e001013b665deb
+   * @example
+   * instance.updateCondition('34', 'returning', { name: 'returning-visitor' })
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the condition.
+   * @param {Object} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async updateCondition(version, name, data) {
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/condition/${encodeURIComponent(name)}`, data);
+  }
+
+  /**
+   * Delete a condition for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#condition_2b902b7649c46b4541f00a920d06c94d
+   * @example
+   * instance.deleteCondition('34', 'extensions')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the condition.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async deleteCondition(version, name) {
+    return this.request.delete(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/condition/${encodeURIComponent(name)}`);
   }
 
   /**

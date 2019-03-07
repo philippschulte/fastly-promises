@@ -188,11 +188,42 @@ Each `fastly-native-promises` API method returns the following response object:
 }
 ```
 
+## High-Level Helpers
+
+While most functionality is a low-level wrapper of the Fastly, API, we provide a couple of higher-level helper functions in properties of the `Fastly` instance.
+
+### Conditions Helper in `fastly.conditions`
+
+The conditions helper eases the creation and management of conditions.
+
+```javascript
+
+const fastly = require('fastly-native-promises');
+
+const instance = fastly('mykey', 'service-config');
+
+const update = fastly.conditions.update(1, 'REQUEST', 'Created as an Example', 'example');
+
+const conditions = await update('req.url.basename == "new.html"', 'req.url.basename == "index.html"');
+
+console.log('Created a condition matching index.html with following name', conditions['req.url.basename == "index.html"'].name);
+
+```
+
+`fastly.conditions.update` can be called with the parameters `version` (service config version), `type` (condition type, either `REQUEST`, `RESPONSE`, or `CACHE`), `comment` (a comment that will be visible in the Fastly UI), `nameprefix` (a common prefix for the condition name) to get a new function `update` that performs the update.
+
+When `update` is called with a list of `statements` in VCL condition language, it will synchronize the list of conditions passed in with the conditions that already exist in the Fastly service config. All conditions that share the same `nameprefix`, but are no longer used get deleted, new conditions that don't exist yet will get created (unchanged conditions aren't touched, reducing the number of requests made upon updates).
+
+The return value of `update` is an object that maps condition statment to the condition object. This allows re-using the condition in other Fastly API calls.
+
 ## API
 
 ### Classes
 
 <dl>
+<dt><a href="#Conditions">Conditions</a></dt>
+<dd><p>Helper class with high-level operations for condition-management</p>
+</dd>
 <dt><a href="#Fastly">Fastly</a></dt>
 <dd></dd>
 </dl>
@@ -251,6 +282,12 @@ to update values, as it will work for existing and non-existing items.</p>
 <dd></dd>
 </dl>
 
+<a name="Conditions"></a>
+
+### Conditions
+Helper class with high-level operations for condition-management
+
+**Kind**: global class  
 <a name="Fastly"></a>
 
 ### Fastly
@@ -291,6 +328,11 @@ to update values, as it will work for existing and non-existing items.</p>
     * [.createDictionary(version, data)](#Fastly+createDictionary) ⇒ <code>Promise</code>
     * [.updateDictionary(version, name, data)](#Fastly+updateDictionary) ⇒ <code>Promise</code>
     * [.deleteDictionary(version, name)](#Fastly+deleteDictionary) ⇒ <code>Promise</code>
+    * [.readConditions(version)](#Fastly+readConditions) ⇒ <code>Promise</code>
+    * [.readCondition(version, name)](#Fastly+readCondition) ⇒ <code>Promise</code>
+    * [.createCondition(version, data)](#Fastly+createCondition) ⇒ <code>Promise</code>
+    * [.updateCondition(version, name, data)](#Fastly+updateCondition) ⇒ <code>Promise</code>
+    * [.deleteCondition(version, name)](#Fastly+deleteCondition) ⇒ <code>Promise</code>
     * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
     * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
     * [.createBackend(version, data)](#Fastly+createBackend) ⇒ <code>Promise</code>
@@ -992,6 +1034,119 @@ Delete a dictionary for a particular service and version.
 **Example**  
 ```js
 instance.deleteDictionary('34', 'extensions')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+readConditions"></a>
+
+#### fastly.readConditions(version) ⇒ <code>Promise</code>
+List all conditions for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#condition_b61196c572f473c89863a81cc5912861  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+
+**Example**  
+```js
+instance.readConditions('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+readCondition"></a>
+
+#### fastly.readCondition(version, name) ⇒ <code>Promise</code>
+Get details of a single named condition.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#condition_149a2f48485ceb335f70504e5269b77e  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | Name of the condition. |
+
+**Example**  
+```js
+instance.readCondition('12', 'returning')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+createCondition"></a>
+
+#### fastly.createCondition(version, data) ⇒ <code>Promise</code>
+Create a new condition for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The reponse object.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#condition_551199dbec2271195319b675d8659226  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | The version number (current if omitted). |
+| data | <code>Object</code> | The condition definition. |
+
+<a name="Fastly+updateCondition"></a>
+
+#### fastly.updateCondition(version, name, data) ⇒ <code>Promise</code>
+Update a condition for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#condition_01a2c4e4b44943b541e001013b665deb  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the condition. |
+| data | <code>Object</code> | The data to be sent as the request body. |
+
+**Example**  
+```js
+instance.updateCondition('34', 'returning', { name: 'returning-visitor' })
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
+<a name="Fastly+deleteCondition"></a>
+
+#### fastly.deleteCondition(version, name) ⇒ <code>Promise</code>
+Delete a condition for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**Fulfil**: [<code>Response</code>](#Response)  
+**See**: https://docs.fastly.com/api/config#condition_2b902b7649c46b4541f00a920d06c94d  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the condition. |
+
+**Example**  
+```js
+instance.deleteCondition('34', 'extensions')
    .then(res => {
      console.log(res.data);
    })
