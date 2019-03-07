@@ -188,11 +188,42 @@ Each `fastly-native-promises` API method returns the following response object:
 }
 ```
 
+## High-Level Helpers
+
+While most functionality is a low-level wrapper of the Fastly, API, we provide a couple of higher-level helper functions in properties of the `Fastly` instance.
+
+### Conditions Helper in `fastly.conditions`
+
+The conditions helper eases the creation and management of conditions.
+
+```javascript
+
+const fastly = require('fastly-native-promises');
+
+const instance = fastly('mykey', 'service-config');
+
+const update = fastly.conditions.update(1, 'REQUEST', 'Created as an Example', 'example');
+
+const conditions = await update('req.url.basename == "new.html"', 'req.url.basename == "index.html"');
+
+console.log('Created a condition matching index.html with following name', conditions['req.url.basename == "index.html"'].name);
+
+```
+
+`fastly.conditions.update` can be called with the parameters `version` (service config version), `type` (condition type, either `REQUEST`, `RESPONSE`, or `CACHE`), `comment` (a comment that will be visible in the Fastly UI), `nameprefix` (a common prefix for the condition name) to get a new function `update` that performs the update.
+
+When `update` is called with a list of `statements` in VCL condition language, it will synchronize the list of conditions passed in with the conditions that already exist in the Fastly service config. All conditions that share the same `nameprefix`, but are no longer used get deleted, new conditions that don't exist yet will get created (unchanged conditions aren't touched, reducing the number of requests made upon updates).
+
+The return value of `update` is an object that maps condition statment to the condition object. This allows re-using the condition in other Fastly API calls.
+
 ## API
 
 ### Classes
 
 <dl>
+<dt><a href="#Conditions">Conditions</a></dt>
+<dd><p>Helper class with high-level operations for condition-management</p>
+</dd>
 <dt><a href="#Fastly">Fastly</a></dt>
 <dd></dd>
 </dl>
@@ -251,6 +282,12 @@ to update values, as it will work for existing and non-existing items.</p>
 <dd></dd>
 </dl>
 
+<a name="Conditions"></a>
+
+### Conditions
+Helper class with high-level operations for condition-management
+
+**Kind**: global class  
 <a name="Fastly"></a>
 
 ### Fastly
