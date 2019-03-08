@@ -1,3 +1,11 @@
+# [1.8.0](https://github.com/adobe/fastly-native-promises/compare/v1.7.0...v1.8.0) (2019-03-08)
+
+
+### Features
+
+* **fastly:** Add CRUD for headers ([c00f867](https://github.com/adobe/fastly-native-promises/commit/c00f867)), closes [#35](https://github.com/adobe/fastly-native-promises/issues/35)
+* **headers:** Add high-level functions for header management ([e6b4779](https://github.com/adobe/fastly-native-promises/commit/e6b4779)), closes [#35](https://github.com/adobe/fastly-native-promises/issues/35)
+
 # [1.7.0](https://github.com/adobe/fastly-native-promises/compare/v1.6.1...v1.7.0) (2019-03-07)
 
 
