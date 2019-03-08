@@ -3,6 +3,7 @@
 const axios = require('./httpclient');
 const config = require('./config');
 const Conditions = require('./conditions');
+const Headers = require('./headers');
 
 class Fastly {
   /**
@@ -292,7 +293,14 @@ class Fastly {
       this.readCondition,
     );
 
+    this.writeHeader = this.upsertFn(
+      this.createHeader,
+      this.updateHeader,
+      this.readHeader,
+    );
+
     this.conditions = new Conditions(this);
+    this.headers = new Headers(this);
   }
   /**
    * @typedef {Object} FastlyError
@@ -1065,6 +1073,103 @@ class Fastly {
    */
   async deleteCondition(version, name) {
     return this.request.delete(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/condition/${encodeURIComponent(name)}`);
+  }
+
+  /* == HEADERS */
+
+  /**
+   * List all headers for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#header_dd9da0592b2f1ff8ef0a4c1943f8abff
+   * @example
+   * instance.readHeaders('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readHeaders(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/header`);
+  }
+
+  /**
+   * Get details of a single named header.
+   *
+   * @see https://docs.fastly.com/api/config#header_86469e5eba4e5d6b1463e81f82a847e0
+   * @example
+   * instance.readHeader('12', 'returning')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - Name of the header.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readHeader(version, name) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/header/${name}`);
+  }
+
+  /**
+   * Create a new header for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#header_151df4ce647a8e222e730b260287cb39
+   * @param {number} version - The version number (current if omitted).
+   * @param {Object} data - The header definition.
+   * @returns {Promise} The reponse object.
+   * @fulfil {Response}
+   */
+  async createHeader(version, data) {
+    return this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/header`, data);
+  }
+
+  /**
+   * Update a header for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#header_c4257a0fd0eb017ea47b1fbb318fd61c
+   * @example
+   * instance.updateHeader('34', 'returning', { name: 'returning-visitor' })
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the header.
+   * @param {Object} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async updateHeader(version, name, data) {
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/header/${encodeURIComponent(name)}`, data);
+  }
+
+  /**
+   * Delete a header for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#header_4bbb73fffda4d189bf5a19b474399a83
+   * @example
+   * instance.deleteHeader('34', 'extensions')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the header.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async deleteHeader(version, name) {
+    return this.request.delete(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/header/${encodeURIComponent(name)}`);
   }
 
   /**
