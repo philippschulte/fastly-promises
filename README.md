@@ -216,12 +216,49 @@ When `update` is called with a list of `statements` in VCL condition language, i
 
 The return value of `update` is an object that maps condition statment to the condition object. This allows re-using the condition in other Fastly API calls.
 
+### Header Helper in `fastly.headers`
+
+The headers helper eases the creation and management of conditional headers.
+
+```javascript
+const fastly = require('fastly-native-promises');
+
+const instance = fastly('mykey', 'service-config');
+
+const update = fastly.headers.update(
+  1, 
+  'REQUEST', // apply a request condition
+  'Created as an Example', // use following comment for conditions
+  'example', // name-prefix for all generated conditions and headers
+  'set', // set the header
+  'http.Location' // which header (Location)
+  'request' // in the request handling
+  );
+
+await update(
+    {
+      condition: 'req.url.basename == "new.html"',
+      expression: '"https://new.example.com"',
+    },
+    {
+      condition: 'req.url.basename == "index.html"',
+      expression: 'https://www.example.com',
+    });
+```
+
+`fastly.headers.update` can be called with the parameters `version` (service config version), `type` (condition type, either `REQUEST`, `RESPONSE`, or `CACHE`), `comment` (a comment that will be visible in the Fastly UI), `nameprefix` (a common prefix for the condition name), `action` (what to do with the header, can be `set`, `append`, or `delete`), `header` (the name of the header – remember to include `http.` in the value), `sub` (the subroutine where the header is applied, can be `request`, `fetch`, `cache`, or `response`) to get a new function `update` that performs the update.
+
+When `update` is called with a list of `objects` that looks like `{ condition: 'req.url ~ "foo/(.*)/bar"', expression: '"bar/" + re.group.1 + "/foo"'}`, i.e. pairs of a `condition` (in VCL condition language) and an `expression` (also valid VCL), it will synchronize the list of headers (and resultant conditions) passed in with the headers and conditions that already exist in the Fastly service config. All conditions and headers that share the same `nameprefix`, but are no longer used get deleted, new conditions and headers that don't exist yet will get created (unchanged conditions and headers aren't touched, reducing the number of requests made upon updates).
+
 ## API
 
 ### Classes
 
 <dl>
 <dt><a href="#Conditions">Conditions</a></dt>
+<dd><p>Helper class with high-level operations for condition-management</p>
+</dd>
+<dt><a href="#Headers">Headers</a></dt>
 <dd><p>Helper class with high-level operations for condition-management</p>
 </dd>
 <dt><a href="#Fastly">Fastly</a></dt>
@@ -303,6 +340,31 @@ superflous conditions.
 | type | <code>string</code> | Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`. |
 | commentprefix | <code>string</code> | The prefix to be used for comments. |
 | nameprefix | <code>string</code> | The prefix to be used for names. |
+
+<a name="Headers"></a>
+
+### Headers
+Helper class with high-level operations for condition-management
+
+**Kind**: global class  
+<a name="Headers+update"></a>
+
+#### headers.update(version, type, commentprefix, nameprefix, action, header, sub) ⇒ <code>Array.&lt;function()&gt;</code>
+Creates functions for multi-step creation of missing and deletion of
+superflous conditional headers.
+
+**Kind**: instance method of [<code>Headers</code>](#Headers)  
+**Returns**: <code>Array.&lt;function()&gt;</code> - A pair of a create and cleanup function.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>number</code> | Service config version. |
+| type | <code>string</code> | Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`. |
+| commentprefix | <code>string</code> | The prefix to be used for comments. |
+| nameprefix | <code>string</code> | The prefix to be used for names. |
+| action | <code>string</code> | What do do with the header, can be `set`, `append`, `delete`. |
+| header | <code>string</code> | The name of the header to set. |
+| sub | <code>string</code> | Name of the subroutine where the header should be applied, can be `request`, `fetch`, `cache`, or `response`. |
 
 <a name="Fastly"></a>
 

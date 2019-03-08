@@ -3,6 +3,7 @@
 const axios = require('./httpclient');
 const config = require('./config');
 const Conditions = require('./conditions');
+const Headers = require('./headers');
 
 class Fastly {
   /**
@@ -299,6 +300,7 @@ class Fastly {
     );
 
     this.conditions = new Conditions(this);
+    this.headers = new Headers(this);
   }
   /**
    * @typedef {Object} FastlyError
