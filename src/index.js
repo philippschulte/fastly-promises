@@ -281,11 +281,6 @@ class Fastly {
     this.writeVCL = this.upsertFn(this.createVCL, this.updateVCL);
     this.writeSnippet = this.upsertFn(this.createSnippet, this.updateSnippet);
     this.writeBackend = this.upsertFn(this.createBackend, this.updateBackend);
-    this.writeDictionary = this.upsertFn(
-      this.createDictionary,
-      this.updateDictionary,
-      this.readDictionary,
-    );
 
     this.writeCondition = this.upsertFn(
       this.createCondition,
@@ -955,6 +950,23 @@ class Fastly {
    */
   async updateDictionary(version, name, data) {
     return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/dictionary/${encodeURIComponent(name)}`, data);
+  }
+
+  async writeDictionary(version, name, data) {
+    try {
+      const existing = await this.readDictionary(version, name);
+      // keep the write-only status
+      const mydata = {
+        name: data.name,
+        write_only: existing.data.write_only,
+      };
+      if (mydata.name && mydata.name !== existing.data.name) {
+        return this.updateDictionary(version, name, mydata);
+      }
+      return existing;
+    } catch (e) {
+      return this.createDictionary(version, data);
+    }
   }
 
   /**
