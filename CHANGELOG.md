@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/adobe/fastly-native-promises/compare/v1.8.0...v1.8.1) (2019-03-13)
+
+
+### Bug Fixes
+
+* **dictionaries:** Fix invalid dictionary updates ([9e0a239](https://github.com/adobe/fastly-native-promises/commit/9e0a239)), closes [#50](https://github.com/adobe/fastly-native-promises/issues/50)
+
 # [1.8.0](https://github.com/adobe/fastly-native-promises/compare/v1.7.0...v1.8.0) (2019-03-08)
 
 
