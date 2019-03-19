@@ -43,6 +43,7 @@ function repeat(responseOrError) {
 }
 
 function create({ baseURL, timeout, headers }) {
+  const responselog = [];
   /**
    * Creates a function that mimicks the Axios request API
    * for the selected HTTP method. Optionally enables
@@ -72,6 +73,7 @@ function create({ baseURL, timeout, headers }) {
       };
 
       const reqfn = attempt => request(options).then((response) => {
+        responselog.push(response.headers);
         if (response.statusCode >= 400) {
           if (attempt < retries && repeat(response)) {
             return reqfn(attempt + 1);
@@ -103,6 +105,19 @@ function create({ baseURL, timeout, headers }) {
     put: makereq('put'),
     patch: makereq('patch'),
     delete: makereq('delete'),
+    monitor: {
+      count: () => {
+        return responselog.length;
+      },
+
+      remaining: () => {
+        return responselog
+          .filter(headers => typeof headers['Fastly-RateLimit-Remaining']!=='undefined')
+          .map(headers => headers['Fastly-RateLimit-Remaining'])
+          .map(remaining => Number.parseInt(remaining))
+          .pop();
+      }
+    }
   };
 
   client.get.fresh = makereq('get');
