@@ -156,4 +156,4 @@ function create({ baseURL, timeout, headers }) {
   return client;
 }
 
-module.exports = { create };
+module.exports = { create, FastlyError };

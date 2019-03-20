@@ -27,7 +27,11 @@ describe('#integration edge dictionary updates', () => {
     });
   });
 
-  condit('Create Edge Dictionary 1', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
+  condit('Do not create Edge Dictionary due to insufficient limits', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
+    await expect(fastly.transact(() => {}, false, 2000)).rejects.toThrow();
+  }).timeout(5000);
+
+  condit('Create Edge Dictionary', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
     await fastly.transact(async (version) => {
       await fastly.writeDictionary(version, 'test_dict', {
         name: 'test_dict',
