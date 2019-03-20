@@ -153,6 +153,8 @@ class Fastly {
       headers: { 'Fastly-Key': token },
     });
 
+    this.requestmonitor = this.request.monitor;
+
     this.versions = {
       current: undefined,
       active: undefined,

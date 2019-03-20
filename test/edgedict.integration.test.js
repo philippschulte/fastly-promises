@@ -3,6 +3,7 @@
 const { condit } = require('@adobe/helix-testutils');
 const nock = require('nock');
 const assert = require('assert');
+const expect = require('expect');
 const { AssertionError } = require('assert');
 const f = require('../src/index');
 
@@ -19,7 +20,14 @@ describe('#integration edge dictionary updates', () => {
     nock.activate();
   });
 
-  condit('Create Edge Dictionary', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
+  afterEach(() => {
+    Object.values(fastly.requestmonitor.stats).forEach((val) => {
+      // all stats should be numbers
+      expect(val).toBeGreaterThan(0);
+    });
+  });
+
+  condit('Create Edge Dictionary 1', condit.hasenvs(['FASTLY_AUTH', 'FASTLY_SERVICE_ID']), async () => {
     await fastly.transact(async (version) => {
       await fastly.writeDictionary(version, 'test_dict', {
         name: 'test_dict',
