@@ -1,3 +1,11 @@
+# [1.9.0](https://github.com/adobe/fastly-native-promises/compare/v1.8.1...v1.9.0) (2019-03-22)
+
+
+### Features
+
+* **fastly:** Fail fast on transactions that will exceed the rate limit ([6d30ed2](https://github.com/adobe/fastly-native-promises/commit/6d30ed2)), closes [adobe/helix-publish#35](https://github.com/adobe/helix-publish/issues/35)
+* **http:** Add HTTP request monitor for getting request statistics ([2e91b11](https://github.com/adobe/fastly-native-promises/commit/2e91b11)), closes [#30](https://github.com/adobe/fastly-native-promises/issues/30)
+
 ## [1.8.1](https://github.com/adobe/fastly-native-promises/compare/v1.8.0...v1.8.1) (2019-03-13)
 
 
