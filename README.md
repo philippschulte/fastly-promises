@@ -188,6 +188,23 @@ Each `fastly-native-promises` API method returns the following response object:
 }
 ```
 
+## Retrieving Request Statistics
+
+The `Fastly` instance has a `requestmonitor` property that can be used to retrieve request statistics:
+
+- `requestmonitor.count` for the total number of requests
+- `requestmonitor.remaining` for the number of requests remaining according to Fastly's API Rate limit for the hour or `undefined` (if no modifying requests have been made yet)
+- `requestmonitor.edgedurations` for an array of API processing durations (in milliseconds, measured from the edge)
+- `requestmonitor.durations` for an array of request durations (in milliseconds, measured from the client, i.e. including network latency)
+
+With `requestmonitor.stats` you can get all of that in one object, including minumum, maximum and mean durations for all requests.
+
+## Guarding against Rate Limits
+
+Using the `requestmonitor.remaining` property, you can make sure that you still have sufficient requests before you hit the rate limit. 
+
+When using the `instance.transact` method, you can furthermore provide a minimum for the neccessary available request limit, so that after the inital cloning of the version no additional requests will be made if the API rate limit will be exceeded. This allows you to fail fast in case of rate limit issues.
+
 ## High-Level Helpers
 
 While most functionality is a low-level wrapper of the Fastly, API, we provide a couple of higher-level helper functions in properties of the `Fastly` instance.
@@ -424,7 +441,7 @@ superflous conditional headers.
     * [.createVCL(version, data)](#Fastly+createVCL) ⇒ <code>Promise</code>
     * [.updateVCL(version, name, data)](#Fastly+updateVCL) ⇒ <code>Promise</code>
     * [.setMainVCL(version, name)](#Fastly+setMainVCL) ⇒ <code>Promise</code>
-    * [.transact(operations, activate)](#Fastly+transact) ⇒ <code>Object</code>
+    * [.transact(operations, activate, limit)](#Fastly+transact) ⇒ <code>Object</code>
     * [.dryrun(operations)](#Fastly+dryrun) ⇒ <code>Object</code>
 
 <a name="new_Fastly_new"></a>
@@ -1507,10 +1524,15 @@ Define a custom VCL to be the main VCL for a particular service and version.
 
 <a name="Fastly+transact"></a>
 
-#### fastly.transact(operations, activate) ⇒ <code>Object</code>
+#### fastly.transact(operations, activate, limit) ⇒ <code>Object</code>
 Creates a new version, runs the function `operations` and then
 optionally activates the newly created version. This function
 is useful for making modifications to a service config.
+
+You can provide a `limit` of write operations, which is an estimate
+of the number of write operations that will be attempted. If the
+limit is higher than the number of actions allowed by Fastly's rate
+limits, the function will fail fast after cloning the service config.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 **Returns**: <code>Object</code> - The return value of the wrapped function.  
@@ -1519,6 +1541,7 @@ is useful for making modifications to a service config.
 | --- | --- | --- | --- |
 | operations | <code>function</code> |  | A function that performs changes on the service config. |
 | activate | <code>boolean</code> | <code>true</code> | Set to false to prevent automatic activation. |
+| limit | <code>number</code> | <code>0</code> | Number of write operations that will be performed in this action. |
 
 **Example**  
 ```javascript

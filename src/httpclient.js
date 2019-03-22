@@ -43,6 +43,7 @@ function repeat(responseOrError) {
 }
 
 function create({ baseURL, timeout, headers }) {
+  const responselog = [];
   /**
    * Creates a function that mimicks the Axios request API
    * for the selected HTTP method. Optionally enables
@@ -66,12 +67,14 @@ function create({ baseURL, timeout, headers }) {
         form: method === 'patch' ? undefined : body,
         body: method === 'patch' ? body : undefined,
         timeout,
+        time: true,
         headers: myheaders,
         resolveWithFullResponse: true,
         simple: false,
       };
 
       const reqfn = attempt => request(options).then((response) => {
+        responselog.push(Object.assign({ 'request-duration': response.elapsedTime }, response.headers));
         if (response.statusCode >= 400) {
           if (attempt < retries && repeat(response)) {
             return reqfn(attempt + 1);
@@ -103,10 +106,54 @@ function create({ baseURL, timeout, headers }) {
     put: makereq('put'),
     patch: makereq('patch'),
     delete: makereq('delete'),
+    monitor: {
+      get count() {
+        return responselog.length;
+      },
+
+      get remaining() {
+        return responselog
+          .filter(hdrs => typeof hdrs['fastly-ratelimit-remaining'] !== 'undefined')
+          .map(hdrs => hdrs['fastly-ratelimit-remaining'])
+          .map(remaining => Number.parseInt(remaining, 10))
+          .pop();
+      },
+
+      get edgedurations() {
+        return responselog
+          .filter(hdrs => typeof hdrs['x-timer'] !== 'undefined')
+          .map(hdrs => hdrs['x-timer'])
+          .map(timer => timer.split(',').pop())
+          .map(ve => ve.substring(2))
+          .map(ve => Number.parseInt(ve, 10));
+      },
+
+      get durations() {
+        return responselog
+          .filter(hdrs => typeof hdrs['request-duration'] !== 'undefined')
+          .map(hdrs => hdrs['request-duration'])
+          .map(ve => Number.parseInt(ve, 10));
+      },
+
+      get stats() {
+        return {
+          count: this.count,
+          remaining: this.remaining,
+          minduration: Math.min(...this.durations),
+          maxduration: Math.max(...this.durations),
+          meanduration: Math.round(this.durations.reduce((a, b) => a + b, 0)
+            / this.durations.length),
+          minedgeduration: Math.min(...this.edgedurations),
+          maxedgeduration: Math.max(...this.edgedurations),
+          meanedgeduration: Math.round(this.edgedurations.reduce((a, b) => a + b, 0)
+            / this.edgedurations.length),
+        };
+      },
+    },
   };
 
   client.get.fresh = makereq('get');
   return client;
 }
 
-module.exports = { create };
+module.exports = { create, FastlyError };

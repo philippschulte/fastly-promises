@@ -5,6 +5,10 @@ const config = require('./config');
 const Conditions = require('./conditions');
 const Headers = require('./headers');
 
+class RateLimitError extends Error {
+
+}
+
 class Fastly {
   /**
    * @typedef {Function} CreateFunction
@@ -152,6 +156,8 @@ class Fastly {
       timeout,
       headers: { 'Fastly-Key': token },
     });
+
+    this.requestmonitor = this.request.monitor;
 
     this.versions = {
       current: undefined,
@@ -1335,6 +1341,11 @@ class Fastly {
    * optionally activates the newly created version. This function
    * is useful for making modifications to a service config.
    *
+   * You can provide a `limit` of write operations, which is an estimate
+   * of the number of write operations that will be attempted. If the
+   * limit is higher than the number of actions allowed by Fastly's rate
+   * limits, the function will fail fast after cloning the service config.
+   *
    * @example
    * ```javascript
    * await fastly.transact(async (newversion) => {
@@ -1344,10 +1355,14 @@ class Fastly {
    * ```
    * @param {Function} operations - A function that performs changes on the service config.
    * @param {boolean} activate - Set to false to prevent automatic activation.
+   * @param {number} limit - Number of write operations that will be performed in this action.
    * @returns {Object} The return value of the wrapped function.
    */
-  async transact(operations, activate = true) {
+  async transact(operations, activate = true, limit = 0) {
     const newversion = (await this.cloneVersion()).data.number;
+    if (limit > 0 && this.requestmonitor.remaining && this.requestmonitor.remaining < limit) {
+      throw new RateLimitError(`Insufficient number of requests (${this.requestmonitor.remaining}) remaining for number of scheduled operations (${limit})`);
+    }
     const result = await operations.apply(this, [newversion]);
     if (activate) {
       await this.activateVersion(newversion);
