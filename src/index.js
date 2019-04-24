@@ -162,7 +162,7 @@ class Fastly {
    * @param version {String} The current version of a service.
    * @return {Promise} The response object representing the completion or failure.
    */
-  readBackends(version = '') {
+  readDictionaries(version = '') {
       return this.request.get(`/service/${this.service_id}/version/${version}/dictionary`);
   }
 
