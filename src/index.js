@@ -157,7 +157,16 @@ class Fastly {
     return this.request.get(`/service/${this.service_id}/version/${version}/backend`);
   }
 
+
   /**
+   * @param version {String} The current version of a service.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  readBackends(version = '') {
+      return this.request.get(`/service/${this.service_id}/version/${version}/dictionary`);
+  }
+
+    /**
    * Update the backend for a particular service and version.
    * @param version {String} The current version of a service.
    * @param name {String} The name of the backend.
