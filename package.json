@@ -1,5 +1,5 @@
 {
-  "name": "fastly-promises",
+  "name": "fastly-promises-extended",
   "version": "0.0.0-semantically-released",
   "description": "Promise based Fastly API client for Node.js",
   "main": "src/index.js",
