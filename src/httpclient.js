@@ -1,5 +1,5 @@
 const request = require('request-promise-native');
-const memo = require('lodash.memoize');
+const hash = require('object-hash');
 
 class FastlyError extends Error {
   constructor(response) {
@@ -10,6 +10,24 @@ class FastlyError extends Error {
     this.code = response.body.msg;
     this.name = 'FastlyError';
   }
+}
+
+function memo(fn) {
+  const keyfn = (...args) => hash(args[0]);
+  const cache = new Map();
+  return (...fnargs) => {
+    const key = keyfn(...fnargs);
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+    const prom = fn(...fnargs);
+    return Promise.resolve(prom).then((res) => {
+      cache.set(key, res);
+      return res;
+    }).catch((e) => {
+      throw e;
+    });
+  };
 }
 
 function repeatError(error) {
