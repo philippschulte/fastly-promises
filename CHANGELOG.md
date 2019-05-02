@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/adobe/fastly-native-promises/compare/v1.9.0...v1.9.1) (2019-05-02)
+
+
+### Bug Fixes
+
+* **httpclient:** do not memoize failing requests ([6e3726c](https://github.com/adobe/fastly-native-promises/commit/6e3726c)), closes [#61](https://github.com/adobe/fastly-native-promises/issues/61)
+
 # [1.9.0](https://github.com/adobe/fastly-native-promises/compare/v1.8.1...v1.9.0) (2019-03-22)
 
 
