@@ -4,6 +4,8 @@ const axios = require('./httpclient');
 const config = require('./config');
 const Conditions = require('./conditions');
 const Headers = require('./headers');
+const AccountAPI = require('./api-acount.js');
+const AuthAPI = require('./api-auth.js');
 
 class RateLimitError extends Error {
 
@@ -302,7 +304,19 @@ class Fastly {
 
     this.conditions = new Conditions(this);
     this.headers = new Headers(this);
+
+    // bind the methods of the API classes.
+    [AccountAPI, AuthAPI].forEach((API) => {
+      const api = new API(this);
+      Object.getOwnPropertyNames(API.prototype).forEach((name) => {
+        const prop = api[name];
+        if (typeof prop === 'function' && !name.startsWith('_') && name !== 'constructor') {
+          this[name] = prop.bind(api);
+        }
+      });
+    });
   }
+
   /**
    * @typedef {Object} FastlyError
    * The FastlyError class describes the most common errors that can occur
@@ -525,6 +539,31 @@ class Fastly {
   }
 
   /**
+   * Reads the services and returns a data object that contains a map where the service id is
+   * the key.
+   *
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async readServicesById() {
+    const ret = await this.request.get('/service');
+    ret.data = ret.data.reduce((dat, service) => Object.assign(dat, { [service.id]: service }), {});
+    return ret;
+  }
+
+  /**
+   * Get a specific service by id.
+   *
+   * @see https://docs.fastly.com/api/config#service_a884a9abd5af9723f6fcbb1ed13ae4cc
+   * @param {string} [serviceId] - The service id.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async readService(serviceId = this.service_id) {
+    return this.request.get(`/service/${serviceId}`);
+  }
+
+  /**
    * List the versions for a particular service.
    *
    * @see https://docs.fastly.com/api/config#version_dfde9093f4eb0aa2497bbfd1d9415987
@@ -669,6 +708,18 @@ class Fastly {
    */
   async readDomains(version) {
     return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/domain`);
+  }
+
+  /**
+   * List the domains within a service.
+   *
+   * @see https://docs.fastly.com/api/config#service_d5578a1e3bc75512711ddd0a58ce7a36
+   * @param {string} [serviceId] - The service id.
+   * @returns {Promise} The response object representing the completion or failure.
+   * @fulfil {Response}
+   */
+  async readServiceDomains(serviceId = this.service_id) {
+    return this.request.get(`/service/${serviceId}/domain`);
   }
 
   // === start ===
@@ -1376,7 +1427,7 @@ class Fastly {
    * @see #transact
    * @param {Function} operations - The operations that should be applied to the
    * cloned service config version.
-   * @returns {Object} Whatever `operations` returns.
+   * @returns {object} Whatever `operations` returns.
    */
   async dryrun(operations) {
     return this.transact(operations, false);
@@ -1388,5 +1439,6 @@ class Fastly {
  *
  * @param {string} token - The Fastly API token.
  * @param {string} service_id - The Fastly service ID.
+ * @returns {Fastly} The exported module.
  */
 module.exports = (token, service_id) => new Fastly(token, service_id);
