@@ -184,6 +184,15 @@ class Fastly {
       return this.request.put(`/service/${this.service_id}/dictionary/${dictionaryId}/item/${item}`, {'item_value': value});
   }
 
+  /**
+   * @param dictionaryId {String} The dictionary ID.
+   * @param data {Object} The current version of a service.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  upsertDictionaryItems(dictionaryId, data = {}) {
+      return this.request.patch(`/service/${this.service_id}/dictionary/${dictionaryId}/items`, data);
+  }
+
     /**
    * Update the backend for a particular service and version.
    * @param version {String} The current version of a service.
