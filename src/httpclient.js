@@ -82,14 +82,21 @@ function create({ baseURL, timeout, headers }) {
         method,
         uri: `${baseURL}${path}`,
         json: true,
-        form: method === 'patch' ? undefined : body,
-        body: method === 'patch' ? body : undefined,
         timeout,
         time: true,
         headers: myheaders,
         resolveWithFullResponse: true,
         simple: false,
       };
+
+      // set body or form based on content type. default is form, except for patch ;-)
+      const contentType = myheaders['content-type']
+        || (method === 'patch' ? 'application/vnd.api+json' : 'application/x-www-form-urlencoded');
+      if (contentType === 'application/x-www-form-urlencoded') {
+        options.form = body;
+      } else {
+        options.body = body;
+      }
 
       const reqfn = attempt => request(options).then((response) => {
         responselog.push(Object.assign({ 'request-duration': response.elapsedTime }, response.headers));
