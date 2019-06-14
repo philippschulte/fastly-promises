@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/adobe/fastly-native-promises/compare/v1.9.1...v1.10.0) (2019-06-14)
+
+
+### Features
+
+* **client:** Add more user management functions ([3acd8d9](https://github.com/adobe/fastly-native-promises/commit/3acd8d9)), closes [#10](https://github.com/adobe/fastly-native-promises/issues/10)
+
 ## [1.9.1](https://github.com/adobe/fastly-native-promises/compare/v1.9.0...v1.9.1) (2019-05-02)
 
 
