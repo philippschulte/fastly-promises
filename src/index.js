@@ -157,7 +157,43 @@ class Fastly {
     return this.request.get(`/service/${this.service_id}/version/${version}/backend`);
   }
 
+
   /**
+   * @param version {String} The current version of a service.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  readDictionaries(version = '') {
+      return this.request.get(`/service/${this.service_id}/version/${version}/dictionary`);
+  }
+
+  /**
+   * @param dictionaryId {String} The current version of a service.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  listDictionaryItems(dictionaryId = '') {
+      return this.request.get(`/service/${this.service_id}/dictionary/${dictionaryId}/items`);
+  }
+
+  /**
+   * @param dictionaryId {String} The dictionary ID.
+   * @param item {String} The current version of a service.
+   * @param value {String} dictionary item value.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  upsertDictionaryItem(dictionaryId, item = '', value = '') {
+      return this.request.put(`/service/${this.service_id}/dictionary/${dictionaryId}/item/${item}`, {'item_value': value});
+  }
+
+  /**
+   * @param dictionaryId {String} The dictionary ID.
+   * @param data {Object} The current version of a service.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  upsertDictionaryItems(dictionaryId, data = {}) {
+      return this.request.patch(`/service/${this.service_id}/dictionary/${dictionaryId}/items`, data);
+  }
+
+    /**
    * Update the backend for a particular service and version.
    * @param version {String} The current version of a service.
    * @param name {String} The name of the backend.
