@@ -142,6 +142,32 @@ class PurgeAPI {
   async softPurgeKey(key) {
     return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
   }
+
+  /**
+   * Soft Purge a particular service of items tagged with Surrogate Keys in a batch.
+   *
+   * @see https://docs.fastly.com/api/purge#purge_db35b293f8a724717fcf25628d713583
+   * @example
+   * instance.softPurgeKeys(['key_2', 'key_3', 'key_4'])
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {Array} keys - The array of surrogate keys to purge.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async softPurgeKeys(keys) {
+    return this.request.post(`/service/${this.service_id}/purge`, {
+      surrogate_keys: keys,
+    }, {
+      headers: {
+        'Fastly-Soft-Purge': 1,
+        'content-type': 'application/json',
+      },
+    });
+  }
 }
 
 module.exports = PurgeAPI;
