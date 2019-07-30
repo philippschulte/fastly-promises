@@ -4,7 +4,7 @@ const axios = require('./httpclient');
 const config = require('./config');
 const Conditions = require('./conditions');
 const Headers = require('./headers');
-const AccountAPI = require('./api-acount.js');
+const AccountAPI = require('./api-account.js');
 const AuthAPI = require('./api-auth.js');
 
 class RateLimitError extends Error {
