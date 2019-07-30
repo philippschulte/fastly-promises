@@ -96,7 +96,13 @@ class PurgeAPI {
    * @returns {Promise} The response object representing the completion or failure.
    */
   async purgeKeys(keys) {
-    return this.request.post(`/service/${this.service_id}/purge`, { surrogate_keys: keys });
+    return this.request.post(`/service/${this.service_id}/purge`, {
+      surrogate_keys: keys,
+    }, {
+      headers: {
+        'content-type': 'application/json',
+      },
+    });
   }
 
   /**
