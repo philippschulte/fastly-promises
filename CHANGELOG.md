@@ -1,3 +1,15 @@
+# [1.11.0](https://github.com/adobe/fastly-native-promises/compare/v1.10.0...v1.11.0) (2019-07-30)
+
+
+### Bug Fixes
+
+* **purge:** purgeKeys should send correct content-type ([47535f6](https://github.com/adobe/fastly-native-promises/commit/47535f6)), closes [#100](https://github.com/adobe/fastly-native-promises/issues/100)
+
+
+### Features
+
+* **purge:** add softPurgeKeys() ([61bf5b2](https://github.com/adobe/fastly-native-promises/commit/61bf5b2))
+
 # [1.10.0](https://github.com/adobe/fastly-native-promises/compare/v1.9.1...v1.10.0) (2019-06-14)
 
 
