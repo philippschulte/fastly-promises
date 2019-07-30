@@ -4,8 +4,9 @@ const axios = require('./httpclient');
 const config = require('./config');
 const Conditions = require('./conditions');
 const Headers = require('./headers');
-const AccountAPI = require('./api-acount.js');
+const AccountAPI = require('./api-account.js');
 const AuthAPI = require('./api-auth.js');
+const PurgeAPI = require('./api-purge.js');
 
 class RateLimitError extends Error {
 
@@ -306,7 +307,7 @@ class Fastly {
     this.headers = new Headers(this);
 
     // bind the methods of the API classes.
-    [AccountAPI, AuthAPI].forEach((API) => {
+    [AccountAPI, AuthAPI, PurgeAPI].forEach((API) => {
       const api = new API(this);
       Object.getOwnPropertyNames(API.prototype).forEach((name) => {
         const prop = api[name];
@@ -343,124 +344,6 @@ class Fastly {
    * @property {Object} request the HTTP request
    * @property {Object} data the parsed body of the HTTP response
    */
-
-  /**
-   * Instant Purge an individual URL.
-   *
-   * @see https://docs.fastly.com/api/purge#purge_3aa1d66ee81dbfed0b03deed0fa16a9a
-   * @param {string} url - The URL to purge.
-   * @returns {Promise} The response object representing the completion or failure.
-   * @fulfil {Response}
-   * @example
-   * instance.purgeIndividual('www.example.com')
-   .then(res => {
-     console.log(res.data);
-   })
-   .catch(err => {
-     console.log(err.message);
-   });
-   */
-  purgeIndividual(url = '') {
-    return this.request.post(`/purge/${url}`);
-  }
-
-  /**
-   * Instant Purge everything from a service.
-   *
-   * @see https://docs.fastly.com/api/purge#purge_bee5ed1a0cfd541e8b9f970a44718546
-   * @example
-   * instance.purgeAll()
-   .then(res => {
-     console.log(res.data);
-   })
-   .catch(err => {
-     console.log(err.message);
-   });
-   * @returns {Promise} The response object representing the completion or failure.
-   * @fulfil {Response}
-   * @reject {FastlyError}
-   */
-  purgeAll() {
-    return this.request.post(`/service/${this.service_id}/purge_all`);
-  }
-
-  /**
-   * Instant Purge a particular service of items tagged with a Surrogate Key.
-   *
-   * @see https://docs.fastly.com/api/purge#purge_d8b8e8be84c350dd92492453a3df3230
-   * @example
-   * instance.purgeKey('key_1')
-   .then(res => {
-     console.log(res.data);
-   })
-   .catch(err => {
-     console.log(err.message);
-   });
-   * @param {string} key - The surrogate key to purge.
-   * @returns {Promise} The response object representing the completion or failure.
-   * @fulfil {Response}
-   */
-  purgeKey(key) {
-    return this.request.post(`/service/${this.service_id}/purge/${key}`);
-  }
-
-  /**
-   * Instant Purge a particular service of items tagged with Surrogate Keys in a batch.
-   *
-   * @see https://docs.fastly.com/api/purge#purge_db35b293f8a724717fcf25628d713583
-   * @example
-   * instance.purgeKeys(['key_2', 'key_3', 'key_4'])
-   .then(res => {
-     console.log(res.data);
-   })
-   .catch(err => {
-     console.log(err.message);
-   });
-   * @param {Array} keys - The array of surrogate keys to purge.
-   * @returns {Promise} The response object representing the completion or failure.
-   */
-  purgeKeys(keys = []) {
-    return this.request.post(`/service/${this.service_id}/purge`, { surrogate_keys: keys });
-  }
-
-  /**
-   * Soft Purge an individual URL.
-   *
-   * @param {string} url - The URL to soft purge.
-   * @see https://docs.fastly.com/api/purge#soft_purge_0c4f56f3d68e9bed44fb8b638b78ea36
-   * @example
-   * instance.softPurgeIndividual('www.example.com/images')
-   .then(res => {
-     console.log(res.data);
-   })
-   .catch(err => {
-     console.log(err.message);
-   });
-   * @returns {Promise} The response object representing the completion or failure.
-   * @fulfil {Response}
-   */
-  softPurgeIndividual(url = '') {
-    return this.request.post(`/purge/${url}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
-  }
-
-  /**
-   * Soft Purge a particular service of items tagged with a Surrogate Key.
-   *
-   * @see https://docs.fastly.com/api/purge#soft_purge_2e4d29085640127739f8467f27a5b549
-   * @example
-   * instance.softPurgeKey('key_5')
-   .then(res => {
-     console.log(res.data);
-   })
-   .catch(err => {
-     console.log(err.message);
-   });
-   * @param {string} key - The surrogate key to soft purge.
-   * @returns {Promise} The response object representing the completion or failure.
-   */
-  softPurgeKey(key) {
-    return this.request.post(`/service/${this.service_id}/purge/${key}`, undefined, { headers: { 'Fastly-Soft-Purge': 1 } });
-  }
 
   /**
    * Get a list of all Fastly datacenters.
