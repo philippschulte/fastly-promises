@@ -516,7 +516,7 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    */
   async cloneVersion(version) {
-    const versions = await this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'active')}/clone`);
+    const versions = await this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'active', 'current', 'latest', 'initial')}/clone`);
     this.versions.current = versions.data.number;
     this.versions.latest = versions.data.number;
     return versions;
