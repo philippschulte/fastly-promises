@@ -1,3 +1,15 @@
+# [1.12.0](https://github.com/adobe/fastly-native-promises/compare/v1.11.0...v1.12.0) (2019-08-20)
+
+
+### Bug Fixes
+
+* **clone:** if no active version can be found during clone fall back to current, latest, or initial ([fbd0c60](https://github.com/adobe/fastly-native-promises/commit/fbd0c60)), closes [#106](https://github.com/adobe/fastly-native-promises/issues/106)
+
+
+### Features
+
+* **versions:** allow specifying multiple fallbacks for getVersion ([f884cb8](https://github.com/adobe/fastly-native-promises/commit/f884cb8))
+
 # [1.11.0](https://github.com/adobe/fastly-native-promises/compare/v1.10.0...v1.11.0) (2019-07-30)
 
 
