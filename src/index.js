@@ -476,6 +476,7 @@ class Fastly {
       return this.versions;
     }
     const { data } = await this.readVersions();
+    this.versions.initial = 1;
     this.versions.latest = data
       .map(({ number }) => number)
       .pop();
@@ -491,12 +492,12 @@ class Fastly {
     return this.versions;
   }
 
-  async getVersion(version, fallbackname) {
+  async getVersion(version, ...fallbackname) {
     if (version) {
       return version;
     }
     const versions = await this.getVersions();
-    return versions[fallbackname];
+    return fallbackname.map((attempt) => versions[attempt]).filter((e) => e)[0];
   }
 
   /**
@@ -515,7 +516,7 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    */
   async cloneVersion(version) {
-    const versions = await this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'active')}/clone`);
+    const versions = await this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'active', 'current', 'latest', 'initial')}/clone`);
     this.versions.current = versions.data.number;
     this.versions.latest = versions.data.number;
     return versions;
