@@ -476,6 +476,7 @@ class Fastly {
       return this.versions;
     }
     const { data } = await this.readVersions();
+    this.versions.initial = 1;
     this.versions.latest = data
       .map(({ number }) => number)
       .pop();
@@ -491,12 +492,12 @@ class Fastly {
     return this.versions;
   }
 
-  async getVersion(version, fallbackname) {
+  async getVersion(version, ...fallbackname) {
     if (version) {
       return version;
     }
     const versions = await this.getVersions();
-    return versions[fallbackname];
+    return fallbackname.map((attempt) => versions[attempt]).filter((e) => e)[0];
   }
 
   /**
