@@ -6,6 +6,7 @@ const Headers = require('./headers');
 const AccountAPI = require('./api-account.js');
 const AuthAPI = require('./api-auth.js');
 const PurgeAPI = require('./api-purge.js');
+const DomainAPI = require('./api-domain.js');
 
 class RateLimitError extends Error {
 
@@ -303,7 +304,7 @@ class Fastly {
     this.headers = new Headers(this);
 
     // bind the methods of the API classes.
-    [AccountAPI, AuthAPI, PurgeAPI].forEach((API) => {
+    [AccountAPI, AuthAPI, PurgeAPI, DomainAPI].forEach((API) => {
       const api = new API(this);
       Object.getOwnPropertyNames(API.prototype).forEach((name) => {
         const prop = api[name];
@@ -542,56 +543,6 @@ class Fastly {
     this.versions.active = versions.data.number;
     this.versions.latest = versions.data.number;
     return versions;
-  }
-
-  /**
-   * Checks the status of all domains for a particular service and version.
-   *
-   * @param {string} version - The current version of a service.
-   * @see https://docs.fastly.com/api/config#domain_e33a599694c3316f00b6b8d53a2db7d9
-   * @example
-   * instance.domainCheckAll('182')
-   .then(res => {
-     console.log(res.data);
-   })
-   .catch(err => {
-     console.log(err.message);
-   });
-   * @returns {Promise} The response object representing the completion or failure.
-   */
-  async domainCheckAll(version) {
-    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/domain/check_all`);
-  }
-
-  /**
-   * List all the domains for a particular service and version.
-   *
-   * @param {string} version - The current version of a service.
-   * @see https://docs.fastly.com/api/config#domain_6d340186666771f022ca20f81609d03d
-   * @example
-   * instance.readDomains('182')
-   .then(res => {
-     console.log(res.data);
-   })
-   .catch(err => {
-     console.log(err.message);
-   });
-
-   * @returns {Promise} The response object representing the completion or failure.
-   */
-  async readDomains(version) {
-    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/domain`);
-  }
-
-  /**
-   * List the domains within a service.
-   *
-   * @see https://docs.fastly.com/api/config#service_d5578a1e3bc75512711ddd0a58ce7a36
-   * @param {string} [serviceId] - The service id.
-   * @returns {Promise} The response object representing the completion or failure.
-   */
-  async readServiceDomains(serviceId = this.service_id) {
-    return this.request.get(`/service/${serviceId}/domain`);
   }
 
   // === start ===
