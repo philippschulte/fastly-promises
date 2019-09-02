@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/adobe/fastly-native-promises/compare/v1.12.0...v1.13.0) (2019-09-02)
+
+
+### Features
+
+* **domain:** add more domain functions ([06d6fd6](https://github.com/adobe/fastly-native-promises/commit/06d6fd6))
+
 # [1.12.0](https://github.com/adobe/fastly-native-promises/compare/v1.11.0...v1.12.0) (2019-08-20)
 
 
