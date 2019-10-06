@@ -952,7 +952,7 @@ superflous conditional headers.
     * [.readHealthcheck(version, name)](#Fastly+readHealthcheck) ⇒ <code>Promise</code>
     * [.createHealthcheck(version, data)](#Fastly+createHealthcheck) ⇒ <code>Promise</code>
     * [.updateHealthcheck(version, name, data)](#Fastly+updateHealthcheck) ⇒ <code>Promise</code>
-    * [.deleteHealthCheck(version, name)](#Fastly+deleteHealthCheck) ⇒ <code>Promise</code>
+    * [.deleteHealthcheck(version, name)](#Fastly+deleteHealthcheck) ⇒ <code>Promise</code>
 
 <a name="new_Fastly_new"></a>
 
@@ -1938,9 +1938,9 @@ Update the healthcheck for a particular service and version.
 | name | <code>string</code> | The name of the healthcheck to update. |
 | data | <code>object</code> | The healthcheck definition. |
 
-<a name="Fastly+deleteHealthCheck"></a>
+<a name="Fastly+deleteHealthcheck"></a>
 
-#### fastly.deleteHealthCheck(version, name) ⇒ <code>Promise</code>
+#### fastly.deleteHealthcheck(version, name) ⇒ <code>Promise</code>
 Delete the healthcheck for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
