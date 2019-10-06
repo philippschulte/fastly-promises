@@ -8,7 +8,7 @@ const config = require('../src/config');
 const fastlyPromises = require('../src/index');
 const response = require('./response/readHealthchecks.response');
 
-describe('#createHealthCheck', () => {
+describe('#readHealthChecks', () => {
   const fastly = fastlyPromises('xDrqnDPrSim56UxQeZ442GQTgrAWNXun', '5gY6jizXEIvY6cgU1D1Yq4');
   let res;
 

@@ -1288,7 +1288,7 @@ class Fastly {
    * @param {string} name - The name of the healthcheck to delete.
    * @returns {Promise} The response object representing the completion or failure.
    */
-  async deleteHealthCheck(version, name) {
+  async deleteHealthcheck(version, name) {
     return this.request.delete(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/healthcheck/${name}`);
   }
 }
