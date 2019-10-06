@@ -1236,6 +1236,61 @@ class Fastly {
   async dryrun(operations) {
     return this.transact(operations, false);
   }
+
+  /**
+   * List all healthchecks for a particular service and version.
+   * 
+   * @param {string} version - The current version of a service.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readHealthChecks(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/healthcheck`);
+  }
+
+  /**
+   * Get details of a single named healthcheck.
+   * 
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the healthcheck.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readHealthCheck(version, name) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/healthcheck/${name}`);
+  }
+
+  /**
+   * Create a healthcheck for a particular service and version.
+   * 
+   * @param {string} version - The current version of a service.
+   * @param {object} data - The healthcheck definition.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async createHealthCheck(version, data) {
+    return this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/healthcheck/`, data);
+  }
+
+  /**
+   * Update the healthcheck for a particular service and version.
+   * 
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the healthcheck to update.
+   * @param {object} data - The healthcheck definition.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async updateHealthCheck(version, name, data) {
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/healthcheck/${name}`, data);
+  }
+
+  /**
+   * Delete the healthcheck for a particular service and version.
+   * 
+   * @param {string} version The current version of a service.
+   * @param {string} name - The name of the healthcheck to delete.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async deleteHealthCheck(version, name) {
+    return this.request.delete(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/healthcheck/${name}`);
+  }
 }
 
 /**
