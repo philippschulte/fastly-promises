@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/adobe/fastly-native-promises/compare/v1.13.0...v1.14.0) (2019-10-07)
+
+
+### Features
+
+* add healthcheck methods ([6c97b56](https://github.com/adobe/fastly-native-promises/commit/6c97b56))
+
 # [1.13.0](https://github.com/adobe/fastly-native-promises/compare/v1.12.0...v1.13.0) (2019-09-02)
 
 
