@@ -10,8 +10,7 @@
     "junit": "nyc --reporter=text --reporter=lcov --check-coverage --statements 100 --lines 100 mocha --exit -R mocha-junit-reporter && codecov",
     "docs": "jsdoc2md --files src/*.js -t README.md.hbs -d 3 > README.md",
     "semantic-release": "semantic-release",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": ""
   },
   "repository": {
     "type": "git",
@@ -61,8 +60,7 @@
   "dependencies": {
     "object-hash": "^2.0.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5",
-    "snyk": "^1.195.1"
+    "request-promise-native": "^1.0.5"
   },
   "config": {
     "commitizen": {
