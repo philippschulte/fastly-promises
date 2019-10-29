@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/adobe/fastly-native-promises/compare/v1.14.0...v1.14.1) (2019-10-29)
+
+
+### Bug Fixes
+
+* **ci:** try semantic-release w/o writing .npmrc ([859dee1](https://github.com/adobe/fastly-native-promises/commit/859dee1e1773cbad306beaf371fb188e06699b02))
+
 # [1.14.0](https://github.com/adobe/fastly-native-promises/compare/v1.13.0...v1.14.0) (2019-10-07)
 
 
