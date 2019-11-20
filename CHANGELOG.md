@@ -1,3 +1,10 @@
+## [1.14.2](https://github.com/adobe/fastly-native-promises/compare/v1.14.1...v1.14.2) (2019-11-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependencies ([#169](https://github.com/adobe/fastly-native-promises/issues/169)) ([4931d79](https://github.com/adobe/fastly-native-promises/commit/4931d79eb1a999fd59035587d3a584ab21e52152))
+
 ## [1.14.1](https://github.com/adobe/fastly-native-promises/compare/v1.14.0...v1.14.1) (2019-10-29)
 
 
