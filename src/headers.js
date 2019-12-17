@@ -19,7 +19,7 @@ class Headers {
    * @param {number} version - Service config version.
    * @param {string} type - Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`.
    * @param {string} commentprefix - The prefix to be used for comments.
-   * @param {string} nameprefix  - The prefix to be used for names.
+   * @param {string} nameprefix -  - The prefix to be used for names.
    * @param {string} action - What do do with the header, can be `set`, `append`, `delete`.
    * @param {string} header - The name of the header to set.
    * @param {string} sub - Name of the subroutine where the header
