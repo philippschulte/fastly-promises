@@ -7,20 +7,20 @@
 [![codecov](https://img.shields.io/codecov/c/github/adobe/fastly-native-promises.svg)](https://codecov.io/gh/adobe/fastly-native-promises)
 [![CircleCI](https://img.shields.io/circleci/project/github/adobe/fastly-native-promises.svg)](https://circleci.com/gh/adobe/fastly-native-promises)
 [![GitHub license](https://img.shields.io/github/license/adobe/fastly-native-promises.svg)](https://github.com/adobe/fastly-native-promises/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/adobe/fastly-native-promises.svg)](https://github.com/adobe/fastly-native-promises/issues) [![Greenkeeper badge](https://badges.greenkeeper.io/adobe/fastly-native-promises.svg)](https://greenkeeper.io/)
+[![GitHub issues](https://img.shields.io/github/issues/adobe/fastly-native-promises.svg)](https://github.com/adobe/fastly-native-promises/issues)
 
 ## Problem
 
-The callback based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/). [Philipp Schulte's fastly-native-promises](https://github.com/philippschulte/fastly-native-promises) client seemed almost perfect, except:
+The callback-based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/). [Philipp Schulte's fastly-native-promises](https://github.com/philippschulte/fastly-native-promises) client seemed almost perfect, except:
 
 - it uses Axios, which is an additional dependency we'd like to avoid, especially when running inside Adobe I/O Runtime
 - it has been missing features and pull requests were merged only slowly
 
-This fork addresses the concerns above, but breaks compatibility with Browsers, so that it can only be used in Node JS environments.
+This fork addresses the concerns above but breaks compatibility with Browsers, so that it can only be used in Node JS environments.
 
 ## Solution
 
-The `fastly-native-promises` package uses the promise based HTTP client [Request-Promise-Native](https://github.com/request/request-promise-native) to perform requests to the [Fastly](https://docs.fastly.com/api/) API. [Request-Promise-Native](https://github.com/request/request-promise-native) supports the native JavaScript [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API and automatically transforms the data into JSON. Each `fastly-native-promises` API method returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which represents either the completion or failure of the request. 
+The `fastly-native-promises` package uses the promise-based HTTP client [Request-Promise-Native](https://github.com/request/request-promise-native) to perform requests to the [Fastly](https://docs.fastly.com/api/) API. [Request-Promise-Native](https://github.com/request/request-promise-native) supports the native JavaScript [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API and automatically transforms the data into JSON. Each `fastly-native-promises` API method returns a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) which represents either the completion or failure of the request. 
 
 ## Table of Contents
 
@@ -34,7 +34,7 @@ The `fastly-native-promises` package uses the promise based HTTP client [Request
 
 ## Security
 
-You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) in order to use the `fastly-native-promises` library. I recommend to use a token with a [global scope](https://docs.fastly.com/api/auth#access) to be able to use all `fastly-native-promises` API methods.
+You'll need a [Fastly API Token](https://docs.fastly.com/api/auth#tokens) to use the `fastly-native-promises` library. I recommend using a token with [global scope](https://docs.fastly.com/api/auth#access) to be able to use all `fastly-native-promises` API methods.
 
 ## Install
 
@@ -197,13 +197,13 @@ The `Fastly` instance has a `requestmonitor` property that can be used to retrie
 - `requestmonitor.edgedurations` for an array of API processing durations (in milliseconds, measured from the edge).
 - `requestmonitor.durations` for an array of request durations (in milliseconds, measured from the client, i.e. including network latency).
 
-With `requestmonitor.stats` you can get all of that in one object, including minumum, maximum and mean durations for all requests.
+With `requestmonitor.stats` you can get all of that in one object, including minimum, maximum and mean durations for all requests.
 
 ## Guarding against Rate Limits
 
 Using the `requestmonitor.remaining` property, you can make sure that you still have sufficient requests before you hit the rate limit. 
 
-When using the `instance.transact` method, you can furthermore provide a minimum for the neccessary available request limit, so that after the inital cloning of the version no additional requests will be made if the API rate limit will be exceeded. This allows you to fail fast in case of rate limit issues.
+When using the `instance.transact` method, you can furthermore provide a minimum for the necessary available request limit so that after the initial cloning of the version no additional requests will be made if the API rate limit will be exceeded. This allows you to fail fast in case of rate limit issues.
 
 ## High-Level Helpers
 
@@ -231,7 +231,7 @@ console.log('Created a condition matching index.html with following name', condi
 
 When `update` is called with a list of `statements` in VCL condition language, it will synchronize the list of conditions passed in with the conditions that already exist in the Fastly service config. All conditions that share the same `nameprefix`, but are no longer used get deleted, new conditions that don't exist yet will get created (unchanged conditions aren't touched, reducing the number of requests made upon updates).
 
-The return value of `update` is an object that maps condition statment to the condition object. This allows re-using the condition in other Fastly API calls.
+The return value of `update` is an object that maps condition statement to the condition object. This allows re-using the condition in other Fastly API calls.
 
 ### Header Helper in `fastly.headers`
 
@@ -955,7 +955,7 @@ superflous conditions.
 | version | <code>number</code> | Service config version. |
 | type | <code>string</code> | Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`. |
 | commentprefix | <code>string</code> | The prefix to be used for comments. |
-| nameprefix | <code>string</code> | The prefix to be used for names. |
+| nameprefix | <code>string</code> | - The prefix to be used for names. |
 
 <a name="Headers"></a>
 
@@ -977,7 +977,7 @@ superflous conditional headers.
 | version | <code>number</code> | Service config version. |
 | type | <code>string</code> | Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`. |
 | commentprefix | <code>string</code> | The prefix to be used for comments. |
-| nameprefix | <code>string</code> | The prefix to be used for names. |
+| nameprefix | <code>string</code> | - The prefix to be used for names. |
 | action | <code>string</code> | What do do with the header, can be `set`, `append`, `delete`. |
 | header | <code>string</code> | The name of the header to set. |
 | sub | <code>string</code> | Name of the subroutine where the header should be applied, can be `request`, `fetch`, `cache`, or `response`. |
