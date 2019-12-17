@@ -1110,6 +1110,25 @@ class Fastly {
    */
 
   /**
+   * List all snippets for a particular service and version.
+   *
+   * @see https://docs.fastly.com/api/config#api-section-snippet
+   * @example
+   * instance.readSnippets('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readSnippets(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/snippet`);
+  }
+
+  /**
    * Create a snippet for a particular service and version.
    *
    * @see https://docs.fastly.com/api/config#snippet_41e0e11c662d4d56adada215e707f30d

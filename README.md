@@ -281,6 +281,9 @@ When `update` is called with a list of `objects` that looks like `{ condition: '
 <dt><a href="#DomainAPI">DomainAPI</a> : <code><a href="#DomainAPI">DomainAPI</a></code></dt>
 <dd><p>The Fastly Domain API.</p>
 </dd>
+<dt><a href="#HealthcheckAPI">HealthcheckAPI</a> : <code><a href="#HealthcheckAPI">HealthcheckAPI</a></code></dt>
+<dd><p>The Fastly Healthcheck API.</p>
+</dd>
 <dt><a href="#PurgeAPI">PurgeAPI</a> : <code><a href="#PurgeAPI">PurgeAPI</a></code></dt>
 <dd><p>The Fastly Purge API.</p>
 </dd>
@@ -328,7 +331,7 @@ HTTP status code can be retrieved. Known error status codes include:</p>
 <li>400: attempting to activate invalid VCL</li>
 <li>401: invalid credentials</li>
 <li>404: resource not found</li>
-<li>409: conflict when trying to POST a resource that already exists</li>
+<li>409: confict when trying to POST a resource that already exists</li>
 <li>422: attempting to modify a service config that is not checked out</li>
 <li>429: rate limit exceeded, try again later</li>
 </ul>
@@ -385,7 +388,7 @@ Get a list of all users from the current customer.
 <a name="AccountAPI+readUser"></a>
 
 #### accountAPI.readUser(id) ⇒ <code>Promise</code>
-Get the user with the specific id.
+Get the the user with the specific id.
 
 **Kind**: instance method of [<code>AccountAPI</code>](#AccountAPI)  
 **Returns**: <code>Promise</code> - The response object representing the completion or failure.  
@@ -674,6 +677,91 @@ Delete the domain for a particular service and version.
 | version | <code>string</code> | The current version of a service. |
 | name | <code>string</code> | The domain name. |
 
+<a name="HealthcheckAPI"></a>
+
+### HealthcheckAPI : [<code>HealthcheckAPI</code>](#HealthcheckAPI)
+The Fastly Healthcheck API.
+
+**Kind**: global class  
+**See**: https://docs.fastly.com/api/config#healthcheck  
+
+* [HealthcheckAPI](#HealthcheckAPI) : [<code>HealthcheckAPI</code>](#HealthcheckAPI)
+    * [.readHealthchecks(version)](#HealthcheckAPI+readHealthchecks) ⇒ <code>Promise</code>
+    * [.readHealthcheck(version, name)](#HealthcheckAPI+readHealthcheck) ⇒ <code>Promise</code>
+    * [.createHealthcheck(version, data)](#HealthcheckAPI+createHealthcheck) ⇒ <code>Promise</code>
+    * [.updateHealthcheck(version, name, data)](#HealthcheckAPI+updateHealthcheck) ⇒ <code>Promise</code>
+    * [.deleteHealthcheck(version, name)](#HealthcheckAPI+deleteHealthcheck) ⇒ <code>Promise</code>
+
+<a name="HealthcheckAPI+readHealthchecks"></a>
+
+#### healthcheckAPI.readHealthchecks(version) ⇒ <code>Promise</code>
+List all healthchecks for a particular service and version.
+
+**Kind**: instance method of [<code>HealthcheckAPI</code>](#HealthcheckAPI)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#healthcheck_126cb37382d68583269420ba772ded36  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+
+<a name="HealthcheckAPI+readHealthcheck"></a>
+
+#### healthcheckAPI.readHealthcheck(version, name) ⇒ <code>Promise</code>
+Get details of a single named healthcheck.
+
+**Kind**: instance method of [<code>HealthcheckAPI</code>](#HealthcheckAPI)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#healthcheck_b54ea357a2377e62ae7649e609b94966  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the healthcheck. |
+
+<a name="HealthcheckAPI+createHealthcheck"></a>
+
+#### healthcheckAPI.createHealthcheck(version, data) ⇒ <code>Promise</code>
+Create a healthcheck for a particular service and version.
+
+**Kind**: instance method of [<code>HealthcheckAPI</code>](#HealthcheckAPI)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#healthcheck_8712be8923dd419c54393da3ac31f6d3  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| data | <code>object</code> | The healthcheck definition. |
+
+<a name="HealthcheckAPI+updateHealthcheck"></a>
+
+#### healthcheckAPI.updateHealthcheck(version, name, data) ⇒ <code>Promise</code>
+Update the healthcheck for a particular service and version.
+
+**Kind**: instance method of [<code>HealthcheckAPI</code>](#HealthcheckAPI)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#healthcheck_9a60b6005125c4afeaa80111e69d7586  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the healthcheck to update. |
+| data | <code>object</code> | The healthcheck definition. |
+
+<a name="HealthcheckAPI+deleteHealthcheck"></a>
+
+#### healthcheckAPI.deleteHealthcheck(version, name) ⇒ <code>Promise</code>
+Delete the healthcheck for a particular service and version.
+
+**Kind**: instance method of [<code>HealthcheckAPI</code>](#HealthcheckAPI)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#healthcheck_a22900c40a2fd59db5028061dc5dfa36  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+| name | <code>string</code> | The name of the healthcheck to delete. |
+
 <a name="PurgeAPI"></a>
 
 ### PurgeAPI : [<code>PurgeAPI</code>](#PurgeAPI)
@@ -867,7 +955,7 @@ superflous conditions.
 | version | <code>number</code> | Service config version. |
 | type | <code>string</code> | Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`. |
 | commentprefix | <code>string</code> | The prefix to be used for comments. |
-| nameprefix | <code>string</code> | The prefix to be used for names. |
+| nameprefix | <code>string</code> | - The prefix to be used for names. |
 
 <a name="Headers"></a>
 
@@ -889,8 +977,8 @@ superflous conditional headers.
 | version | <code>number</code> | Service config version. |
 | type | <code>string</code> | Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`. |
 | commentprefix | <code>string</code> | The prefix to be used for comments. |
-| nameprefix | <code>string</code> | The prefix to be used for names. |
-| action | <code>string</code> | What to do with the header can be `set`, `append`, `delete`. |
+| nameprefix | <code>string</code> | - The prefix to be used for names. |
+| action | <code>string</code> | What do do with the header, can be `set`, `append`, `delete`. |
 | header | <code>string</code> | The name of the header to set. |
 | sub | <code>string</code> | Name of the subroutine where the header should be applied, can be `request`, `fetch`, `cache`, or `response`. |
 
@@ -941,6 +1029,7 @@ superflous conditional headers.
     * [.readBackends(version)](#Fastly+readBackends) ⇒ <code>Promise</code>
     * [.updateBackend(version, name, data)](#Fastly+updateBackend) ⇒ <code>Promise</code>
     * [.createBackend(version, data)](#Fastly+createBackend) ⇒ <code>Promise</code>
+    * [.readSnippets(version)](#Fastly+readSnippets) ⇒ <code>Promise</code>
     * [.createSnippet(version, data)](#Fastly+createSnippet) ⇒ <code>Promise</code>
     * [.updateSnippet(version, name, data)](#Fastly+updateSnippet) ⇒ <code>Promise</code>
     * [.createVCL(version, data)](#Fastly+createVCL) ⇒ <code>Promise</code>
@@ -948,11 +1037,6 @@ superflous conditional headers.
     * [.setMainVCL(version, name)](#Fastly+setMainVCL) ⇒ <code>Promise</code>
     * [.transact(operations, activate, limit)](#Fastly+transact) ⇒ <code>object</code>
     * [.dryrun(operations)](#Fastly+dryrun) ⇒ <code>object</code>
-    * [.readHealthchecks(version)](#Fastly+readHealthchecks) ⇒ <code>Promise</code>
-    * [.readHealthcheck(version, name)](#Fastly+readHealthcheck) ⇒ <code>Promise</code>
-    * [.createHealthcheck(version, data)](#Fastly+createHealthcheck) ⇒ <code>Promise</code>
-    * [.updateHealthcheck(version, name, data)](#Fastly+updateHealthcheck) ⇒ <code>Promise</code>
-    * [.deleteHealthcheck(version, name)](#Fastly+deleteHealthcheck) ⇒ <code>Promise</code>
 
 <a name="new_Fastly_new"></a>
 
@@ -970,7 +1054,7 @@ The constructor method for creating a fastly-promises instance.
 
 #### fastly.readLogsFn(service) ⇒ [<code>ListFunction</code>](#ListFunction)
 Create a new function that lists all log configurations for a given service
-and version. The function can be parameterized with the name of the logging
+and version. The function can be parametrized with the name of the logging
 service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
@@ -984,7 +1068,7 @@ service.
 
 #### fastly.readLogFn(service) ⇒ [<code>ReadFunction</code>](#ReadFunction)
 Create a new function that returns a named log configuration for a given service
-and version. The function can be parameterized with the name of the logging
+and version. The function can be parametrized with the name of the logging
 service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
@@ -998,7 +1082,7 @@ service.
 
 #### fastly.createLogFn(service) ⇒ [<code>CreateFunction</code>](#CreateFunction)
 Create a new function that creates a named log configuration for a given service
-and version. The function can be parameterized with the name of the logging
+and version. The function can be parametrized with the name of the logging
 service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
@@ -1012,7 +1096,7 @@ service.
 
 #### fastly.updateLogFn(service) ⇒ [<code>UpdateFunction</code>](#UpdateFunction)
 Create a new function that updates a named log configuration for a given service
-and version. The function can be parameterized with the name of the logging
+and version. The function can be parametrized with the name of the logging
 service.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
@@ -1265,7 +1349,7 @@ instance.readDictItem('12', 'extensions', 'some_key')
 Create a new dictionary item for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object.  
+**Returns**: <code>Promise</code> - The reponse object.  
 **See**: https://docs.fastly.com/api/config#dictionary_item_6ec455c0ba1b21671789e1362bc7fe55  
 
 | Param | Type | Description |
@@ -1419,7 +1503,7 @@ instance.readDictionary('12', 'extensions')
 Create a new dictionary for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object.  
+**Returns**: <code>Promise</code> - The reponse object.  
 **See**: https://docs.fastly.com/api/config#dictionary_7d48b87bf82433162a3b209292722125  
 
 | Param | Type | Description |
@@ -1529,7 +1613,7 @@ instance.readCondition('12', 'returning')
 Create a new condition for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object.  
+**Returns**: <code>Promise</code> - The reponse object.  
 **See**: https://docs.fastly.com/api/config#condition_551199dbec2271195319b675d8659226  
 
 | Param | Type | Description |
@@ -1639,7 +1723,7 @@ instance.readHeader('12', 'returning')
 Create a new header for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object.  
+**Returns**: <code>Promise</code> - The reponse object.  
 **See**: https://docs.fastly.com/api/config#header_151df4ce647a8e222e730b260287cb39  
 
 | Param | Type | Description |
@@ -1750,7 +1834,7 @@ instance.updateBackend('34', 'slow-server', { name: 'fast-server' })
 Create a new backend for a particular service and version.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object.  
+**Returns**: <code>Promise</code> - The reponse object.  
 **See**: https://docs.fastly.com/api/config#backend_85c170418ee71191dbb3b5046aeb6c2c  
 
 | Param | Type | Description |
@@ -1758,6 +1842,29 @@ Create a new backend for a particular service and version.
 | version | <code>number</code> | The version number (current if omitted). |
 | data | <code>object</code> | The backend definition. |
 
+<a name="Fastly+readSnippets"></a>
+
+#### fastly.readSnippets(version) ⇒ <code>Promise</code>
+List all snippets for a particular service and version.
+
+**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
+**See**: https://docs.fastly.com/api/config#api-section-snippet  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| version | <code>string</code> | The current version of a service. |
+
+**Example**  
+```js
+instance.readSnippets('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+```
 <a name="Fastly+createSnippet"></a>
 
 #### fastly.createSnippet(version, data) ⇒ <code>Promise</code>
@@ -1886,71 +1993,6 @@ See `transact`, but this version does not activate the created version.
 | --- | --- | --- |
 | operations | <code>function</code> | The operations that should be applied to the cloned service config version. |
 
-<a name="Fastly+readHealthchecks"></a>
-
-#### fastly.readHealthchecks(version) ⇒ <code>Promise</code>
-List all health checks for a particular service and version.
-
-**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| version | <code>string</code> | The current version of a service. |
-
-<a name="Fastly+readHealthcheck"></a>
-
-#### fastly.readHealthcheck(version, name) ⇒ <code>Promise</code>
-Get details of a single named health check.
-
-**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| version | <code>string</code> | The current version of a service. |
-| name | <code>string</code> | The name of the health check. |
-
-<a name="Fastly+createHealthcheck"></a>
-
-#### fastly.createHealthcheck(version, data) ⇒ <code>Promise</code>
-Create a health check for a particular service and version.
-
-**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| version | <code>string</code> | The current version of a service. |
-| data | <code>object</code> | The health check definition. |
-
-<a name="Fastly+updateHealthcheck"></a>
-
-#### fastly.updateHealthcheck(version, name, data) ⇒ <code>Promise</code>
-Update the health check for a particular service and version.
-
-**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| version | <code>string</code> | The current version of a service. |
-| name | <code>string</code> | The name of the health check to update. |
-| data | <code>object</code> | The health check definition. |
-
-<a name="Fastly+deleteHealthcheck"></a>
-
-#### fastly.deleteHealthcheck(version, name) ⇒ <code>Promise</code>
-Delete the health check for a particular service and version.
-
-**Kind**: instance method of [<code>Fastly</code>](#Fastly)  
-**Returns**: <code>Promise</code> - The response object representing the completion or failure.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| version | <code>string</code> | The current version of a service. |
-| name | <code>string</code> | The name of the health check to delete. |
-
 <a name="repeat"></a>
 
 ### repeat(responseOrError) ⇒ <code>boolean</code>
@@ -2045,7 +2087,7 @@ HTTP status code can be retrieved. Known error status codes include:
 - 400: attempting to activate invalid VCL
 - 401: invalid credentials
 - 404: resource not found
-- 409: conflict when trying to POST a resource that already exists
+- 409: confict when trying to POST a resource that already exists
 - 422: attempting to modify a service config that is not checked out
 - 429: rate limit exceeded, try again later
 
