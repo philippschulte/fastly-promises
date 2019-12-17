@@ -13,7 +13,7 @@ class Conditions {
    * @param {number} version - Service config version.
    * @param {string} type - Condition type, can be `REQUEST`, `RESPONSE`, or `CACHE`.
    * @param {string} commentprefix - The prefix to be used for comments.
-   * @param {string} nameprefix  - The prefix to be used for names.
+   * @param {string} nameprefix -  - The prefix to be used for names.
    * @returns {Function[]} A pair of a create and cleanup function.
    */
   multistepupdate(version, type, commentprefix, nameprefix) {
