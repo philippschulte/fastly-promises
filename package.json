@@ -9,8 +9,7 @@
     "lint": "./node_modules/.bin/eslint .",
     "junit": "nyc --reporter=text --reporter=lcov --check-coverage --statements 100 --lines 100 mocha --exit -R mocha-junit-reporter && codecov",
     "docs": "jsdoc2md --files src/*.js -t README.md.hbs -d 3 > README.md",
-    "semantic-release": "semantic-release",
-    "prepare": ""
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -67,6 +66,5 @@
     "ghooks": {
       "pre-commit": "npm run test"
     }
-  },
-  "snyk": true
+  }
 }

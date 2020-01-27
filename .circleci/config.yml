@@ -1,8 +1,8 @@
 version: 2.1
 executors:
-  node8:
+  node10:
     docker:
-    - image: circleci/node:8
+    - image: circleci/node:10-buster
     environment:
       NPM_CONFIG_PREFIX: ~/.npm-global
 
@@ -14,8 +14,8 @@ commands:
         keys:
         - v1-dependencies-{{ arch }}-{{ checksum "package-lock.json" }}
     - run:
-        name: install npm 6.4.1
-        command: sudo npm -g install npm@6.4.1
+        name: install latest npm
+        command: sudo npm -g install npm
     - run:
         name: Installing Dependencies
         command: npm install
@@ -29,7 +29,7 @@ commands:
 
 jobs:
   build:
-    executor: node8
+    executor: node10
 
     steps:
     - setup
@@ -52,7 +52,7 @@ jobs:
         path: junit
 
   release:
-    executor: node8
+    executor: node10
 
     steps:
     - setup
