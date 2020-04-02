@@ -608,7 +608,7 @@ class Fastly {
         };
       }
       // always use uncached version here
-      return this.request.get.fresh(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`);
+      return this.request.get.fresh(`/service/${this.service_id}/dictionary/${data.id}/item/${encodeURIComponent(key)}`);
     });
   }
 
@@ -688,7 +688,7 @@ class Fastly {
     return this.readDictionary(
       await this.getVersion(version, 'latest'),
       name,
-    ).then(({ data }) => this.request.put(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`, {
+    ).then(({ data }) => this.request.put(`/service/${this.service_id}/dictionary/${data.id}/item/${encodeURIComponent(key)}`, {
       item_value: value,
     }));
   }
@@ -714,7 +714,7 @@ class Fastly {
     return this.readDictionary(
       await this.getVersion(version, 'latest'),
       name,
-    ).then(({ data }) => this.request.delete(`/service/${this.service_id}/dictionary/${data.id}/item/${key}`));
+    ).then(({ data }) => this.request.delete(`/service/${this.service_id}/dictionary/${data.id}/item/${encodeURIComponent(key)}`));
   }
 
   /**
