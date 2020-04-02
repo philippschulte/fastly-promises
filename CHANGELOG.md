@@ -1,3 +1,11 @@
+## [1.15.1](https://github.com/adobe/fastly-native-promises/compare/v1.15.0...v1.15.1) (2020-04-02)
+
+
+### Bug Fixes
+
+* **deps:** npm audit fix ([36c27ef](https://github.com/adobe/fastly-native-promises/commit/36c27efef1528052070150b7e2307898fbbda16b))
+* **dicts:** urlencode dict keys ([97b8f2a](https://github.com/adobe/fastly-native-promises/commit/97b8f2afe5c6101ccdd1e4fc838428a01d726260)), closes [#199](https://github.com/adobe/fastly-native-promises/issues/199)
+
 # [1.15.0](https://github.com/adobe/fastly-native-promises/compare/v1.14.2...v1.15.0) (2019-12-17)
 
 
