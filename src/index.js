@@ -63,7 +63,7 @@ class Fastly {
    *
    * @param {string} service - The id of the logging service. Supported services are:
    * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
-   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * logshuttle, logentries, loggly, heroku, https, openstack, papertrail, scalyr, splunk,
    * sumologic, syslog.
    * @returns {ListFunction} A logging function.
    */
@@ -78,7 +78,7 @@ class Fastly {
    *
    * @param {string} service - The id of the logging service. Supported services are:
    * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
-   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * logshuttle, logentries, loggly, heroku, https, openstack, papertrail, scalyr, splunk,
    * sumologic, syslog.
    * @returns {ReadFunction} A logging function.
    */
@@ -93,7 +93,7 @@ class Fastly {
    *
    * @param {string} service - The id of the logging service. Supported services are:
    * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
-   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * logshuttle, logentries, loggly, heroku, https, openstack, papertrail, scalyr, splunk,
    * sumologic, syslog.
    * @returns {CreateFunction} A logging function.
    */
@@ -108,7 +108,7 @@ class Fastly {
    *
    * @param {string} service - The id of the logging service. Supported services are:
    * s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb,
-   * logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk,
+   * logshuttle, logentries, loggly, heroku, https, openstack, papertrail, scalyr, splunk,
    * sumologic, syslog.
    * @returns {UpdateFunction} A logging function.
    */
@@ -185,6 +185,7 @@ class Fastly {
     this.readSplunkLogs = this.readLogsFn('splunk');
     this.readSumologicLogs = this.readLogsFn('sumologic');
     this.readSyslogLogs = this.readLogsFn('syslog');
+    this.readHttpsLogs = this.readLogsFn('https');
 
     this.readS3 = this.readLogFn('s3');
     this.readS3canary = this.readLogFn('s3canary');
@@ -205,6 +206,7 @@ class Fastly {
     this.readSplunk = this.readLogFn('splunk');
     this.readSumologic = this.readLogFn('sumologic');
     this.readSyslog = this.readLogFn('syslog');
+    this.readHttps = this.readLogFn('https');
 
     this.createS3 = this.createLogFn('s3');
     this.createS3canary = this.createLogFn('s3canary');
@@ -225,6 +227,7 @@ class Fastly {
     this.createSplunk = this.createLogFn('splunk');
     this.createSumologic = this.createLogFn('sumologic');
     this.createSyslog = this.createLogFn('syslog');
+    this.createHttps = this.createLogFn('https');
 
     this.updateS3 = this.updateLogFn('s3');
     this.updateS3canary = this.updateLogFn('s3canary');
@@ -245,6 +248,7 @@ class Fastly {
     this.updateSplunk = this.updateLogFn('splunk');
     this.updateSumologic = this.updateLogFn('sumologic');
     this.updateSyslog = this.updateLogFn('syslog');
+    this.updateHttps = this.updateLogFn('https');
 
     this.writeS3 = this
       .upsertFn(this.createS3, this.updateS3, this.readS3);
@@ -284,6 +288,8 @@ class Fastly {
       .upsertFn(this.createSumologic, this.updateSumologic, this.readSumologic);
     this.writeSyslog = this
       .upsertFn(this.createSyslog, this.updateSyslog, this.readSyslog);
+      this.writeHttps = this
+      .upsertFn(this.createHttps, this.updateHttps, this.readHttps);
 
     this.writeVCL = this.upsertFn(this.createVCL, this.updateVCL);
     this.writeSnippet = this.upsertFn(this.createSnippet, this.updateSnippet);
