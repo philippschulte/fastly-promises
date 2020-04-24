@@ -9,6 +9,7 @@
 [![GitHub license](https://img.shields.io/github/license/adobe/fastly-native-promises.svg)](https://github.com/adobe/fastly-native-promises/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/adobe/fastly-native-promises.svg)](https://github.com/adobe/fastly-native-promises/issues)
 
+
 ## Problem
 
 The callback-based [fastly](https://www.npmjs.com/package/fastly) package is still the most used client on [NPM](https://www.npmjs.com/). However, I needed a client which allows me to perform request sequentially and parallelly without ending up in an untamable [callback hell](http://callbackhell.com/). [Philipp Schulte's fastly-native-promises](https://github.com/philippschulte/fastly-native-promises) client seemed almost perfect, except:
@@ -1062,7 +1063,7 @@ service.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, https, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
 
 <a name="Fastly+readLogFn"></a>
 
@@ -1076,7 +1077,7 @@ service.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, https, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
 
 <a name="Fastly+createLogFn"></a>
 
@@ -1090,7 +1091,7 @@ service.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, https, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
 
 <a name="Fastly+updateLogFn"></a>
 
@@ -1104,7 +1105,7 @@ service.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
+| service | <code>string</code> | The id of the logging service. Supported services are: s3, s3canary, azureblob, cloudfiles, digitalocean, ftp, bigquery, gcs, honeycomb, logshuttle, logentries, loggly, heroku, https, openstack, papertrail, scalyr, splunk, sumologic, syslog. |
 
 <a name="Fastly+upsertFn"></a>
 
