@@ -288,7 +288,7 @@ class Fastly {
       .upsertFn(this.createSumologic, this.updateSumologic, this.readSumologic);
     this.writeSyslog = this
       .upsertFn(this.createSyslog, this.updateSyslog, this.readSyslog);
-      this.writeHttps = this
+    this.writeHttps = this
       .upsertFn(this.createHttps, this.updateHttps, this.readHttps);
 
     this.writeVCL = this.upsertFn(this.createVCL, this.updateVCL);
