@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/adobe/fastly-native-promises/compare/v1.15.1...v1.16.0) (2020-04-24)
+
+
+### Features
+
+* **logging:** add support for HTTPS log streaming API ([2e7af00](https://github.com/adobe/fastly-native-promises/commit/2e7af00565a6a05936b5a84fa8e9134d33e46dde)), closes [#205](https://github.com/adobe/fastly-native-promises/issues/205)
+
 ## [1.15.1](https://github.com/adobe/fastly-native-promises/compare/v1.15.0...v1.15.1) (2020-04-02)
 
 
