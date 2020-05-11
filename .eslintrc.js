@@ -11,51 +11,51 @@
  */
 
 module.exports = {
-  'env': {
-    'node': true,
-    'es6': true
+  env: {
+    node: true,
+    es6: true,
   },
   // this is the root project for all sub modules. stop searching for any
   // eslintrc files in parent directories.
-  'root': true,
-  'parserOptions': {
-    'sourceType': 'script',
-    'ecmaVersion': 10,
+  root: true,
+  parserOptions: {
+    sourceType: 'script',
+    ecmaVersion: 10,
   },
-  'plugins': [
-    'jsdoc'
+  plugins: [
+    'jsdoc',
   ],
-  'extends': 'airbnb-base',
-  'rules': {
-    'strict': 0,
+  extends: 'airbnb-base',
+  rules: {
+    strict: 0,
 
-    "jsdoc/check-examples": 0,
-    "jsdoc/check-param-names": 1,
-    "jsdoc/check-tag-names": 1,
-    "jsdoc/check-types": 1,
-    "jsdoc/newline-after-description": 1,
-    "jsdoc/no-undefined-types": 1,
-    "jsdoc/require-description": 0,
-    "jsdoc/require-description-complete-sentence": 1,
-    "jsdoc/require-example": 0,
-    "jsdoc/require-hyphen-before-param-description": 1,
-    "jsdoc/require-param": 1,
-    "jsdoc/require-param-description": 1,
-    "jsdoc/require-param-name": 1,
-    "jsdoc/require-param-type": 1,
-    "jsdoc/require-returns": 1,
-    "jsdoc/require-returns-description": 1,
-    "jsdoc/require-returns-type": 1,
-    "jsdoc/valid-types": 1,
+    'jsdoc/check-examples': 0,
+    'jsdoc/check-param-names': 1,
+    'jsdoc/check-tag-names': 1,
+    'jsdoc/check-types': 1,
+    'jsdoc/newline-after-description': 1,
+    'jsdoc/no-undefined-types': 1,
+    'jsdoc/require-description': 0,
+    'jsdoc/require-description-complete-sentence': 1,
+    'jsdoc/require-example': 0,
+    'jsdoc/require-hyphen-before-param-description': 1,
+    'jsdoc/require-param': 1,
+    'jsdoc/require-param-description': 1,
+    'jsdoc/require-param-name': 1,
+    'jsdoc/require-param-type': 1,
+    'jsdoc/require-returns': 1,
+    'jsdoc/require-returns-description': 1,
+    'jsdoc/require-returns-type': 1,
+    'jsdoc/valid-types': 1,
 
     // allow dangling underscores for 'fields'
-    'no-underscore-dangle': ['error', {'allowAfterThis': true}],
+    'no-underscore-dangle': ['error', { allowAfterThis: true }],
   },
-  "settings": {
-    "jsdoc": {
-        "additionalTagNames": {
-            "customTags": ["fulfil", "reject"]
-        }
-    }
-}
+  settings: {
+    jsdoc: {
+      additionalTagNames: {
+        customTags: ['fulfil', 'reject'],
+      },
+    },
+  },
 };
