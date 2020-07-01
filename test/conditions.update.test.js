@@ -46,7 +46,7 @@ describe('#fastly.conditions.update', () => {
     scope.done();
   });
 
-  after(() => {
-    nock.cleanAll();
+  it('Creates stable hashes', () => {
+    expect(map['req.url.basename == "new.html"'].name).toEqual('test-5d02ca762cb6470172b3fd92c21d15e5b0e44925');
   });
 });
