@@ -7,7 +7,7 @@
     "commit": "npm run lint && npm run docs && git-cz",
     "test": "nyc --reporter=text --reporter=lcov --check-coverage --statements 95 --lines 95 mocha -p",
     "lint": "./node_modules/.bin/eslint .",
-    "junit": "nyc --reporter=text --reporter=lcov --check-coverage --statements 100 --lines 100 mocha -p --exit -R xunit --reporter-option output=junit/test-results.xml && codecov",
+    "junit": "nyc --reporter=text --reporter=lcov --check-coverage --statements 95 --lines 95 mocha -p --exit -R xunit --reporter-option output=junit/test-results.xml && codecov",
     "docs": "jsdoc2md --files src/*.js -t README.md.hbs -d 3 > README.md",
     "semantic-release": "semantic-release"
   },
