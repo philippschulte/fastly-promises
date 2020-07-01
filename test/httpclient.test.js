@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const nock = require('nock');
 const expect = require('expect');
 const assert = require('assert');
@@ -24,6 +24,22 @@ describe('#httpclient.caches', () => {
 
     expect(first.data).toEqual(second.data);
     expect(scope.isDone()).toBeFalsy();
+  });
+
+  it('Status 200 can return JSON', async () => {
+    nock('http://www.example.com/')
+      .get('/json')
+      .reply(200, '{"foo": "bar"}');
+
+    const client = httpclient.create({
+      baseURL: 'http://www.example.com',
+      headers: {},
+      timeout: 1000,
+    });
+
+    const first = await client.get('/json');
+
+    expect(first.data).toMatchObject({ foo: 'bar' });
   });
 
   it('Status 404 will not get cached', async () => {

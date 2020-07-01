@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const { condit } = require('@adobe/helix-testutils');
 const nock = require('nock');
 const assert = require('assert');
