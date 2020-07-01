@@ -1,6 +1,5 @@
 /* eslint-env mocha */
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'false';
-const hash = require('object-hash');
 const nock = require('nock');
 const config = require('../src/config');
 const fastlyPromises = require('../src/index');
@@ -10,7 +9,7 @@ const bodymatch = require('./bodymatch');
 
 describe('#fastly.headers.update', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
-  
+
   const scope = nock(config.mainEntryPoint)
     .get('/service/SU1Z0isxPaozGVKXdv0eY/version/1/condition')
     .reply(200, response.list)
@@ -40,11 +39,6 @@ describe('#fastly.headers.update', () => {
     .reply(200, headerresponse.delete);
 
   before(async () => {
-    if (!nock.isActive()) {
-      console.log('re-activating nock')
-      nock.activate();
-    }
-
     await fastly.headers.update(
       1,
       'REQUEST',

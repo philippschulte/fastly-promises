@@ -10,7 +10,7 @@ const bodymatch = require('./bodymatch');
 describe('#fastly.conditions.update', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
   let map;
-  
+
   const scope = nock(config.mainEntryPoint)
     .get('/service/SU1Z0isxPaozGVKXdv0eY/version/1/condition')
     .reply(200, response.list)

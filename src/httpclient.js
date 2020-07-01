@@ -95,7 +95,7 @@ function create({ baseURL, timeout, headers }) {
         time: true,
         headers: myheaders,
       };
-      
+
       const uri = `${baseURL}${path}`;
 
       if (timeout) {
@@ -112,9 +112,9 @@ function create({ baseURL, timeout, headers }) {
         // send JSON
         options.body = JSON.stringify(body);
       }
+      options.headers['Content-Type'] = contentType;
 
       const reqfn = (attempt) => fetch(uri, options).then((response) => {
-
         responselog.push({ 'request-duration': response.elapsedTime, ...response.headers });
 
         if (!response.ok) {
