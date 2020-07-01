@@ -95,7 +95,7 @@ function create({ baseURL, timeout, headers }) {
         time: true,
         headers: myheaders,
       };
-
+      
       const uri = `${baseURL}${path}`;
 
       if (timeout) {
