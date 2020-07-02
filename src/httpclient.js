@@ -116,9 +116,11 @@ function create({ baseURL, timeout, headers }) {
         options.body = JSON.stringify(body);
       }
       options.headers['Content-Type'] = contentType;
+      const start = Date.now();
 
       const reqfn = (attempt) => fetch(uri, options).then((response) => {
-        responselog.push({ 'request-duration': response.elapsedTime, ...response.headers });
+        const end = Date.now();
+        responselog.push({ 'request-duration': end - start, headers: response.headers });
 
         if (!response.ok) {
           if (attempt < retries && repeat(response)) {
@@ -172,16 +174,18 @@ function create({ baseURL, timeout, headers }) {
 
       get remaining() {
         return responselog
-          .filter((hdrs) => typeof hdrs['fastly-ratelimit-remaining'] !== 'undefined')
-          .map((hdrs) => hdrs['fastly-ratelimit-remaining'])
+          .map((o) => o.headers)
+          .filter((hdrs) => typeof hdrs.get('fastly-ratelimit-remaining') !== 'undefined')
+          .map((hdrs) => hdrs.get('fastly-ratelimit-remaining'))
           .map((remaining) => Number.parseInt(remaining, 10))
           .pop();
       },
 
       get edgedurations() {
         return responselog
-          .filter((hdrs) => typeof hdrs['x-timer'] !== 'undefined')
-          .map((hdrs) => hdrs['x-timer'])
+          .map((o) => o.headers)
+          .filter((hdrs) => typeof hdrs.get('x-timer') !== 'undefined')
+          .map((hdrs) => hdrs.get('x-timer'))
           .map((timer) => timer.split(',').pop())
           .map((ve) => ve.substring(2))
           .map((ve) => Number.parseInt(ve, 10));
@@ -195,7 +199,7 @@ function create({ baseURL, timeout, headers }) {
       },
 
       get stats() {
-        return {
+        const retval = {
           count: this.count,
           remaining: this.remaining,
           minduration: Math.min(...this.durations),
@@ -207,6 +211,7 @@ function create({ baseURL, timeout, headers }) {
           meanedgeduration: Math.round(this.edgedurations.reduce((a, b) => a + b, 0)
             / this.edgedurations.length),
         };
+        return retval;
       },
     },
   };
