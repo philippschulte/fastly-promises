@@ -94,7 +94,6 @@ function create({ baseURL, timeout, headers }) {
 
       const options = {
         method,
-        time: true,
         headers: myheaders,
         cache: 'no-store',
       };
@@ -107,13 +106,13 @@ function create({ baseURL, timeout, headers }) {
 
       // set body or form based on content type. default is form, except for patch ;-)
       const contentType = myheaders['content-type']
-        || (method === 'patch' ? 'application/vnd.api+json' : 'application/x-www-form-urlencoded');
+        || (method === 'patch' ? 'application/json' : 'application/x-www-form-urlencoded');
       if (contentType === 'application/x-www-form-urlencoded') {
         // create form data
         options.body = new URLSearchParams(Object.entries(body || {})).toString();
       } else {
         // send JSON
-        options.body = JSON.stringify(body);
+        options.json = body;
       }
       options.headers['Content-Type'] = contentType;
       const start = Date.now();
