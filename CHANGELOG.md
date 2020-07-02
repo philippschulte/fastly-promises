@@ -1,3 +1,13 @@
+## [1.16.1](https://github.com/adobe/fastly-native-promises/compare/v1.16.0...v1.16.1) (2020-07-02)
+
+
+### Bug Fixes
+
+* disable cache ([9d8887f](https://github.com/adobe/fastly-native-promises/commit/9d8887ff14aede87a803f5d31c4065d006201875))
+* **httpclient:** robust timing ([5b5d901](https://github.com/adobe/fastly-native-promises/commit/5b5d901227c783193ce776131b506d64d58c9a14))
+* **httpclient:** use application/json for patch requests ([207476c](https://github.com/adobe/fastly-native-promises/commit/207476ce7cfadc675a0a07ee337da60caf3f75b9))
+* **writevcl:** guard against missing name ([cd2afd4](https://github.com/adobe/fastly-native-promises/commit/cd2afd45b8274d5ceef3f90fb6903a7f28386863))
+
 # [1.16.0](https://github.com/adobe/fastly-native-promises/compare/v1.15.1...v1.16.0) (2020-04-24)
 
 
