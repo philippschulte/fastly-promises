@@ -12,6 +12,7 @@
 
 'use strict';
 
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 /* eslint-env mocha */
 
 const nock = require('nock');

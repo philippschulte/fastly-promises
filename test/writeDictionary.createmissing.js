@@ -1,5 +1,6 @@
 'use strict';
 
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 /* eslint-env mocha */
 
 const nock = require('nock');
@@ -8,7 +9,7 @@ const config = require('../src/config');
 const fastlyPromises = require('../src/index');
 const response = require('./response/writedictionary.response');
 
-describe('#writeDictionary.updatename', () => {
+describe('#writeDictionary.createmissing', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', '3l2MjGcHgWw5NUJz7OKYH3');
   let res;
 

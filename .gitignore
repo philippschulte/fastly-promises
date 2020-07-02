@@ -7,3 +7,6 @@
 /* Istanbul */
 /coverage
 .nyc_output
+
+/* Mocha */
+junit

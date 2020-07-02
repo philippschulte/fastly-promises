@@ -2,6 +2,7 @@
 
 'use strict';
 
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 const expect = require('expect');
 const config = require('../src/config');
 

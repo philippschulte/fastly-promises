@@ -1,5 +1,6 @@
 'use strict';
 
+process.env.HELIX_FETCH_FORCE_HTTP1 = 'true';
 /* eslint-env mocha */
 
 const nock = require('nock');
@@ -7,6 +8,7 @@ const expect = require('expect');
 const config = require('../src/config');
 const fastlyPromises = require('../src/index');
 const response = require('./response/writedictionary.response');
+const bodymatch = require('./bodymatch');
 
 describe('#writeDictionary.updatename', () => {
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', '3l2MjGcHgWw5NUJz7OKYH3');
@@ -15,15 +17,12 @@ describe('#writeDictionary.updatename', () => {
   nock(config.mainEntryPoint)
     .get('/service/3l2MjGcHgWw5NUJz7OKYH3/version/1040/dictionary/strain_owners')
     .reply(200, response.get)
-    .put('/service/3l2MjGcHgWw5NUJz7OKYH3/version/1040/dictionary/strain_owners', {
+    .put('/service/3l2MjGcHgWw5NUJz7OKYH3/version/1040/dictionary/strain_owners', bodymatch({
       write_only: true,
       name: 'strain_owners',
-    })
+    }))
     .reply(400, response.badput)
-    .put('/service/3l2MjGcHgWw5NUJz7OKYH3/version/1040/dictionary/strain_owners', {
-      write_only: false,
-      name: 'owner_strains',
-    })
+    .put('/service/3l2MjGcHgWw5NUJz7OKYH3/version/1040/dictionary/strain_owners')
     .reply(200, response.goodput)
     .post('/service/3l2MjGcHgWw5NUJz7OKYH3/version/1040/dictionary')
     .reply(409, response.badpost);

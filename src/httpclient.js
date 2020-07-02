@@ -1,13 +1,27 @@
-const request = require('request-promise-native');
 const hash = require('object-hash');
+const fetchAPI = require('@adobe/helix-fetch');
+
+const context = process.env.HELIX_FETCH_FORCE_HTTP1
+  ? fetchAPI.context({
+    httpProtocols: ['http1'],
+    httpsProtocols: ['http1'],
+  })
+  : fetchAPI;
+const { fetch } = context;
 
 class FastlyError extends Error {
-  constructor(response) {
-    super(response.body.detail || response.body.msg);
+  constructor(response, text) {
+    try {
+      const body = JSON.parse(text);
+      super(body.detail || body.msg || text);
+      this.data = body;
+      this.code = body.msg;
+    } catch {
+      // eslint-disable-next-line constructor-super
+      super(text);
+    }
 
-    this.data = response.body;
-    this.status = response.statusCode;
-    this.code = response.body.msg;
+    this.status = response.status;
     this.name = 'FastlyError';
   }
 }
@@ -34,14 +48,14 @@ function repeatError(error) {
   if (error.name === 'FastlyError') {
     return false;
   }
-  return error.name === 'RequestError';
+  return error.name === 'Error';
 }
 
-function repeatResponse({ statusCode }) {
-  if (statusCode === 429) {
+function repeatResponse({ status }) {
+  if (status === 429) {
     return true;
   }
-  if (statusCode > 500 && statusCode < 505) {
+  if (status > 500 && status < 505) {
     return true;
   }
   return false;
@@ -57,7 +71,7 @@ function repeat(responseOrError) {
   if (responseOrError instanceof Error) {
     return repeatError(responseOrError);
   }
-  return responseOrError.statusCode ? repeatResponse(responseOrError) : false;
+  return responseOrError.status ? repeatResponse(responseOrError) : false;
 }
 
 function create({ baseURL, timeout, headers }) {
@@ -80,40 +94,61 @@ function create({ baseURL, timeout, headers }) {
 
       const options = {
         method,
-        uri: `${baseURL}${path}`,
-        json: true,
-        timeout,
-        time: true,
         headers: myheaders,
-        resolveWithFullResponse: true,
-        simple: false,
+        cache: 'no-store',
       };
+
+      const uri = `${baseURL}${path}`;
+
+      if (timeout) {
+        options.signal = context.timeoutSignal(timeout);
+      }
 
       // set body or form based on content type. default is form, except for patch ;-)
       const contentType = myheaders['content-type']
-        || (method === 'patch' ? 'application/vnd.api+json' : 'application/x-www-form-urlencoded');
+        || (method === 'patch' ? 'application/json' : 'application/x-www-form-urlencoded');
       if (contentType === 'application/x-www-form-urlencoded') {
-        options.form = body;
+        // create form data
+        options.body = new URLSearchParams(Object.entries(body || {})).toString();
       } else {
-        options.body = body;
+        // send JSON
+        options.json = body;
       }
+      options.headers['Content-Type'] = contentType;
+      const start = Date.now();
 
-      const reqfn = (attempt) => request(options).then((response) => {
-        responselog.push({ 'request-duration': response.elapsedTime, ...response.headers });
-        if (response.statusCode >= 400) {
+      const reqfn = (attempt) => fetch(uri, options).then((response) => {
+        const end = Date.now();
+        responselog.push({ 'request-duration': end - start, headers: response.headers });
+
+        if (!response.ok) {
           if (attempt < retries && repeat(response)) {
-            return reqfn(attempt + 1);
+            return response.text().then(() => reqfn(attempt + 1));
           }
-          throw new FastlyError(response);
+          return response.text().then((text) => { throw new FastlyError(response, text); });
         }
-        return {
-          status: response.statusCode,
-          statusText: response.stausMessage,
-          headers: response.headers,
-          config: options,
-          request: response.request,
-          data: response.body,
-        };
+
+        return response.text().then((text) => {
+          let data = text;
+          try {
+            data = JSON.parse(text);
+            return {
+              status: response.status,
+              statusText: response.statusText,
+              headers: response.headers,
+              config: options,
+              data,
+            };
+          } catch {
+            return {
+              status: response.status,
+              statusText: response.statusText,
+              headers: response.headers,
+              config: options,
+              data,
+            };
+          }
+        });
       }).catch((reason) => {
         if (attempt < retries && repeat(reason)) {
           return reqfn(attempt + 1);
@@ -138,16 +173,18 @@ function create({ baseURL, timeout, headers }) {
 
       get remaining() {
         return responselog
-          .filter((hdrs) => typeof hdrs['fastly-ratelimit-remaining'] !== 'undefined')
-          .map((hdrs) => hdrs['fastly-ratelimit-remaining'])
+          .map((o) => o.headers)
+          .filter((hdrs) => typeof hdrs.get('fastly-ratelimit-remaining') !== 'undefined')
+          .map((hdrs) => hdrs.get('fastly-ratelimit-remaining'))
           .map((remaining) => Number.parseInt(remaining, 10))
           .pop();
       },
 
       get edgedurations() {
         return responselog
-          .filter((hdrs) => typeof hdrs['x-timer'] !== 'undefined')
-          .map((hdrs) => hdrs['x-timer'])
+          .map((o) => o.headers)
+          .filter((hdrs) => typeof hdrs.get('x-timer') !== 'undefined')
+          .map((hdrs) => hdrs.get('x-timer'))
           .map((timer) => timer.split(',').pop())
           .map((ve) => ve.substring(2))
           .map((ve) => Number.parseInt(ve, 10));
@@ -161,7 +198,7 @@ function create({ baseURL, timeout, headers }) {
       },
 
       get stats() {
-        return {
+        const retval = {
           count: this.count,
           remaining: this.remaining,
           minduration: Math.min(...this.durations),
@@ -173,6 +210,7 @@ function create({ baseURL, timeout, headers }) {
           meanedgeduration: Math.round(this.edgedurations.reduce((a, b) => a + b, 0)
             / this.edgedurations.length),
         };
+        return retval;
       },
     },
   };

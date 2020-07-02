@@ -1201,6 +1201,12 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    */
   async updateVCL(version, name, data) {
+    if (typeof name === 'object') {
+      /* eslint-disable no-param-reassign */
+      data = name;
+      name = data.name;
+      /* eslint-enable no-param-reassign */
+    }
     return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/vcl/${name}`, data);
   }
 
