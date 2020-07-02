@@ -23,7 +23,9 @@ describe('#integration edge dictionary updates', () => {
   afterEach(() => {
     Object.values(fastly.requestmonitor.stats).forEach((val) => {
       // all stats should be numbers
-      expect(val).toBeGreaterThan(0);
+      if (!Number.isNaN(val)) {
+        expect(val).toBeGreaterThan(0);
+      }
     });
   });
 
