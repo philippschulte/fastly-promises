@@ -1,10 +1,12 @@
-const context = require('@adobe/helix-fetch').context({
-  httpsProtocols:
-  /* istanbul ignore next */
-  process.env.HELIX_FETCH_FORCE_HTTP1 ? ['http1'] : ['http2', 'http1'],
-});
 const hash = require('object-hash');
+const fetchAPI = require('@adobe/helix-fetch');
 
+const context = process.env.HELIX_FETCH_FORCE_HTTP1
+  ? fetchAPI.context({
+    httpProtocols: ['http1'],
+    httpsProtocols: ['http1'],
+  })
+  : fetchAPI;
 const { fetch } = context;
 
 class FastlyError extends Error {
@@ -94,6 +96,7 @@ function create({ baseURL, timeout, headers }) {
         method,
         time: true,
         headers: myheaders,
+        cache: 'no-store',
       };
 
       const uri = `${baseURL}${path}`;
