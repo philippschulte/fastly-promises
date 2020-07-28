@@ -1,5 +1,6 @@
 const hash = require('object-hash');
 const fetchAPI = require('@adobe/helix-fetch');
+const { Lock } = require('./lock');
 
 const context = process.env.HELIX_FETCH_FORCE_HTTP1
   ? fetchAPI.context({
@@ -160,12 +161,31 @@ function create({ baseURL, timeout, headers }) {
     return memoize ? memo(myreq) : myreq;
   }
 
+  const lock = new Lock();
+
+  /**
+   * Guards a function against concurrent execution.
+   *
+   * @param {Function} fn - The function to guard.
+   * @returns {Function} A guarded function.
+   */
+  function protect(fn) {
+    return async function protected(...args) {
+      await lock.acquire();
+      try {
+        return fn(...args);
+      } finally {
+        lock.release();
+      }
+    };
+  }
+
   const client = {
-    post: makereq('post'),
+    post: protect(makereq('post')),
     get: makereq('get', true, 2),
-    put: makereq('put'),
-    patch: makereq('patch'),
-    delete: makereq('delete'),
+    put: protect(makereq('put')),
+    patch: protect(makereq('patch')),
+    delete: protect(makereq('delete')),
     monitor: {
       get count() {
         return responselog.length;
