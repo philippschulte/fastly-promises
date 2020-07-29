@@ -1,3 +1,15 @@
+# [1.17.0](https://github.com/adobe/fastly-native-promises/compare/v1.16.4...v1.17.0) (2020-07-29)
+
+
+### Bug Fixes
+
+* **http:** prevent concurrent modification of the same service ([691d976](https://github.com/adobe/fastly-native-promises/commit/691d9769c017f6943713c823adf84fdf9cf5395d))
+
+
+### Features
+
+* **lock:** add a lock helper to control concurrency ([ad3c24c](https://github.com/adobe/fastly-native-promises/commit/ad3c24c669fae825a5870b469761d90bc7cf8444))
+
 ## [1.16.4](https://github.com/adobe/fastly-native-promises/compare/v1.16.3...v1.16.4) (2020-07-22)
 
 
