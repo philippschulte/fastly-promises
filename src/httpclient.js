@@ -169,8 +169,9 @@ function create({ baseURL, timeout, headers }) {
    * @param {Function} fn - The function to guard.
    * @returns {Function} A guarded function.
    */
-  function protect(fn) {
-    return async function protected(...args) {
+  /* istanbul ignore next */
+  function protect(fn) { // eslint-disable-line no-unused-vars
+    return async (...args) => {
       await lock.acquire();
       try {
         return fn(...args);
@@ -181,11 +182,17 @@ function create({ baseURL, timeout, headers }) {
   }
 
   const client = {
-    post: protect(makereq('post')),
+    // remove serialization of API calls: too broad in scope
+
+    // post: protect(makereq('post')),
+    post: makereq('post'),
     get: makereq('get', true, 2),
-    put: protect(makereq('put')),
-    patch: protect(makereq('patch')),
-    delete: protect(makereq('delete')),
+    // put: protect(makereq('put')),
+    put: makereq('put'),
+    // patch: protect(makereq('patch')),
+    patch: makereq('patch'),
+    // delete: protect(makereq('delete')),
+    delete: makereq('delete'),
     monitor: {
       get count() {
         return responselog.length;
