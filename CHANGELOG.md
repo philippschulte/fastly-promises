@@ -1,3 +1,10 @@
+## [1.17.2](https://github.com/adobe/fastly-native-promises/compare/v1.17.1...v1.17.2) (2020-08-08)
+
+
+### Performance Improvements
+
+* remove serialization of API calls: too broad in scope ([09e2b5b](https://github.com/adobe/fastly-native-promises/commit/09e2b5b722842ce9f876abb133a090adc018ee67))
+
 ## [1.17.1](https://github.com/adobe/fastly-native-promises/compare/v1.17.0...v1.17.1) (2020-08-03)
 
 
