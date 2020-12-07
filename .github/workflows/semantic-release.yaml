@@ -16,6 +16,9 @@ jobs:
           node-version: '10.x'
       - run: npm install
       - run: npm test
+        env:
+          FASTLY_AUTH: ${{ secrets.FASTLY_AUTH }}
+          FASTLY_SERVICE_ID: ${{ secrets.FASTLY_SERVICE_ID }}
       - run: npm run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
