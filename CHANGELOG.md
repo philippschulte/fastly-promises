@@ -1,3 +1,15 @@
+# [1.18.0](https://github.com/adobe/fastly-native-promises/compare/v1.17.3...v1.18.0) (2020-12-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-fetch to v1.9.2 ([b5e4781](https://github.com/adobe/fastly-native-promises/commit/b5e47814137c6b9d2b2e352f244a56b45276b93a))
+
+
+### Features
+
+* **healthcheck:** add writeHealthcheck method for upserts ([56bec96](https://github.com/adobe/fastly-native-promises/commit/56bec96dc5b9fa31166d1e7e72a167eabafc7c40))
+
 ## [1.17.3](https://github.com/adobe/fastly-native-promises/compare/v1.17.2...v1.17.3) (2020-08-10)
 
 
