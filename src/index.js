@@ -319,6 +319,11 @@ class Fastly {
         }
       });
     });
+
+    this.writeHealtcheck = this.upsertFn(
+      this.createHealthcheck, 
+      this.updateHealthcheck,
+      this.readHealtcheck);
   }
 
   /**
