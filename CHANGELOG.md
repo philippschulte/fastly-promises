@@ -1,3 +1,10 @@
+## [1.18.1](https://github.com/adobe/fastly-native-promises/compare/v1.18.0...v1.18.1) (2020-12-16)
+
+
+### Bug Fixes
+
+* **healthcheck:** fix typo ([950781e](https://github.com/adobe/fastly-native-promises/commit/950781e751af9aa3deffbfaa73a5ea8a00cd4903))
+
 # [1.18.0](https://github.com/adobe/fastly-native-promises/compare/v1.17.3...v1.18.0) (2020-12-15)
 
 
