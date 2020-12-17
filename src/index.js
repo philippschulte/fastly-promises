@@ -946,6 +946,8 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    */
   async updateCondition(version, name, data) {
+    const mydata = { ...data };
+    delete mydata.type;
     return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/condition/${encodeURIComponent(name)}`, data);
   }
 
