@@ -1,3 +1,10 @@
+## [1.18.2](https://github.com/adobe/fastly-native-promises/compare/v1.18.1...v1.18.2) (2020-12-17)
+
+
+### Bug Fixes
+
+* **conditions:** do not attempt to change condition type ([20db0a4](https://github.com/adobe/fastly-native-promises/commit/20db0a4f4b5a1435122fd5669c7fb03fb9a22d02))
+
 ## [1.18.1](https://github.com/adobe/fastly-native-promises/compare/v1.18.0...v1.18.1) (2020-12-16)
 
 
