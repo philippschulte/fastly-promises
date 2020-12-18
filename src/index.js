@@ -967,6 +967,7 @@ class Fastly {
    */
   async updateCondition(version, name, data) {
     const mydata = { ...data };
+    // cannot change type of condition
     delete mydata.type;
     return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/condition/${encodeURIComponent(name)}`, data);
   }
@@ -1196,7 +1197,9 @@ class Fastly {
    * @returns {Promise} The response object representing the completion or failure.
    */
   async updateSnippet(version, name, data) {
-    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/snippet/${name}`, data);
+    const mydata = { ...data };
+    delete mydata.type;
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/snippet/${name}`, mydata);
   }
 
   /**
