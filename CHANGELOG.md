@@ -1,3 +1,10 @@
+## [1.19.1](https://github.com/adobe/fastly-native-promises/compare/v1.19.0...v1.19.1) (2020-12-18)
+
+
+### Bug Fixes
+
+* **conditions:** prevent type updates ([9a0aa17](https://github.com/adobe/fastly-native-promises/commit/9a0aa17337fd0a6989fdcc6ab30a1f9e8b6e2307))
+
 # [1.19.0](https://github.com/adobe/fastly-native-promises/compare/v1.18.2...v1.19.0) (2020-12-18)
 
 
