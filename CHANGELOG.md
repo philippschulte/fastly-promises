@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/adobe/fastly-native-promises/compare/v1.18.2...v1.19.0) (2020-12-18)
+
+
+### Features
+
+* **snippets:** add readsnippet method ([398593a](https://github.com/adobe/fastly-native-promises/commit/398593a3535e10cf0da0c86be64dd83e4c3290ca))
+
 ## [1.18.2](https://github.com/adobe/fastly-native-promises/compare/v1.18.1...v1.18.2) (2020-12-17)
 
 
