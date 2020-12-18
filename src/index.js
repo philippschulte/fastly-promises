@@ -291,7 +291,7 @@ class Fastly {
       .upsertFn(this.createHttps, this.updateHttps, this.readHttps);
 
     this.writeVCL = this.upsertFn(this.createVCL, this.updateVCL);
-    this.writeSnippet = this.upsertFn(this.createSnippet, this.updateSnippet);
+    this.writeSnippet = this.upsertFn(this.createSnippet, this.updateSnippet, this.readSnippet);
     this.writeBackend = this.upsertFn(this.createBackend, this.updateBackend);
 
     this.writeCondition = this.upsertFn(
@@ -914,6 +914,26 @@ class Fastly {
    */
   async readCondition(version, name) {
     return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/condition/${name}`);
+  }
+
+  /**
+   * Get details of a single named snippet.
+   *
+   * @see https://developer.fastly.com/reference/api/vcl-services/snippet/
+   * @example
+   * instance.readSnippet('12', 'returning')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - Name of the snippet.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readSnippet(version, name) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/snippet/${name}`);
   }
 
   /**
