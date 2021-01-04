@@ -1,3 +1,10 @@
+## [1.19.2](https://github.com/adobe/fastly-native-promises/compare/v1.19.1...v1.19.2) (2021-01-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency object-hash to v2.1.1 ([#274](https://github.com/adobe/fastly-native-promises/issues/274)) ([07655f6](https://github.com/adobe/fastly-native-promises/commit/07655f62d032e5c1b6ff100d6035a23da591c46b))
+
 ## [1.19.1](https://github.com/adobe/fastly-native-promises/compare/v1.19.0...v1.19.1) (2020-12-18)
 
 
