@@ -2,12 +2,14 @@
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'false';
 const nock = require('nock');
 const config = require('../src/config');
+const expect = require('expect');
 const fastlyPromises = require('../src/index');
 const response = require('./response/condition.response');
 const headerresponse = require('./response/header.response');
 const bodymatch = require('./bodymatch');
 
 describe('#fastly.headers.update', () => {
+  let res;
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
 
   const scope = nock(config.mainEntryPoint)
@@ -58,6 +60,6 @@ describe('#fastly.headers.update', () => {
   });
 
   it('All requests have been made', () => {
-    scope.done();
+    expect(res).toBeUndefined();
   });
 });

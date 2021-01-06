@@ -134,7 +134,8 @@ class Fastly {
       // careful
       return (version, name, data) => readFn.apply(this, [version, name])
         .then(() => updateFn.apply(this, [version, name, data]))
-        .catch(() => createFn.apply(this, [version, data]));
+        .catch(() => createFn.apply(this, [version, data]))
+        .catch(() => updateFn.apply(this, [version, name, data]));
     }
     // stubborn
     return (version, name, data) => createFn.apply(this, [version, data])
