@@ -1,3 +1,10 @@
+## [1.19.4](https://github.com/adobe/fastly-native-promises/compare/v1.19.3...v1.19.4) (2021-01-06)
+
+
+### Bug Fixes
+
+* **index:** retry with POST after failed PUT ([52f0b45](https://github.com/adobe/fastly-native-promises/commit/52f0b452791615e263512962a319eaaacad7a749))
+
 ## [1.19.3](https://github.com/adobe/fastly-native-promises/compare/v1.19.2...v1.19.3) (2021-01-06)
 
 
