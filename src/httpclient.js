@@ -8,7 +8,7 @@ const context = process.env.HELIX_FETCH_FORCE_HTTP1
     httpsProtocols: ['http1'],
   })
   : fetchAPI;
-const { fetch } = context;
+const { fetch, AbortError } = context;
 
 class FastlyError extends Error {
   constructor(response, text) {
@@ -49,7 +49,7 @@ function repeatError(error) {
   if (error.name === 'FastlyError') {
     return false;
   }
-  return error.name === 'Error';
+  return error.name === 'Error' || error instanceof AbortError;
 }
 
 function repeatResponse({ status }) {
