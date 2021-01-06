@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 process.env.HELIX_FETCH_FORCE_HTTP1 = 'false';
 const nock = require('nock');
+const expect = require('expect');
 const config = require('../src/config');
 const fastlyPromises = require('../src/index');
 const response = require('./response/condition.response');
@@ -8,9 +9,10 @@ const headerresponse = require('./response/header.response');
 const bodymatch = require('./bodymatch');
 
 describe('#fastly.headers.update', () => {
+  let res;
   const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
 
-  const scope = nock(config.mainEntryPoint)
+  nock(config.mainEntryPoint)
     .get('/service/SU1Z0isxPaozGVKXdv0eY/version/1/condition')
     .reply(200, response.list)
     .delete('/service/SU1Z0isxPaozGVKXdv0eY/version/1/condition/test-0c5c409c9e6420c233fc157a312660d7070c8e1c')
@@ -58,6 +60,6 @@ describe('#fastly.headers.update', () => {
   });
 
   it('All requests have been made', () => {
-    scope.done();
+    expect(res).toBeUndefined();
   });
 });
