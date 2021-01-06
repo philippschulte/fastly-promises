@@ -1,3 +1,10 @@
+## [1.19.3](https://github.com/adobe/fastly-native-promises/compare/v1.19.2...v1.19.3) (2021-01-06)
+
+
+### Bug Fixes
+
+* **http:** retry in case of timeouts ([1b0f770](https://github.com/adobe/fastly-native-promises/commit/1b0f770abd9c7e2d9802a635f6f4053e86e8eceb)), closes [#261](https://github.com/adobe/fastly-native-promises/issues/261)
+
 ## [1.19.2](https://github.com/adobe/fastly-native-promises/compare/v1.19.1...v1.19.2) (2021-01-04)
 
 
