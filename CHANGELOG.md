@@ -1,3 +1,10 @@
+## [1.19.5](https://github.com/adobe/fastly-native-promises/compare/v1.19.4...v1.19.5) (2021-01-19)
+
+
+### Bug Fixes
+
+* **conditions:** do not update condition type ([06a63ec](https://github.com/adobe/fastly-native-promises/commit/06a63ec168491bb792574a6c423158344e74599c))
+
 ## [1.19.4](https://github.com/adobe/fastly-native-promises/compare/v1.19.3...v1.19.4) (2021-01-06)
 
 
