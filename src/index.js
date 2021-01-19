@@ -970,7 +970,7 @@ class Fastly {
     const mydata = { ...data };
     // cannot change type of condition
     delete mydata.type;
-    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/condition/${encodeURIComponent(name)}`, data);
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/condition/${encodeURIComponent(name)}`, mydata);
   }
 
   /**
