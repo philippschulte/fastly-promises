@@ -32,13 +32,13 @@ describe('#integration condition updates', () => {
       await fastly.createCondition(version, {
         name: 'test_condition',
         type: 'request',
-        statement: 'req.url.basename == "new.html"'
+        statement: 'req.url.basename == "new.html"',
       });
 
       await fastly.updateCondition(version, 'test_condition', {
         name: 'test_condition',
         type: 'request',
-        statement: 'req.url.basename == "old.html"'
+        statement: 'req.url.basename == "old.html"',
       });
 
       await fastly.deleteCondition(version, 'test_condition');
