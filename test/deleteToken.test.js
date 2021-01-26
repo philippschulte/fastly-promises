@@ -21,7 +21,7 @@ const config = require('../src/config');
 const fastlyPromises = require('../src/index');
 
 describe('#deleteToken', () => {
-  const fastly = fastlyPromises();
+  const fastly = fastlyPromises('923b6bd5266a7f932e41962755bd4254', 'SU1Z0isxPaozGVKXdv0eY');
   let res;
 
   nock(config.mainEntryPoint)

@@ -4,8 +4,7 @@ const { Lock } = require('./lock');
 
 const context = process.env.HELIX_FETCH_FORCE_HTTP1
   ? fetchAPI.context({
-    httpProtocols: ['http1'],
-    httpsProtocols: ['http1'],
+    alpnProtocols: [fetchAPI.ALPN_HTTP1_1],
   })
   : fetchAPI;
 const { fetch, AbortError } = context;
@@ -49,7 +48,7 @@ function repeatError(error) {
   if (error.name === 'FastlyError') {
     return false;
   }
-  return error.name === 'Error' || error instanceof AbortError;
+  return error.name === 'Error' || error instanceof AbortError || error.name === 'FetchError';
 }
 
 function repeatResponse({ status }) {
@@ -108,12 +107,14 @@ function create({ baseURL, timeout, headers }) {
       // set body or form based on content type. default is form, except for patch ;-)
       const contentType = myheaders['content-type']
         || (method === 'patch' ? 'application/json' : 'application/x-www-form-urlencoded');
-      if (contentType === 'application/x-www-form-urlencoded') {
-        // create form data
-        options.body = new URLSearchParams(Object.entries(body || {})).toString();
-      } else {
-        // send JSON
-        options.json = body;
+      if (method && method !== 'get' && method !== 'head') {
+        if (contentType === 'application/x-www-form-urlencoded') {
+          // create form data
+          options.body = new URLSearchParams(Object.entries(body || {})).toString();
+        } else {
+          // send JSON
+          options.body = JSON.stringify(body);
+        }
       }
       options.headers['Content-Type'] = contentType;
       const start = Date.now();
