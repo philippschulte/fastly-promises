@@ -107,7 +107,8 @@ function create({ baseURL, timeout, headers }) {
       // set body or form based on content type. default is form, except for patch ;-)
       const contentType = myheaders['content-type']
         || (method === 'patch' ? 'application/json' : 'application/x-www-form-urlencoded');
-      if (method && method !== 'get' && method !== 'head') {
+      if (!method || (method !== 'get' && method !== 'head')) {
+        // GET (default) and HEAD requests can't have a body
         if (contentType === 'application/x-www-form-urlencoded') {
           // create form data
           options.body = new URLSearchParams(Object.entries(body || {})).toString();

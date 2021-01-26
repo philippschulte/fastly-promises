@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/adobe/fastly-native-promises#readme",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=12.0.0"
   },
   "devDependencies": {
     "@adobe/helix-testutils": "0.4.2",
