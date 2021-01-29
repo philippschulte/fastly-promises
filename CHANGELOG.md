@@ -1,3 +1,10 @@
+## [1.19.9](https://github.com/adobe/fastly-native-promises/compare/v1.19.8...v1.19.9) (2021-01-29)
+
+
+### Bug Fixes
+
+* **rel:** fix semantic release order ([87378fd](https://github.com/adobe/fastly-native-promises/commit/87378fd1de9c92df06c8c1b5c55205bd1f65ac2e))
+
 ## [1.19.8](https://github.com/adobe/fastly-native-promises/compare/v1.19.7...v1.19.8) (2021-01-29)
 
 
