@@ -7,7 +7,7 @@ const context = process.env.HELIX_FETCH_FORCE_HTTP1
     alpnProtocols: [fetchAPI.ALPN_HTTP1_1],
   })
   : fetchAPI;
-const { fetch, AbortError } = context;
+const { fetch, AbortError, Headers } = context;
 
 class FastlyError extends Error {
   constructor(response, text) {
@@ -89,12 +89,12 @@ function create({ baseURL, timeout, headers }) {
    */
   function makereq(method, memoize = false, retries = 0) {
     const myreq = function req(path, body, config) {
-      const myheaders = Object.assign(headers,
-        config && config.headers ? config.headers : {});
+      const myHeaders = new Headers(Object.assign(headers,
+        config && config.headers ? config.headers : {}));
 
       const options = {
         method,
-        headers: myheaders,
+        headers: myHeaders,
         cache: 'no-store',
       };
 
@@ -105,7 +105,7 @@ function create({ baseURL, timeout, headers }) {
       }
 
       // set body or form based on content type. default is form, except for patch ;-)
-      const contentType = myheaders['content-type']
+      const contentType = myHeaders.get('content-type')
         || (method === 'patch' ? 'application/json' : 'application/x-www-form-urlencoded');
       if (method && method !== 'get' && method !== 'head') {
         // GET (default) and HEAD requests can't have a body
@@ -117,7 +117,7 @@ function create({ baseURL, timeout, headers }) {
           options.body = JSON.stringify(body);
         }
       }
-      options.headers['Content-Type'] = contentType;
+      options.headers.set('content-type', contentType);
       const start = Date.now();
 
       const reqfn = (attempt) => fetch(uri, options).then((response) => {
