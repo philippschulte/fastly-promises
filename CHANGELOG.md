@@ -1,3 +1,11 @@
+## [1.19.13](https://github.com/adobe/fastly-native-promises/compare/v1.19.12...v1.19.13) (2021-02-18)
+
+
+### Bug Fixes
+
+* normalize headers ([f8e49e1](https://github.com/adobe/fastly-native-promises/commit/f8e49e19abb3c2713e5acd7a5beee0b405dd67bb))
+* **deps:** update dependency @adobe/helix-fetch to v2.1.5 ([38adb75](https://github.com/adobe/fastly-native-promises/commit/38adb75529cb7656dadbe5a5c67fd9aac7f83656))
+
 ## [1.19.12](https://github.com/adobe/fastly-native-promises/compare/v1.19.11...v1.19.12) (2021-02-15)
 
 
