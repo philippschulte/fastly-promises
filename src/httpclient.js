@@ -156,6 +156,11 @@ function create({ baseURL, timeout, headers }) {
         if (attempt < retries && repeat(reason)) {
           return reqfn(attempt + 1);
         }
+        if (reason instanceof AbortError) {
+          const done = new Date();
+          // eslint-disable-next-line no-param-reassign
+          reason.message = `Aborted ${method} request to ${path} after ${attempt} retries and ${done - start} ms: ${reason.message}`;
+        }
         throw reason;
       });
       return reqfn(0);
