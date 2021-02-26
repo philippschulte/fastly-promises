@@ -1,3 +1,10 @@
+# [1.20.0](https://github.com/adobe/fastly-native-promises/compare/v1.19.14...v1.20.0) (2021-02-26)
+
+
+### Features
+
+* **http:** add more detailed error reporting on abort errors ([0ab356a](https://github.com/adobe/fastly-native-promises/commit/0ab356adfaa0f6f867d7ed5557dae1c0f2b410a9))
+
 ## [1.19.14](https://github.com/adobe/fastly-native-promises/compare/v1.19.13...v1.19.14) (2021-02-26)
 
 
