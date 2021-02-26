@@ -1306,6 +1306,7 @@ class Fastly {
  *
  * @param {string} token - The Fastly API token.
  * @param {string} service_id - The Fastly service ID.
+ * @param {number} timeout - Timeout in seconds.
  * @returns {Fastly} The exported module.
  */
-module.exports = (token, service_id) => new Fastly(token, service_id);
+module.exports = (token, service_id, timeout) => new Fastly(token, service_id, timeout);
