@@ -329,7 +329,8 @@ class Fastly {
   }
 
   /**
-   * Remove the existing HTTP client and allow the node process to quit.
+   * Free resources bound to the HTTP client (pending sessions/sockets)
+   * and allow the node process to quit.
    */
   // eslint-disable-next-line class-methods-use-this
   discard() {

@@ -1133,7 +1133,8 @@ update.
 <a name="Fastly+discard"></a>
 
 #### fastly.discard()
-Remove the existing HTTP client and allow the node process to quit.
+Free resources bound to the HTTP client (pending sessions/sockets)
+and allow the node process to quit.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
 <a name="Fastly+dataCenters"></a>
