@@ -6,7 +6,7 @@ const context = process.env.HELIX_FETCH_FORCE_HTTP1
   ? fetchAPI.context({
     alpnProtocols: [fetchAPI.ALPN_HTTP1_1],
   })
-  : fetchAPI;
+  : fetchAPI.context();
 const { fetch, AbortError, Headers } = context;
 
 function discard() {
