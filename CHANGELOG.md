@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/adobe/fastly-native-promises/compare/v1.20.0...v1.21.0) (2021-03-01)
+
+
+### Features
+
+* **index:** allow timeouts to be configurable ([30d7cd6](https://github.com/adobe/fastly-native-promises/commit/30d7cd6c5363f83ccfcb79561c1914ab22c419d6))
+
 # [1.20.0](https://github.com/adobe/fastly-native-promises/compare/v1.19.14...v1.20.0) (2021-02-26)
 
 
