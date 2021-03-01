@@ -329,6 +329,14 @@ class Fastly {
   }
 
   /**
+   * Remove the existing HTTP client and allow the node process to quit.
+   */
+  // eslint-disable-next-line class-methods-use-this
+  discard() {
+    axios.discard();
+  }
+
+  /**
    * @typedef {object} FastlyError
    * The FastlyError class describes the most common errors that can occur
    * when working with the Fastly API. Using `error.status`, the underlying

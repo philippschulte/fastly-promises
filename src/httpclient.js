@@ -9,6 +9,10 @@ const context = process.env.HELIX_FETCH_FORCE_HTTP1
   : fetchAPI;
 const { fetch, AbortError, Headers } = context;
 
+function discard() {
+  context.reset();
+}
+
 class FastlyError extends Error {
   constructor(response, text) {
     try {
@@ -253,4 +257,4 @@ function create({ baseURL, timeout, headers }) {
   return client;
 }
 
-module.exports = { create, FastlyError };
+module.exports = { create, FastlyError, discard };

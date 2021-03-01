@@ -46,4 +46,8 @@ describe('#constructor', () => {
         });
       });
   });
+
+  after('Discard instance', () => {
+    instance.discard();
+  });
 });
