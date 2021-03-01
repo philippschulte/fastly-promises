@@ -1319,3 +1319,4 @@ class Fastly {
  * @returns {Fastly} The exported module.
  */
 module.exports = (token, service_id, timeout) => new Fastly(token, service_id, timeout);
+module.exports.loghelpers = require('./log-helpers');
