@@ -334,7 +334,7 @@ class Fastly {
    */
   // eslint-disable-next-line class-methods-use-this
   discard() {
-    axios.discard();
+    this.request.discard();
   }
 
   /**

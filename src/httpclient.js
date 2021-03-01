@@ -1,17 +1,8 @@
 const hash = require('object-hash');
 const fetchAPI = require('@adobe/helix-fetch');
+
+const { AbortError, Headers } = fetchAPI;
 const { Lock } = require('./lock');
-
-const context = process.env.HELIX_FETCH_FORCE_HTTP1
-  ? fetchAPI.context({
-    alpnProtocols: [fetchAPI.ALPN_HTTP1_1],
-  })
-  : fetchAPI.context();
-const { fetch, AbortError, Headers } = context;
-
-function discard() {
-  context.reset();
-}
 
 class FastlyError extends Error {
   constructor(response, text) {
@@ -79,6 +70,13 @@ function repeat(responseOrError) {
 }
 
 function create({ baseURL, timeout, headers }) {
+  const context = process.env.HELIX_FETCH_FORCE_HTTP1
+    ? fetchAPI.context({
+      alpnProtocols: [fetchAPI.ALPN_HTTP1_1],
+    })
+    : fetchAPI.context();
+  const { fetch } = context;
+
   const responselog = [];
   /**
    * Creates a function that mimicks the Axios request API
@@ -193,6 +191,9 @@ function create({ baseURL, timeout, headers }) {
   }
 
   const client = {
+    discard() {
+      context.reset();
+    },
     // remove serialization of API calls: too broad in scope
 
     // post: protect(makereq('post')),
@@ -257,4 +258,4 @@ function create({ baseURL, timeout, headers }) {
   return client;
 }
 
-module.exports = { create, FastlyError, discard };
+module.exports = { create, FastlyError };
