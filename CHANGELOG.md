@@ -1,3 +1,11 @@
+# [1.22.0](https://github.com/adobe/fastly-native-promises/compare/v1.21.0...v1.22.0) (2021-03-01)
+
+
+### Features
+
+* **http:** add discard method to allow quick return from node process ([1de0325](https://github.com/adobe/fastly-native-promises/commit/1de032517e215918ce2fa011845cb9f946a6aff2))
+* **logging:** add log helpers for easy json log formatting ([dcfd09f](https://github.com/adobe/fastly-native-promises/commit/dcfd09fb4663c24c577eed7ce2786adf94bff1d0))
+
 # [1.21.0](https://github.com/adobe/fastly-native-promises/compare/v1.20.0...v1.21.0) (2021-03-01)
 
 
