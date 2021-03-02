@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/adobe/fastly-native-promises/compare/v1.22.0...v1.22.1) (2021-03-02)
+
+
+### Bug Fixes
+
+* discard is async ([02f4e8b](https://github.com/adobe/fastly-native-promises/commit/02f4e8bdfb438361aa0189d71c8be7031ff11a88))
+
 # [1.22.0](https://github.com/adobe/fastly-native-promises/compare/v1.21.0...v1.22.0) (2021-03-01)
 
 
