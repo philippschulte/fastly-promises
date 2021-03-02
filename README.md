@@ -83,8 +83,8 @@ service_2.transact(async () => {
   });
 
   // optional, but speeds up end of process
-  service_1.discard();
-  service_2.discard();
+  await service_1.discard();
+  await service_2.discard();
 });
 ```
 
@@ -1137,6 +1137,7 @@ Free resources bound to the HTTP client (pending sessions/sockets)
 and allow the node process to quit.
 
 **Kind**: instance method of [<code>Fastly</code>](#Fastly)  
+**Returns**: <code>Promise</code> - A promise which resolves when all resources have been freed.  
 <a name="Fastly+dataCenters"></a>
 
 #### fastly.dataCenters() ⇒ <code>Promise</code>
