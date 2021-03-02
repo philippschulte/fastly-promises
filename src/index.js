@@ -331,10 +331,11 @@ class Fastly {
   /**
    * Free resources bound to the HTTP client (pending sessions/sockets)
    * and allow the node process to quit.
+   * @returns {Promise} A promise which resolves when all resources have been freed.
    */
   // eslint-disable-next-line class-methods-use-this
   discard() {
-    this.request.discard();
+    return this.request.discard();
   }
 
   /**

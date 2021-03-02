@@ -191,8 +191,8 @@ function create({ baseURL, timeout, headers }) {
   }
 
   const client = {
-    discard() {
-      context.reset();
+    async discard() {
+      return context.reset();
     },
     // remove serialization of API calls: too broad in scope
 

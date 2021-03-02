@@ -47,7 +47,7 @@ describe('#constructor', () => {
       });
   });
 
-  after('Discard instance', () => {
-    instance.discard();
+  after('Discard instance', async () => {
+    await instance.discard();
   });
 });
