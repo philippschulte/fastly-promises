@@ -1,3 +1,10 @@
+## [1.22.2](https://github.com/adobe/fastly-native-promises/compare/v1.22.1...v1.22.2) (2021-03-04)
+
+
+### Bug Fixes
+
+* **deps:** bump helix-fetch ([da16c14](https://github.com/adobe/fastly-native-promises/commit/da16c14b412412361e88c60c797a5230347e6f95))
+
 ## [1.22.1](https://github.com/adobe/fastly-native-promises/compare/v1.22.0...v1.22.1) (2021-03-02)
 
 
