@@ -307,6 +307,12 @@ class Fastly {
       this.readHeader,
     );
 
+    this.writeResponse = this.upsertFn(
+      this.createResponse,
+      this.updateResponse,
+      this.readResponse,
+    );
+
     this.conditions = new Conditions(this);
     this.headers = new Headers(this);
 
@@ -331,6 +337,7 @@ class Fastly {
   /**
    * Free resources bound to the HTTP client (pending sessions/sockets)
    * and allow the node process to quit.
+   *
    * @returns {Promise} A promise which resolves when all resources have been freed.
    */
   // eslint-disable-next-line class-methods-use-this
@@ -1098,6 +1105,26 @@ class Fastly {
   }
 
   /**
+   * Delete a response for a particular service and version.
+   *
+   * @see https://developer.fastly.com/reference/api/vcl-services/response-object/
+   * @example
+   * instance.deleteResponse('34', 'extensions')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the response.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async deleteResponse(version, name) {
+    return this.request.delete(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/response_object/${encodeURIComponent(name)}`);
+  }
+
+  /**
    * List all backends for a particular service and version.
    *
    * @see https://docs.fastly.com/api/config#backend_fb0e875c9a7669f071cbf89ca32c7f69
@@ -1152,6 +1179,15 @@ class Fastly {
    * @typedef {object} Snippet
    * @property {string} name The name of the snippet, as visible in the Fastly UI.
    * @property {string} content The VCL body of the snippet.
+   */
+
+  /**
+   * @typedef {object} ResponseObject
+   * @property {string} name The name of the synthetic response, as visible in the Fastly UI.
+   * @property {string} content The body of the response.
+   * @property {string} content_type The content type.
+   * @property {number} status Http status code.
+   * @property {string} request_condition Name of a request condition.
    */
 
   /**
@@ -1211,6 +1247,82 @@ class Fastly {
     const mydata = { ...data };
     delete mydata.type;
     return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/snippet/${name}`, mydata);
+  }
+
+  /**
+   * List all synthetic responses for a particular service and version.
+   *
+   * @see https://developer.fastly.com/reference/api/vcl-services/response-object/
+   * @example
+   * instance.readResponses('12')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readResponses(version) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/response_object`);
+  }
+
+  /**
+   * Get details of a single synthetic response.
+   *
+   * @see https://developer.fastly.com/reference/api/vcl-services/response-object/
+   * @example
+   * instance.readResponse('12', 'returning')
+   .then(res => {
+     console.log(res.data);
+   })
+   .catch(err => {
+     console.log(err.message);
+   });
+   * @param {string} version - The current version of a service.
+   * @param {string} name - Name of the response object.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async readResponse(version, name) {
+    return this.request.get(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/response_object/${name}`);
+  }
+
+  /**
+   * Create a synthetic response for a particular service and version.
+   *
+   * @see https://developer.fastly.com/reference/api/vcl-services/response-object/
+   * @example
+   * instance.createResponse('36', {
+    status: 200,
+    name: 'test-response',
+    content: 'This message means all is okay.'
+  })
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+   * @param {string} version - The current version of a service.
+   * @param {ResponseObject} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async createResponse(version, data) {
+    return this.request.post(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/response_object`, data);
+  }
+
+  /**
+   * Update a synthetic response for a particular service and version.
+   *
+   * @param {string} version - The current version of a service.
+   * @param {string} name - The name of the response object to update.
+   * @param {Snippet} data - The data to be sent as the request body.
+   * @returns {Promise} The response object representing the completion or failure.
+   */
+  async updateResponse(version, name, data) {
+    const mydata = { ...data };
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'current')}/response_object/${name}`, mydata);
   }
 
   /**
