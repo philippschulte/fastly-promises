@@ -1,3 +1,10 @@
+# [1.23.0](https://github.com/adobe/fastly-native-promises/compare/v1.22.4...v1.23.0) (2021-04-12)
+
+
+### Features
+
+* **responses:** add CRUD support for synthetic responses ([6218725](https://github.com/adobe/fastly-native-promises/commit/6218725c5debcbe276e67874a40eb9b04f2730a7)), closes [#45](https://github.com/adobe/fastly-native-promises/issues/45)
+
 ## [1.22.4](https://github.com/adobe/fastly-native-promises/compare/v1.22.3...v1.22.4) (2021-03-26)
 
 
