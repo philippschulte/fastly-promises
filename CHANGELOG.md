@@ -1,3 +1,10 @@
+## [1.23.3](https://github.com/adobe/fastly-native-promises/compare/v1.23.2...v1.23.3) (2021-07-28)
+
+
+### Bug Fixes
+
+* clear timeout after use ([#350](https://github.com/adobe/fastly-native-promises/issues/350)) ([5eedd4e](https://github.com/adobe/fastly-native-promises/commit/5eedd4e9468fe4b0e86beac4d2e658bb9b6a8108)), closes [#349](https://github.com/adobe/fastly-native-promises/issues/349)
+
 ## [1.23.2](https://github.com/adobe/fastly-native-promises/compare/v1.23.1...v1.23.2) (2021-06-11)
 
 
