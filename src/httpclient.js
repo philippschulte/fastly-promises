@@ -164,6 +164,10 @@ function create({ baseURL, timeout, headers }) {
           reason.message = `Aborted ${method} request to ${path} after ${attempt} retries and ${done - start} ms: ${reason.message}`;
         }
         throw reason;
+      }).finally(() => {
+        if (options.signal) {
+          options.signal.clear();
+        }
       });
       return reqfn(0);
     };
