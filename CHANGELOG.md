@@ -1,3 +1,10 @@
+## [1.23.4](https://github.com/adobe/fastly-native-promises/compare/v1.23.3...v1.23.4) (2021-07-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @adobe/helix-fetch to v2.4.1 ([e5c07c3](https://github.com/adobe/fastly-native-promises/commit/e5c07c34ef8ca0e69ec634e53a3bd98868049a7f))
+
 ## [1.23.3](https://github.com/adobe/fastly-native-promises/compare/v1.23.2...v1.23.3) (2021-07-28)
 
 
