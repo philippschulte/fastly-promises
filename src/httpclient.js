@@ -1,5 +1,6 @@
 const hash = require('object-hash');
 const fetchAPI = require('@adobe/helix-fetch');
+const FormData = require('form-data');
 
 const { AbortError, Headers } = fetchAPI;
 const { Lock } = require('./lock');
@@ -109,9 +110,24 @@ function create({ baseURL, timeout, headers }) {
       // set body or form based on content type. default is form, except for patch ;-)
       const contentType = myHeaders.get('content-type')
         || (method === 'patch' ? 'application/json' : 'application/x-www-form-urlencoded');
+      options.headers.set('content-type', contentType);
       if (method && method !== 'get' && method !== 'head') {
         // GET (default) and HEAD requests can't have a body
-        if (contentType === 'application/x-www-form-urlencoded') {
+        if (body instanceof Buffer) {
+          // multipart formdata
+          const form = new FormData();
+          form.append('package', body, {
+            filename: 'test.tar.gz',
+            contentType: 'application/x-gzip',
+          });
+          // override headers to include content type and boundary
+          options.headers = form.getHeaders({
+            'Fastly-Key': options.headers.get('fastly-key'),
+          });
+          // set body
+          options.body = form.getBuffer();// .toString();
+          // console.log(options.body.toString('base64'));
+        } else if (contentType === 'application/x-www-form-urlencoded') {
           // create form data
           options.body = new URLSearchParams(Object.entries(body || {})).toString();
         } else {
@@ -119,7 +135,7 @@ function create({ baseURL, timeout, headers }) {
           options.body = JSON.stringify(body);
         }
       }
-      options.headers.set('content-type', contentType);
+
       const start = Date.now();
 
       const reqfn = (attempt) => fetch(uri, options).then((response) => {
@@ -130,7 +146,9 @@ function create({ baseURL, timeout, headers }) {
           if (attempt < retries && repeat(response)) {
             return response.text().then(() => reqfn(attempt + 1));
           }
-          return response.text().then((text) => { throw new FastlyError(response, text); });
+          return response.text().then((text) => {
+            throw new FastlyError(response, text);
+          });
         }
 
         return response.text().then((text) => {
