@@ -25,8 +25,13 @@ module.exports = {
   plugins: [
     'jsdoc',
   ],
-  extends: 'airbnb-base',
+  extends: '@adobe/eslint-config-helix',
   rules: {
+    // a large part of this project's files are from the original (forked) project
+    // and did not come with copyright headers, so we disable the rule in order to
+    // allow files without headers and prevent accidential insertion of the Adobe
+    // copyright header into files that were not originally created by Adobe
+    'header/header': 'off',
     'import/extensions': 0,
     strict: 0,
 
