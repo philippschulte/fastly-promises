@@ -7,6 +7,7 @@ const AccountAPI = require('./api-account.js');
 const AuthAPI = require('./api-auth.js');
 const PurgeAPI = require('./api-purge.js');
 const DomainAPI = require('./api-domain.js');
+const PackageAPI = require('./api-package.js');
 const HealthcheckAPI = require('./api-healthcheck');
 
 class RateLimitError extends Error {
@@ -317,7 +318,7 @@ class Fastly {
     this.headers = new Headers(this);
 
     // bind the methods of the API classes.
-    [AccountAPI, AuthAPI, PurgeAPI, DomainAPI, HealthcheckAPI].forEach((API) => {
+    [AccountAPI, AuthAPI, PurgeAPI, DomainAPI, HealthcheckAPI, PackageAPI].forEach((API) => {
       const api = new API(this);
       Object.getOwnPropertyNames(API.prototype).forEach((name) => {
         const prop = api[name];
