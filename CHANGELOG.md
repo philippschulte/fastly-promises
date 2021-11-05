@@ -1,3 +1,26 @@
+# [2.0.0](https://github.com/adobe/fastly-native-promises/compare/v1.24.0...v2.0.0) (2021-11-05)
+
+
+### Bug Fixes
+
+* **package:** use correct body to upload to fastly API ([559ccb8](https://github.com/adobe/fastly-native-promises/commit/559ccb837ba33a1550ff26521a73db6789517171))
+
+
+### Continuous Integration
+
+* **package:** bump node version to 14 ([773fb9d](https://github.com/adobe/fastly-native-promises/commit/773fb9de1fac39ce106596ecb481091458243c28))
+
+
+### Features
+
+* **httpclient:** support multipart/formdata uploads ([861527c](https://github.com/adobe/fastly-native-promises/commit/861527c988ab498d75e5b5794db85689ec62120c))
+* **package:** add support for the compute@edge package API (get metdata, upload) ([7f5d1ae](https://github.com/adobe/fastly-native-promises/commit/7f5d1aea6e407b617eaf9901b3c087edeadc4271))
+
+
+### BREAKING CHANGES
+
+* **package:** updated to the oldest supported node version (14) removes support for node 12, which is EOL
+
 # [1.24.0](https://github.com/adobe/fastly-native-promises/compare/v1.23.5...v1.24.0) (2021-10-18)
 
 
