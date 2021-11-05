@@ -1,6 +1,6 @@
 version: 2.1
 executors:
-  node12:
+  node14:
     docker:
     - image: circleci/node:14
     environment:
