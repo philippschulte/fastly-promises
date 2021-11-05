@@ -40,9 +40,10 @@ class PackageAPI {
    *
    * @param {string} version - The service version to update.
    * @param {Buffer} buffer - The package contents as a Buffer.
+   * @returns {Promise} The response object.
    */
   async writePackage(version, buffer) {
-    this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/package`, buffer);
+    return this.request.put(`/service/${this.service_id}/version/${await this.getVersion(version, 'latest')}/package`, buffer);
   }
 }
 

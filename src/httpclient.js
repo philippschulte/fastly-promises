@@ -113,17 +113,23 @@ function create({ baseURL, timeout, headers }) {
       options.headers.set('content-type', contentType);
       if (method && method !== 'get' && method !== 'head') {
         // GET (default) and HEAD requests can't have a body
-        if (contentType === 'application/x-www-form-urlencoded') {
-          // create form data
-          options.body = new URLSearchParams(Object.entries(body || {})).toString();
-        } else if (body instanceof Buffer) {
+        if (body instanceof Buffer) {
           // multipart formdata
           const form = new FormData();
-          form.append('package', body);
+          form.append('package', body, {
+            filename: 'test.tar.gz',
+            contentType: 'application/x-gzip',
+          });
           // override headers to include content type and boundary
-          options.headers = form.getHeaders(options.headers);
+          options.headers = form.getHeaders({
+            'Fastly-Key': options.headers.get('fastly-key'),
+          });
           // set body
-          options.body = form.getBody();
+          options.body = form.getBuffer();// .toString();
+          // console.log(options.body.toString('base64'));
+        } else if (contentType === 'application/x-www-form-urlencoded') {
+          // create form data
+          options.body = new URLSearchParams(Object.entries(body || {})).toString();
         } else {
           // send JSON
           options.body = JSON.stringify(body);
