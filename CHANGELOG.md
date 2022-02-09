@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/adobe/fastly-native-promises/compare/v2.0.0...v2.0.1) (2022-02-09)
+
+
+### Bug Fixes
+
+* **deps:** update [@adobe](https://github.com/adobe) ([#390](https://github.com/adobe/fastly-native-promises/issues/390)) ([5ebd71b](https://github.com/adobe/fastly-native-promises/commit/5ebd71b7d35d5681be78bd5aeae88eec61cc5e5b))
+
 # [2.0.0](https://github.com/adobe/fastly-native-promises/compare/v1.24.0...v2.0.0) (2021-11-05)
 
 
