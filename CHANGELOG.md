@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/adobe/fastly-native-promises/compare/v2.0.2...v2.0.3) (2022-02-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency object-hash to v3 ([283f66a](https://github.com/adobe/fastly-native-promises/commit/283f66a7b0b5c1d595c059109449d5de714ae1c0))
+
 ## [2.0.2](https://github.com/adobe/fastly-native-promises/compare/v2.0.1...v2.0.2) (2022-02-14)
 
 
