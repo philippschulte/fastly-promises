@@ -179,6 +179,7 @@ Each `fastly-promises` API method returns the following response object:
     - [.publicIpList()](#publicIpList)
     - [.edgeCheck(url)](#edgeCheck)
   - [Service](#service)
+    - [.readService()](#readService)
     - [.readServices()](#readServices)
   - [Version](#version)
     - [.readVersions()](#readVersions)
@@ -464,6 +465,27 @@ instance.edgeCheck('api.example.com')
 ---
 
 ### Service
+
+<a name="readService"></a>
+
+### [.readService()](https://developer.fastly.com/reference/api/services/service/#get-service)
+
+*Get a specific service by id.*
+
+**Example**:
+
+```javascript
+instance.readService()
+  .then(res => {
+    console.log(res.data);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
+```
+
+**Kind**: method  
+**Return**: schema {promise} The response object representing the completion or failure.
 
 <a name="readServices"></a>
 

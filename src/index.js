@@ -103,6 +103,14 @@ class Fastly {
   readServices() {
     return this.request.get(`/service`);
   }
+
+  /**
+   * Get a specific service by id.
+   * @return {Promise} The response object representing the completion or failure.
+   */
+  readService() {
+    return this.request.get(`/service/${this.service_id}`);
+  }
   
   /**
    * List the versions for a particular service.
